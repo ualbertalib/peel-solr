@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context docBase="@PATH_TO_SOLR_WAR@" debug="0" crossContext="true">
+  <Environment name="solr/home" type="java.lang.String" value="@PATH_TO_SOLR_HOME@" override="true" />
+</Context>

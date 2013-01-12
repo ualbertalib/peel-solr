@@ -1,0 +1,11 @@
+<ivy-module version="2.0">
+  <info organisation="ca.ualberta.library" module="example-ivy"/>
+  <configurations>
+    <conf name="tasks" description="Ant tasks"/>
+    <conf name="solr" description="Solr war"/>
+  </configurations>
+  <dependencies>
+    <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->default"/>
+    <dependency org="org.apache.solr" name="solr" rev="4.0.0" conf="solr->default"/>
+  </dependencies>
+</ivy-module>
