@@ -8,6 +8,7 @@ Usage:
 other
 
     ant undeploy // will try to undeploy the /solr webapp
+    ant clean // will remove the created files -- use before commit
     ant [info] // will display usage
 
 Requirements:

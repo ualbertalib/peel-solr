@@ -76,7 +76,8 @@
   </target>
 
   <target name="clean">
-    <delete dir="${target.dir}"/>
+    <delete file="${solr.xml}"/>
+    <delete dir="target"/>
   </target>
 
 </project>
