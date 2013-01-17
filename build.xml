@@ -1,113 +1,115 @@
 <project name="example" default="info" xmlns:ivy="antlib:org.apache.ivy.ant">
   <property file="build.properties"/>
+  <property name="src.dir" location="src"/>
   <property name="test.dir" location="test"/>
   <property name="lib.dir" location="lib"/>
   <property name="main.lib" location="${lib.dir}/main"/>
-  <property name="tasks.dir" location="${lib.dir}/tasks"/>
-  <property name="deploy-solr.dir" location="${lib.dir}/deploy-solr"/>
-	
+  <property name="tasks.lib" location="${lib.dir}/tasks"/>
+  <property name="deploy-solr.lib" location="${lib.dir}/deploy-solr"/>
+  
   <property name="target.dir" location="target"/>
   <property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
   <property name="target.report.dir" location="${target.dir}/report/"/>
-
+  
   <property name="solr.home" location="${src.dir}/solr.home"/>
   <property name="solr.xml" location="solr.xml"/>
   <property name="solr.war" value="solr.war"/>
   <property name="solr.path" value="solr"/>
-	
-	<target name="retrieve.test">
-	      <ivy:retrieve conf="test-solr-home" pattern="${main.lib}/[artifact].[ext]"/>
-	      <path id="test.classpath">
-	          <fileset dir="${main.lib}">
-	            <include name="**/*.jar"/>
-	          </fileset>
-	        </path>
-	    </target>
-	  
-	    <target name="compile.test" depends="retrieve.test">
-	      <mkdir dir="${target.classes.test.dir}"/>
-	      <javac destdir="${target.classes.test.dir}">
-	        <src path="${test.dir}"/>
-	        <classpath refid="test.classpath"/>
-	      </javac>
-	    </target>
-
-	    <target name="compile" depends="compile.test"/>
-
-	    <target name="test" depends="compile">
-	      <mkdir dir="${target.report.dir}"/>
-	      <junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
-
-	        <classpath>
-	          <pathelement location="${target.classes.test.dir}"/>
-	          <path refid="test.classpath"/>
-	        </classpath>
-	        <formatter type="plain" usefile="false"/>
-	        <batchtest todir="${target.report.dir}">
-	          <fileset dir="${test.dir}">
-	            <include name="**/*Test*.java"/>
-	            <exclude name="**/Test*All.java"/>
-	          </fileset>
-	        </batchtest>
-	      </junit>
-	    </target>
-
-	    <target name="report" depends="test">
-	      <mkdir dir="${target.report.dir}/html"/>
-	      <junitreport todir="${target.report.dir}">
-	        <fileset dir="${target.report.dir}">
-	          <include name="TEST-*.xml"/>
-	        </fileset>
-	        <report todir="${target.report.dir}/html"/>
-	      </junitreport>
-	    </target>
-	
-<target name="ant-tasks">
-  <ivy:retrieve conf="tasks" 
-       pattern="${tasks.dir}/[artifact]-[revision].[ext]"/>
- 
-  <path id="tasks.path">
-    <fileset dir="${tasks.dir}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
-
-  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tasks.path"/>
-  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"  classpathref="tasks.path"/>
-  <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="tasks.path"/>
-</target>
-
+  
+  <target name="retrieve.test">
+    <ivy:retrieve conf="test-solr-home" pattern="${main.lib}/[artifact]-[revision].[ext]"/>
+    <path id="test.classpath">
+      <fileset dir="${main.lib}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+  </target>
+  
+  <target name="compile.test" depends="retrieve.test">
+    <mkdir dir="${target.classes.test.dir}"/>
+    <javac destdir="${target.classes.test.dir}">
+      <src path="${test.dir}"/>
+      <classpath refid="test.classpath"/>
+    </javac>
+  </target>
+  
+  <target name="compile" depends="compile.test"/>
+  
+  <target name="test" depends="compile">
+    <mkdir dir="${target.report.dir}"/>
+    <junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
+      <jvmarg value="-ea"/>
+      <classpath>
+        <pathelement location="${target.classes.test.dir}"/>
+      	<pathelement location="${src.dir}"/>
+        <path refid="test.classpath"/>
+      </classpath>
+      <formatter type="plain" usefile="false"/>
+      <batchtest todir="${target.report.dir}">
+        <fileset dir="${test.dir}">
+          <include name="**/*Test*.java"/>
+          <exclude name="**/Test*All.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  
+  <target name="report" depends="test">
+    <mkdir dir="${target.report.dir}/html"/>
+    <junitreport todir="${target.report.dir}">
+      <fileset dir="${target.report.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report todir="${target.report.dir}/html"/>
+    </junitreport>
+  </target>
+  
+  <target name="ant-tasks">
+    <ivy:retrieve conf="tasks" 
+      pattern="${tasks.lib}/[artifact]-[revision].[ext]"/>
+    
+    <path id="tasks.path">
+      <fileset dir="${tasks.lib}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+    
+    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tasks.path"/>
+    <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"  classpathref="tasks.path"/>
+    <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="tasks.path"/>
+  </target>
+  
   <target name="info" description="About solr-deploy">
     <echo message="ant install-solr -- will use solr.xml as context file to deploy solr.war in Tomcat"/>
   </target>
-
+  
   <target name="create-context">
     <copy file="solr.xml.template" tofile="${solr.xml}" filtering="true" overwrite="true">
       <filterset>
-        <filter token="PATH_TO_SOLR_WAR" value="${deploy-solr.dir}/${solr.war}"/>
+        <filter token="PATH_TO_SOLR_WAR" value="${deploy-solr.lib}/${solr.war}"/>
         <filter token="PATH_TO_SOLR_HOME" value="${solr.home}"/>
       </filterset>
     </copy>
   </target>
-
+  
   <target name="retrieve-solr" depends="ant-tasks">
-    <ivy:retrieve conf="deploy-solr" pattern="${deploy-solr.dir}/[artifact].[ext]"/>
+    <ivy:retrieve conf="deploy-solr" pattern="${deploy-solr.lib}/[artifact].[ext]"/>
   </target>
-
+  
   <target name="install-solr" depends="ant-tasks, create-context, retrieve-solr, context.status" if="context.deployable" description="Install Solr">
     <deploy url="${deploy.url}" username="${deploy.user}" password="${deploy.password}" path="/${solr.path}" config="file:${solr.xml}" />
   </target>
-
+  
   <target name="uninstall-solr" depends="ant-tasks, context.status" description="Remove Solr">
     <undeploy url="${deploy.url}" failOnError="false" username="${deploy.user}" password="${deploy.password}" path="/${solr.path}"/>
   </target>
-
+  
   <target name="context.status" depends="ant-tasks">
     <property name="running" value="${solr.path}:running"/>
     <property name="stopped" value="${solr.path}:stopped"/>
-
+    
     <list url="${deploy.url}" outputproperty="ctx.status" username="${deploy.user}" password="${deploy.password}" />
-
+    
     <condition property="context.running">
       <contains string="${ctx.status}" substring="${running}"/>
     </condition>
@@ -121,7 +123,7 @@
       </and>
     </condition>
     <condition property="context.deployable">
-        <istrue value="${context.notInstalled}"/>
+      <istrue value="${context.notInstalled}"/>
     </condition>
     <condition property="context.undeployable">
       <or>
@@ -130,17 +132,18 @@
       </or>
     </condition>
   </target>
-
+  
   <target name="clean-all" depends="clean, clean-ivy, clean-solr"/>
-
+  
   <target name="clean">
     <delete file="${solr.xml}"/>
     <delete dir="target"/>
   </target>
   
   <target name="clean-ivy">
-    <delete dir="${deploy-solr.dir}"/>
-    <delete dir="${tasks.dir}"/>
+    <delete dir="${deploy-solr.lib}"/>
+    <delete dir="${tasks.lib}"/>
+    <delete dir="${main.lib}"/>
   </target>
   
   <target name="clean-solr">
@@ -148,5 +151,5 @@
       <fileset dir="${solr.home}/martini/data" includes="**/*"/>
     </delete>
   </target>
-
+  
 </project>

@@ -9,5 +9,8 @@
     <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->master"/>
     <dependency org="org.apache.solr" name="solr" rev="4.0.0" conf="deploy-solr->master"/>
     <dependency org="junit" name="junit" rev="4.11" conf="test-solr-home->default"/>
+    <dependency org="org.apache.solr" name="solr-test-framework" rev="4.0.0" conf="test-solr-home->default" >
+      <exclude type="orbit"/>
+    </dependency>  
   </dependencies>
 </ivy-module>
