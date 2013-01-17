@@ -4,6 +4,9 @@
     <conf name="tasks" description="Ant tasks"/>
     <conf name="deploy-solr" description="Solr war"/>
     <conf name="test-solr-home" description="Test Solr config files"/>
+    <conf name="solr-plugins" description="Compile solr plugins needed by Martini configs"/>
+    <conf name="test" extends="test-solr-home"/>
+    <conf name="solr.lib" description="for solr.home lib directory"/>
   </configurations>
   <dependencies>
     <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->master"/>
@@ -12,5 +15,6 @@
     <dependency org="org.apache.solr" name="solr-test-framework" rev="4.0.0" conf="test-solr-home->default" >
       <exclude type="orbit"/>
     </dependency>  
+    <dependency org="org.apache.solr" name="solr-dataimporthandler" rev="4.0.0" conf="solr.lib->master;test,solr-plugins->default"/>
   </dependencies>
 </ivy-module>

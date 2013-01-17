@@ -1,4 +1,4 @@
-package ca.ualibraries.dit.martini.solrhome;
+package ca.ualibraries.dit.martini;
 
 import org.apache.solr.SolrTestCaseJ4;
 import org.junit.BeforeClass;

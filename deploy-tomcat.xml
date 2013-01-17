@@ -1,0 +1,77 @@
+<project name="deploy-solr" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property file="build.properties"/>
+    
+    <property name="deploy-solr.lib" location="${lib.dir}/deploy-solr"/>
+    
+    <target name="ant-tasks">
+        <ivy:retrieve conf="tasks" 
+            pattern="${tasks.lib}/[artifact]-[revision].[ext]"/>
+        
+        <path id="tasks.path">
+            <fileset dir="${tasks.lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+        
+        <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tasks.path"/>
+        <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"  classpathref="tasks.path"/>
+        <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="tasks.path"/>
+    </target>
+    
+    <target name="create-context">
+        <copy file="solr.xml.template" tofile="${solr.xml}" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="PATH_TO_SOLR_WAR" value="${deploy-solr.lib}/${solr.war}"/>
+                <filter token="PATH_TO_SOLR_HOME" value="${solr.home}"/>
+            </filterset>
+        </copy>
+    </target>
+    
+    <target name="retrieve-solr" depends="ant-tasks">
+        <ivy:retrieve conf="deploy-solr" pattern="${deploy-solr.lib}/[artifact].[ext]"/>
+    </target>
+    
+    <target name="install-solr" depends="ant-tasks, create-context, retrieve-solr, context.status" if="context.deployable" description="Install Solr">
+        <deploy url="${deploy.url}" username="${deploy.user}" password="${deploy.password}" path="/${solr.path}" config="file:${solr.xml}" />
+    </target>
+    
+    <target name="uninstall-solr" depends="ant-tasks, context.status" description="Remove Solr">
+        <undeploy url="${deploy.url}" failOnError="false" username="${deploy.user}" password="${deploy.password}" path="/${solr.path}"/>
+    </target>
+    
+    <target name="context.status" depends="ant-tasks">
+        <property name="running" value="${solr.path}:running"/>
+        <property name="stopped" value="${solr.path}:stopped"/>
+        
+        <list url="${deploy.url}" outputproperty="ctx.status" username="${deploy.user}" password="${deploy.password}" />
+        
+        <condition property="context.running">
+            <contains string="${ctx.status}" substring="${running}"/>
+        </condition>
+        <condition property="context.stopped">
+            <contains string="${ctx.status}" substring="${stopped}"/>
+        </condition>
+        <condition property="context.notInstalled">
+            <and>
+                <isfalse value="${context.running}"/>
+                <isfalse value="${context.stopped}"/>
+            </and>
+        </condition>
+        <condition property="context.deployable">
+            <istrue value="${context.notInstalled}"/>
+        </condition>
+        <condition property="context.undeployable">
+            <or>
+                <istrue value="${context.running}"/>
+                <istrue value="${context.stopped}"/>
+            </or>
+        </condition>
+    </target>
+    
+    <target name="clean-ivy-deploy-solr">
+        <delete dir="${deploy-solr.lib}"/>
+    </target>
+    <target name="clean-deploy-solr">
+        <delete file="${solr.xml}"/>
+    </target>
+</project>
