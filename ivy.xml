@@ -6,7 +6,8 @@
     <conf name="test-solr-home" description="Test Solr config files"/>
   </configurations>
   <dependencies>
-    <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->default"/>
-    <dependency org="org.apache.solr" name="solr" rev="4.0.0" conf="deploy-solr->default"/>
+    <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->master"/>
+    <dependency org="org.apache.solr" name="solr" rev="4.0.0" conf="deploy-solr->master"/>
+    <dependency org="junit" name="junit" rev="4.11" conf="test-solr-home->default"/>
   </dependencies>
 </ivy-module>

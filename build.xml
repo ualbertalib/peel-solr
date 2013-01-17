@@ -1,16 +1,67 @@
 <project name="example" default="info" xmlns:ivy="antlib:org.apache.ivy.ant">
   <property file="build.properties"/>
-  <property name="src.dir" location="src"/>
   <property name="test.dir" location="test"/>
   <property name="lib.dir" location="lib"/>
+  <property name="main.lib" location="${lib.dir}/main"/>
   <property name="tasks.dir" location="${lib.dir}/tasks"/>
   <property name="deploy-solr.dir" location="${lib.dir}/deploy-solr"/>
+	
+  <property name="target.dir" location="target"/>
+  <property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
+  <property name="target.report.dir" location="${target.dir}/report/"/>
 
   <property name="solr.home" location="${src.dir}/solr.home"/>
   <property name="solr.xml" location="solr.xml"/>
   <property name="solr.war" value="solr.war"/>
   <property name="solr.path" value="solr"/>
+	
+	<target name="retrieve.test">
+	      <ivy:retrieve conf="test-solr-home" pattern="${main.lib}/[artifact].[ext]"/>
+	      <path id="test.classpath">
+	          <fileset dir="${main.lib}">
+	            <include name="**/*.jar"/>
+	          </fileset>
+	        </path>
+	    </target>
+	  
+	    <target name="compile.test" depends="retrieve.test">
+	      <mkdir dir="${target.classes.test.dir}"/>
+	      <javac destdir="${target.classes.test.dir}">
+	        <src path="${test.dir}"/>
+	        <classpath refid="test.classpath"/>
+	      </javac>
+	    </target>
 
+	    <target name="compile" depends="compile.test"/>
+
+	    <target name="test" depends="compile">
+	      <mkdir dir="${target.report.dir}"/>
+	      <junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
+
+	        <classpath>
+	          <pathelement location="${target.classes.test.dir}"/>
+	          <path refid="test.classpath"/>
+	        </classpath>
+	        <formatter type="plain" usefile="false"/>
+	        <batchtest todir="${target.report.dir}">
+	          <fileset dir="${test.dir}">
+	            <include name="**/*Test*.java"/>
+	            <exclude name="**/Test*All.java"/>
+	          </fileset>
+	        </batchtest>
+	      </junit>
+	    </target>
+
+	    <target name="report" depends="test">
+	      <mkdir dir="${target.report.dir}/html"/>
+	      <junitreport todir="${target.report.dir}">
+	        <fileset dir="${target.report.dir}">
+	          <include name="TEST-*.xml"/>
+	        </fileset>
+	        <report todir="${target.report.dir}/html"/>
+	      </junitreport>
+	    </target>
+	
 <target name="ant-tasks">
   <ivy:retrieve conf="tasks" 
        pattern="${tasks.dir}/[artifact]-[revision].[ext]"/>
