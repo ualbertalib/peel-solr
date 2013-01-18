@@ -1,8 +1,12 @@
 <project name="martini-plugins" xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <!-- set global properties for this build -->
-    <property name="solr-plugins.src" location="src/solr-plugins"/>
-    <property name="solr-plugins.class.dir"  location="${target.dir}/solr-plugins"/>
+	  <property name="dist.dir" location="dist"/>
+	  <property name="target.dir" location="target"/>
+  <property name="lib.dir" location="lib"/>
+    
+  <property name="solr-plugins.src" location="src/solr-plugins"/>
+  <property name="solr-plugins.class.dir"  location="${target.dir}/solr-plugins"/>
     <property name="solr-plugins.report.dir" location="${target.dir}/reports"/>
     <property name="solr-plugins.lib" location="${lib.dir}/solr-plugins"/>
     <property name="solr-plugins.test" location="test/solr-plugins"/>
@@ -10,13 +14,12 @@
     <property name="project.revision" value="1.0.0"/>
     
     <!-- Initialize the environment  -->
-    <target name="init-solr-plugins" >
+    <target name="init-solr-plugins" unless="done.solr-plugins">
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${solr-plugins.class.dir}"/>
         <mkdir dir="${solr-plugins.report.dir}"/>
         
-        <ivy:retrieve conf="solr-plugins" pattern="${solr-plugins.lib}/[artifact]-[revision].[ext]"/>
-        <ivy:retrieve conf="test" pattern="${solr-plugins.lib}/[artifact]-[revision].[ext]"/>
+        <ivy:retrieve sync="true" conf="solr-plugins" pattern="${solr-plugins.lib}/[artifact]-[revision].[ext]"/>
         <path id="solr-plugins.classpath">
             <fileset dir="${solr-plugins.lib}">
                 <include name="**/*.jar"/>
@@ -26,7 +29,7 @@
     
     
     <!-- Compile source code  -->
-    <target name="compile-solr-plugins" depends="init-solr-plugins" description="compile the source ">
+    <target name="compile-solr-plugins" depends="init-solr-plugins" unless="done.solr-plugins" description="compile the source ">
         
         <!-- Compile the java code from ${src} and ${src.test} into ${build} -->
         <javac destdir="${solr-plugins.class.dir}">
@@ -39,9 +42,8 @@
         
     </target>
     
-    
     <!--  Build the distribution files  -->
-    <target name="dist-solr-plugins" depends="test-solr-plugins" description="generate the distribution">
+    <target name="dist-solr-plugins" depends="test-solr-plugins" unless="done.solr-plugins" description="generate the distribution" >
         <!-- Create the distribution directory -->
         <mkdir dir="${dist.dir}"/>
         
@@ -55,13 +57,15 @@
     
     
     <!-- Execute Unit Tests  -->
-    <target name="test-solr-plugins" depends="compile-solr-plugins" description="Execute Unit Tests">
-        <junit printsummary="yes" 
+    <target name="test-solr-plugins" depends="compile-solr-plugins" unless="done.solr-plugins" description="Execute Unit Tests">
+      <junit printsummary="yes" 
             errorProperty="test.failed" 
             failureProperty="test.failed">
             <jvmarg value="-ea"/>
             <classpath>
-                <path refid="solr-plugins.classpath"/>
+            	<fileset dir="${solr-plugins.lib}">
+            	                        <include name="**/*.jar"/>
+            	                    </fileset>
                 <pathelement location="${solr-plugins.class.dir}"/>
                 <pathelement location="${solr-plugins.test-files}"/>
             </classpath>
