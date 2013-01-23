@@ -30,7 +30,7 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 				"baseDir", getFile("indexing/newspapers/").getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/dataimport", request);
-		assertQ(req("*:*"), testAll);
+		assertQ(req("q", "*:*", "rows", "102"), testAll);
 		assertQ(req("language:en"), testEn);
 		assertQ(req("language:fr"), testFr);
 	}
