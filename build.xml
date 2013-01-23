@@ -15,7 +15,7 @@
   <property name="target.report.dir" location="${target.dir}/report/"/>
   
   <property name="solr.home" location="${src.dir}/solr.home"/>
-	<property name="solr.home.lib" location="${solr.home}/lib"/>
+	<property name="solr.home.lib" location="${solr.home}/martini/lib"/>
   <property name="solr.xml" location="solr.xml"/>
   <property name="solr.war" value="solr.war"/>
   <property name="solr.path" value="solr"/>

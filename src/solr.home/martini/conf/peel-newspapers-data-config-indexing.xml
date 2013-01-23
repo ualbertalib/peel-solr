@@ -1,0 +1,42 @@
+<dataConfig>
+    <dataSource name="file" type="FileDataSource"/>
+    <document>
+        <!-- this outer processor generates a list of files satisfying the conditions
+            specified in the attributes -->
+        <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties"
+            rootEntity="false" recursive="true" dataSource="null" onError="continue"
+            baseDir="${dataimporter.request.baseDir}" 
+            >
+            <entity name="properties" processor="PropertiesEntityProcessor"
+                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,LogTransformer"
+                logTemplate="      metadata ${bib.fileAbsolutePath}"
+                logLevel="debug" rootEntity="true" dataSource="file">
+                <field column="language" name="language"/>
+                <field column="pubyear" name="pubyear"/>
+                <field column="actyear" name="actyear"/>
+                <field column="digstatus" name="digstatus"/>
+                <field column="publication" name="publication"/>
+                <field column="date" name="date"/>
+                <field column="editionpath" name="editionpath"/>
+                <field column="type" name="type"/>
+                <field column="size" name="size"/>
+                <field column="page" name="page"/>
+                <field column="article" name="article"/>
+                <field column="headline-image" name="headline-image"/>
+                <field column="headline-width" name="headline-width"/>
+                <field column="headline-height" name="headline-height"/>
+                <field column="headline-text" name="bibrecord"/>
+                <field column="title" name="title"/>
+                <field column="mountdate" template="${dataimporter.request.mountdate}"/>
+                <entity name="fulltext" processor="PlainTextEntityProcessor" 
+                    url="${bib.fileDir}\fulltext.txt" transformer="TemplateTransformer,RegexTransformer,LogTransformer"
+                    logTemplate="      fulltext"
+                    logLevel="debug" dataSource="file">
+                    <field column="plainText" name="content"/>
+                    <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
+                    <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
+                </entity>
+            </entity>
+        </entity>
+    </document>
+</dataConfig>

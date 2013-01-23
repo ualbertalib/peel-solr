@@ -925,6 +925,11 @@
        -->
   </requestHandler>
   
+  <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+    <lst name="defaults">
+      <str name="config">peel-newspapers-data-config-indexing.xml</str>
+    </lst>
+  </requestHandler>
 
   <!-- Solr Cell Update Request Handler
 
