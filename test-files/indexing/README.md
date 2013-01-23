@@ -12,7 +12,7 @@ Newspapers
 ----------
 
 | id              | Periodic | OCR          | Language |
-| --              | -------- | ---          | -------: |
+| ---             | -------- | ---          | -------: |
 | CEO/1908/10/03/ | article  | WC mets/alto | latin    |
 | ESA/1913/12/03/ | article  | WC mets/alto | diacritic|
 | GAT/1934/11/09/ | article  | OCLC olive   | latin    |
@@ -33,21 +33,21 @@ Newspapers
 Peel Bibliographic
 ------------------
 
-| peel #       | Periodic | OCR                  | language | alphabet | diacritics |
-| ------       | -------- | ---                  | -------- | -------- | ---------: |
-| 16           | single   | Backstage mets/alto  | english  | latin    | no         | 
-| 9021.1-2.3.1 | single   | OCLC olive           | enlish   | latin    | no         |
-| 81           | single   | OCLC olive           | french   | latin    | yes        |
-| 2490         | single   | OCLC olive           | hungarian| latin 2  | no         |
-| 89           | single   | OCLC olive           | german   | latin 2  | yes        |
-| 6790         | single   | OCLC olive           | ukranian | cyrillic | no         |
-| 329          | single   | OCLC olive           | cree     | canadian aboriginal symballics | yes |
-| 315          | single   | OCLC olive           | cree     | latin    | yes        |
-| 1            | single   | none                 | english  | latin    | no         |
-| 12           | single   | none                 | french   | latin    | yes        |
-| 2526         | single   | none                 | hungarian| latin 2  | no         |
-| 908          | single   | none                 | german   | latin 2  | yes        |
-| 4265         | single   | none                 | ukranian | cyrillic | no         |
-| 2            | single   | none                 | cree     | canadian aboriginal symballics | yes |
-| 10571        | series   | Backstage mets/alto  | english  | latin    | no         |
-| 9021         | series   | OCLC olive           | english  | latin    | no         |
+| peel #       | Periodic | OCR                  | language | alphabet | diacritics | notes |
+| ------       | -------- | ---                  | -------- | -------- | ---------- | ----: |
+| 16           | single   | Backstage mets/alto  | english  | latin    | no         |       |
+| 9021.1-2.3.1 | single   | OCLC olive           | english  | latin    | no         |       |
+| 81           | single   | OCLC olive           | french   | latin    | yes        |       |
+| 2490         | single   | OCLC olive           | hungarian| latin 2  | no         |       |
+| 89           | single   | OCLC olive           | german   | latin 2  | yes        | also english |
+| 6790         | single   | OCLC olive           | ukranian | cyrillic | no         |       |
+| 329          | single   | OCLC olive           | cree     | canadian aboriginal symballics | yes |       |
+| 315          | single   | OCLC olive           | cree     | latin    | yes        | also english |
+| 1            | single   | none                 | english  | latin    | no         |       |
+| 12           | single   | none                 | french   | latin    | yes        |       |
+| 2526         | single   | none                 | hungarian| latin 2  | no         |       |
+| 908          | single   | none                 | german   | latin 2  | yes        |       |
+| 4265         | single   | none                 | ukranian | cyrillic | no         |       |
+| 2            | single   | none                 | cree     | canadian aboriginal symballics | yes | also english |
+| 10571   (73) | series   | Backstage mets/alto  | english  | latin    | no         |       |
+| 9021.* (206) | series   | OCLC olive           | english  | latin    | no         | 9021.2.2-3 is missing language |

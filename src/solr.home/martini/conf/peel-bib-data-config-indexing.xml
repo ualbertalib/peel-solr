@@ -1,0 +1,51 @@
+<dataConfig>
+    <dataSource name="file" type="FileDataSource"/>
+    <document>
+        <!-- this outer processor generates a list of files satisfying the conditions
+            specified in the attributes -->
+        <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties"
+            rootEntity="false" recursive="true" dataSource="null" onError="continue"
+            baseDir="${dataimporter.request.baseDir}" 
+            >
+            <entity name="properties" processor="PropertiesEntityProcessor"
+                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer"
+                logTemplate="      metadata ${bib.fileAbsolutePath}"
+                logLevel="debug" rootEntity="true" dataSource="file">
+                <!-- utility fields -->
+                <field column="modified" template="${bib.fileLastModified}"/>
+                <field column="uri" template="${bib.fileAbsolutePath}"/>
+                <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
+                <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
+                
+                <field column="language" name="language"/>
+                <field column="pubyear" name="pubyear"/>
+                <field column="actyear" name="actyear"/>
+                <field column="peelnum" name="peelnum"/>
+                <field column="peel1" name="peel1"/>
+                <field column="peel2" name="peel2"/>
+                <field column="collection" template="peelbib"/>
+                <field column="digstatus" name="digstatus"/>
+                <field column="oaiset" name="oaiset"/>
+                <field column="rectype" template="text"/>
+                <field column="mountdate" template="${dataimporter.request.mountdate}"/>
+                <!-- index fields -->
+                <field column="title" name="title"/>
+                <field column="author" name="author"/>
+                <field column="subject_en" name="subject_en"/>
+                <field column="subject_fr" name="subject_fr"/>
+                <field column="bibrecord" name="bibrecord"/>
+                <!-- display fields -->
+                <field column="geodisplay_en" name="geodisplay_en"/>
+                <field column="geodisplay_fr" name="geodisplay_fr"/>
+                <field column="origindisplay" name="origindisplay"/>
+                
+                <entity name="fulltext" processor="PlainTextEntityProcessor" 
+                    url="${bib.fileDir}\fulltext.txt" transformer="TemplateTransformer,LogTransformer"
+                    logTemplate="      fulltext"
+                    logLevel="debug" dataSource="file" onError="skip">
+                    <field column="plainText" name="content"/>
+                </entity>
+            </entity>
+        </entity>
+    </document>
+</dataConfig>
