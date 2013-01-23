@@ -31,7 +31,8 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 				"mountdate", dateFormat.format(date));
 		h.query("/dataimport", request);
 		assertQ(req("q", "*:*", "rows", "102"), testAll);
-		assertQ(req("q", "language:en", "rows", "86"), testEn);
+		assertQ(req("q", "language:en", "rows", "86", "fl", "publication"),
+				testEn);
 		assertQ(req("language:fr"), testFr);
 	}
 

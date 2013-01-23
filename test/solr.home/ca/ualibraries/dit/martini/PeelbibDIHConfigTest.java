@@ -28,7 +28,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/dataimport", request);
-		assertQ(req("*:*"), testAll);
+		assertQ(req("q", "*:*", "rows", "292"), testAll);
 	}
 
 	@Test
