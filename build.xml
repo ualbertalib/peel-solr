@@ -38,11 +38,7 @@
 	
   <target name="retrieve.test">
     <ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]"/>
-    <path id="test.classpath">
-      <fileset dir="${main.lib}">
-        <include name="**/*.jar"/>
-      </fileset>
-    </path>
+    <ivy:cachepath pathid="test.classpath" conf="test"/>
  	</target>
 
 	<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>

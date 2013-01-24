@@ -20,11 +20,7 @@
         <mkdir dir="${solr-plugins.report.dir}"/>
         
         <ivy:retrieve sync="true" conf="solr-plugins" pattern="${solr-plugins.lib}/[artifact]-[revision].[ext]"/>
-        <path id="solr-plugins.classpath">
-            <fileset dir="${solr-plugins.lib}">
-                <include name="**/*.jar"/>
-            </fileset>
-        </path>
+        <ivy:cachepath pathid="solr-plugins.classpath" conf="solr-plugins"/>
     </target>
     
     
