@@ -7,6 +7,7 @@
     <conf name="solr-plugins" extends="test" description="Compile solr plugins needed by Martini configs"/>
     <conf name="test" extends="test-solr-home"/>
     <conf name="solr.lib" description="for solr.home lib directory"/>
+    <conf name="peel-scripts" />
   </configurations>
   <dependencies>
     <dependency org="org.apache.tomcat" name="catalina-ant" rev="6.0.36" conf="tasks->master"/>
@@ -17,5 +18,8 @@
       <exclude type="orbit"/>
     </dependency>  
     <dependency org="org.apache.solr" name="solr-dataimporthandler" rev="4.1.0" conf="solr.lib->master;test,solr-plugins->default"/>
+    <dependency org="org.apache.solr" name="solr-solrj" rev="4.1.0" conf="peel-scripts->default"/>
+    <dependency org="org.apache.solr" name="solr-core" rev="4.1.0" conf="peel-scripts->default"/>
+    <dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="peel-scripts->default"/>
   </dependencies>
 </ivy-module>
