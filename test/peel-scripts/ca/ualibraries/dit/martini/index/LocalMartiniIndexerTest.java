@@ -23,11 +23,13 @@ public class LocalMartiniIndexerTest {
 		lmi = new LocalMartiniIndexer("src/solr.home", "martini");
 	}
 	@Test
-	public void testPeelBibDataImport() throws SolrServerException {
+	public void testPeelBibDataImport() throws SolrServerException,
+			InterruptedException {
 
 		lmi.start("test-files/indexing/peelbib/",
 				"peel-bib-data-config-indexing.xml", dateFormat.format(date));
 		while (lmi.poll()) {
+			Thread.sleep(5000L);
 		}
 		;
 		assertEquals(
@@ -37,11 +39,12 @@ public class LocalMartiniIndexerTest {
 
 	@Test
 	public void testPeelBibDataImportMissingDateMounted()
-			throws SolrServerException {
+			throws SolrServerException, InterruptedException {
 
 		lmi.start("test-files/indexing/peelbib/",
 				"peel-bib-data-config-indexing.xml", null);
 		while (lmi.poll()) {
+			Thread.sleep(5000L);
 		}
 		;
 		assertEquals(
@@ -50,11 +53,13 @@ public class LocalMartiniIndexerTest {
 	}
 
 	@Test
-	public void testPeelNewsDataImport() throws SolrServerException {
+	public void testPeelNewsDataImport() throws SolrServerException,
+			InterruptedException {
 		lmi.start("test-files/indexing/newspapers/",
 				"peel-newspapers-data-config-indexing.xml",
 				dateFormat.format(date));
 		while (lmi.poll()) {
+			Thread.sleep(5000L);
 		}
 		;
 		assertEquals(

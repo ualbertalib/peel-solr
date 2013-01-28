@@ -12,40 +12,46 @@
   <property name="target.dir" location="target"/>
   <property name="target.classes.java.dir" location="${target.dir}/classes/java"/>
   <property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
-  <property name="target.report.dir" location="${target.dir}/report/"/>
+  <property name="target.report.dir" location="${target.dir}/reports/"/>
   
   <property name="solr.home" location="${src.dir}/solr.home"/>
-	<property name="solr.home.lib" location="${solr.home}/martini/lib"/>
+  <property name="solr.home.lib" location="${solr.home}/martini/lib"/>
   <property name="solr.xml" location="solr.xml"/>
   <property name="solr.war" value="solr.war"/>
   <property name="solr.path" value="solr"/>
-	  
-  <available file="${dist.dir}/${ant.project.name}.jar" property="solr-plugins.available"/>
-	
-	<import file="deploy-tomcat.xml"/>
-	<import file="build-solr-plugins.xml"/>
-	
-	<target name="info" description="About peel-solr">
-	  <echo message="ant install-solr -- will use solr.xml as context file to deploy solr.war in Tomcat"/>
+  
+  <available file="${solr.home.lib}/${ant.project.name}.jar" property="solr-plugins.available"/>
+  
+  <import file="deploy-tomcat.xml"/>
+  <import file="build-solr-plugins.xml"/>
+  <import file="build-peel-scripts.xml"/>
+  
+  <target name="info" description="About peel-solr">
+    <echo message="ant install-solr -- will use solr.xml as context file to deploy solr.war in Tomcat"/>
     <echo message="ant uninstall-solr -- will undeploy /solr webapp from Tomcat"/>
-		<echo message="ant test -- will run all tests"/>
+    <echo message="ant report -- will run all tests and create tidy report of results"/>
+  	<echo message="ant test -- will run tests of solr.home configurations"/>
     <echo message="ant test-solr-plugins -- will run all tests of custom solr-plugins"/>
     <echo message="ant dist-solr-plugins -- will create jar and install in solr.home/lib"/>
-		<echo message="ant clean -- will remove all compiled source"/>
-	  <echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
-		<echo message="ant clean-solr -- will remove data directory"/>
-	</target>
-	
+    <echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
+    <echo message="ant dist-peel-scripts -- will create jar for use by peel-scripts"/>
+  	<echo message="ant clean-all -- will remove all compiled source, ivy libraries and Solr data directory"/>
+    <echo message="ant clean -- will remove all compiled source"/>
+    <echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
+    <echo message="ant clean-solr -- will remove data directory"/>
+  </target>
+  
   <target name="retrieve.test">
     <ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]"/>
     <ivy:cachepath pathid="test.classpath" conf="test"/>
- 	</target>
-
-	<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
-	<target name="retrieve.solr.home.lib" depends="dist-solr-plugins">
-  	<mkdir dir="${solr.home.lib}"/>
-  	<ivy:retrieve conf="solr.lib" sync="true" pattern="${solr.home.lib}/[artifact]-[revision].[ext]"/>
-  	<copy todir="${solr.home.lib}" file="${dist.dir}/${ant.project.name}.jar"/>
+  </target>
+  
+  <available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
+  
+  <target name="retrieve.solr.home.lib" depends="dist-solr-plugins">
+    <mkdir dir="${solr.home.lib}"/>
+    <ivy:retrieve conf="solr.lib" sync="true" pattern="${solr.home.lib}/[artifact]-[revision].[ext]"/>
+    <copy todir="${solr.home.lib}" file="${dist.dir}/${ant.project.name}.jar"/>
   </target>
   
   <target name="compile.test" depends="retrieve.test, retrieve.solr.home.lib">
@@ -54,7 +60,7 @@
       <src path="${test.dir}"/>
       <classpath>
         <pathelement location="${target.classes.java.dir}"/>
-      	<path refid="test.classpath"/>
+        <path refid="test.classpath"/>
       </classpath>
     </javac>
   </target>
@@ -67,8 +73,8 @@
       <jvmarg value="-ea"/>
       <classpath>
         <pathelement location="${target.classes.java.dir}"/>
-      	<pathelement location="${target.classes.test.dir}"/>
-      	<pathelement location="${src.dir}"/>
+        <pathelement location="${target.classes.test.dir}"/>
+        <pathelement location="${src.dir}"/>
         <pathelement location="${test-files.dir}"/>
         <path refid="test.classpath"/>
       </classpath>
@@ -83,7 +89,7 @@
     </junit>
   </target>
   
-  <target name="report" depends="test">
+  <target name="report" depends="test, test-peel-scripts">
     <mkdir dir="${target.report.dir}/html"/>
     <junitreport todir="${target.report.dir}">
       <fileset dir="${target.report.dir}">
@@ -97,9 +103,9 @@
   
   <target name="clean">
     <delete dir="${target.dir}"/>
-  	<delete dir="${solr.home.lib}"/>
+    <delete dir="${solr.home.lib}"/>
     <antcall target="clean-solr-plugins"/>
-  	<antcall target="clean-deploy-solr"/>
+    <antcall target="clean-deploy-solr"/>
   </target>
   
   <target name="clean-ivy">

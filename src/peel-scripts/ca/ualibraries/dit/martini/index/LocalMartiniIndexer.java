@@ -23,6 +23,16 @@ public class LocalMartiniIndexer {
 	static Logger logger = LoggerFactory.getLogger(LocalMartiniIndexer.class);
 
 
+	/**
+	 * Initializes and starts an embedded Solr server (no servlet container --
+	 * like Tomcat -- required)
+	 * 
+	 * @param solrHome
+	 *            the solr.home directory as defined by Solr
+	 * @param core
+	 *            the name of the Solr core to use. The default defined in
+	 *            solr.xml is used if null.
+	 */
 	public LocalMartiniIndexer(String solrHome, String core) {
 		System.setProperty("solr.solr.home", solrHome);
 		CoreContainer.Initializer initializer = new CoreContainer.Initializer();
@@ -35,11 +45,27 @@ public class LocalMartiniIndexer {
 	}
 
 
+	/**
+	 * Shutdown the Solr server
+	 * 
+	 */
 	public void close() {
 		server.shutdown();
 	}
 
 
+	/**
+	 * Performs a full-import dataimport query to the Solr server
+	 * 
+	 * @param baseDir
+	 *            the path to look for martini bib.properties and fulltext.txt
+	 *            files
+	 * @param config
+	 *            the Solr data-config.xml file which defines the import
+	 * @param mountDate
+	 *            the date that the content is mounted on the server
+	 * @throws SolrServerException
+	 */
 	public void start(String baseDir, String config, String mountDate)
 			throws SolrServerException {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -57,8 +83,13 @@ public class LocalMartiniIndexer {
 		server.query(p, METHOD.POST);
 	}
 
+	/**
+	 * Polls the dataimport handler for status
+	 * 
+	 * @return true if data import is still running else false
+	 * @throws SolrServerException
+	 */
 	public boolean poll() throws SolrServerException {
-		// if DIH done return true
 		ModifiableSolrParams p = new ModifiableSolrParams();
 		p.add("qt", "/dataimport");
 		p.add("command", "status");
@@ -72,6 +103,12 @@ public class LocalMartiniIndexer {
 		return false;
 	}
 
+	/**
+	 * Reports the status of the dataimport handler (poll must return false)
+	 * 
+	 * @return the most recent status message from the dataimport handler
+	 * @throws SolrServerException
+	 */
 	public String report() throws SolrServerException {
 		ModifiableSolrParams p = new ModifiableSolrParams();
 		p.add("qt", "/dataimport");
@@ -97,6 +134,7 @@ public class LocalMartiniIndexer {
 			indexer.start(getArg("contentDir", args), getArg("config", args),
 					getArg("mountDate", args));
 			while (indexer.poll()) {
+				Thread.sleep(5000L);
 			}
 			;
 		} catch (SolrServerException e) {

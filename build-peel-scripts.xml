@@ -1,0 +1,103 @@
+<project name="peel-scripts" xmlns:ivy="antlib:org.apache.ivy.ant">
+    
+    <!-- set global properties for this build -->
+    <property name="dist.dir" location="dist"/>
+    <property name="target.dir" location="target"/>
+    <property name="lib.dir" location="lib"/>
+    
+    <property name="peel-scripts.src" location="src/peel-scripts"/>
+    <property name="peel-scripts.class.dir"  location="${target.dir}/peel-scripts"/>
+    <property name="peel-scripts.report.dir" location="${target.dir}/reports"/>
+    <property name="peel-scripts.lib" location="${lib.dir}/peel-scripts"/>
+    <property name="peel-scripts.test" location="test/peel-scripts"/>
+    <property name="peel-scripts.test-files" location="test-files"/>
+    <property name="project.revision" value="1.0.0"/>
+    
+    <!-- Initialize the environment  -->
+    <target name="init-peel-scripts" depends="retrieve.solr.home.lib">
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${peel-scripts.class.dir}"/>
+        <mkdir dir="${peel-scripts.report.dir}"/>
+        
+        <ivy:retrieve sync="true" conf="peel-scripts" pattern="${peel-scripts.lib}/[artifact]-[revision].[ext]"/>
+        <ivy:cachepath pathid="peel-scripts.classpath" conf="peel-scripts"/>
+    </target>
+    
+    
+    <!-- Compile source code  -->
+    <target name="compile-peel-scripts" depends="init-peel-scripts" description="compile the source ">
+        
+        <!-- Compile the java code from ${src} and ${src.test} into ${build} -->
+        <javac destdir="${peel-scripts.class.dir}">
+            <src path="${peel-scripts.src}"/>
+            <src path="${peel-scripts.test}"/>
+            <classpath>
+                <path refid="peel-scripts.classpath"/>
+            </classpath>
+        </javac>
+        
+    </target>
+    
+    <!--  Build the distribution files  -->
+    <target name="dist-peel-scripts" depends="test-peel-scripts" description="generate the distribution" >
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist.dir}"/>
+        
+        <!-- Put everything in ${build} into the jar file -->
+        <jar jarfile="${dist.dir}/${ant.project.name}.jar">
+            <fileset dir="${peel-scripts.class.dir}">
+                <exclude name="**/*Test*"/>
+            </fileset>
+        </jar>
+    </target>
+    
+    
+    <!-- Execute Unit Tests  -->
+    <target name="test-peel-scripts" depends="compile-peel-scripts" description="Execute Unit Tests">
+        <junit printsummary="yes" 
+            errorProperty="test.failed" 
+            failureProperty="test.failed">
+            <jvmarg value="-ea"/>
+            <classpath>
+                <fileset dir="${peel-scripts.lib}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${peel-scripts.class.dir}"/>
+                <pathelement location="${peel-scripts.test-files}"/>
+            </classpath>
+            
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+            
+            <batchtest fork="yes" todir="${peel-scripts.report.dir}">
+                <fileset dir="${peel-scripts.test}">
+                    <exclude name="**/*TestCase.java"/>
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+            
+        </junit>
+        <junitreport todir="${peel-scripts.report.dir}"> 
+            <fileset dir="${peel-scripts.report.dir}"> 
+                <include name="TEST-*.xml"/> 
+            </fileset> 
+            <report format="frames" todir="${peel-scripts.report.dir}"/> 
+        </junitreport> 
+        
+        <fail if="test.failed"> 
+            Unit tests failed.  Check log or reports for details 
+        </fail> 
+    </target>
+    
+    
+    <!-- Clean up the environment  -->
+    <target name="clean-ivy-peel-scripts">
+        <delete dir="${peel-scripts.lib}"/>
+    </target>
+    
+    <target name="clean-peel-scripts" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${peel-scripts.class.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>

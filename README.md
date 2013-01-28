@@ -1,14 +1,17 @@
-deploy-solr
+peel-solr
 ===========
-This project downloads the latest release of Solr and deploys it in Tomcat using Ant.
+This project deploys Solr with Peel (peel.library.ualberta.ca) configuration and plugins with or without Tomcat using Ant.
 
 Usage:
 ------
-    ant deploy  // will try to deploy the /solr webapp
+    ant install-solr  // will try to deploy the /solr webapp
 other
 
-    ant undeploy // will try to undeploy the /solr webapp
+    ant uninstall-solr // will try to undeploy the /solr webapp
     ant clean // will remove the created files -- use before commit
+    ant report // will run all tests and create tidy report of results
+    ant dist-solr-plugins -- will create jar and install in solr.home/lib
+    ant dist-peel-scripts // will create stand-alone jar for use by peel-scripts
     ant [info] // will display usage
 
 Requirements:
