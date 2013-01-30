@@ -53,5 +53,6 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 			"//str[@name='page']", "//str[@name='article']",
 			"//str[@name='headline-image']", "//str[@name='headline-width']",
 			"//str[@name='headline-height']", "//str[@name='bibrecord']",
-			"//arr[@name='content']" };
+			"//arr[@name='content']", "//str[@name='collection']='newspapers'",
+			"//str[@name='uri']" };
 }

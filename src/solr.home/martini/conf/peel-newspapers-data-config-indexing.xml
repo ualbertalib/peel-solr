@@ -11,6 +11,8 @@
                 url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,LogTransformer"
                 logTemplate="      metadata ${bib.fileAbsolutePath}"
                 logLevel="debug" rootEntity="true" dataSource="file">
+                <field column="modified" template="${bib.fileLastModified}"/>
+                <field column="uri" template="${bib.fileAbsolutePath}"/>
                 <field column="language" name="language"/>
                 <field column="pubyear" name="pubyear"/>
                 <field column="actyear" name="actyear"/>
@@ -26,6 +28,7 @@
                 <field column="headline-width" name="headline-width"/>
                 <field column="headline-height" name="headline-height"/>
                 <field column="headline-text" name="bibrecord"/>
+                <field column="collection" template="newspapers"/>
                 <field column="title" name="title"/>
                 <field column="mountdate" template="${dataimporter.request.mountdate}"/>
                 <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
