@@ -41,7 +41,7 @@
     <echo message="ant clean-solr -- will remove data directory"/>
   </target>
   
-  <target name="retrieve.test">
+  <target name="retrieve.test" xmlns:ivy="antlib:org.apache.ivy.ant">
     <ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]"/>
     <ivy:cachepath pathid="test.classpath" conf="test"/>
   </target>

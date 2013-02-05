@@ -19,6 +19,7 @@
                 <field column="digstatus" name="digstatus"/>
                 <field column="publication" name="publication"/>
                 <field column="date" name="date"/>
+                <field column="editionlabel" name="editionlabel"/>
                 <field column="editionpath" name="editionpath"/>
                 <field column="type" name="type"/>
                 <field column="size" name="size"/>
@@ -30,6 +31,11 @@
                 <field column="headline-text" name="bibrecord"/>
                 <field column="collection" template="newspapers"/>
                 <field column="title" name="title"/>
+                <field column="titlesort" name="titlesort"/>
+                <field column="titledisplay" name="titledisplay"/>
+                <field column="author" name="author"/>
+                <field column="authorsort" name="authorsort"/>
+                <field column="authordisplay" name="authordisplay"/>
                 <field column="mountdate" template="${dataimporter.request.mountdate}"/>
                 <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
                     rootEntity="false" recursive="true" dataSource="null" onError="continue"
