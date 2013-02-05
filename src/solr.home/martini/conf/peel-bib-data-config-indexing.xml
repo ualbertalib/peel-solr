@@ -35,6 +35,8 @@
                 <field column="subject_fr" name="subject_fr"/>
                 <field column="bibrecord" name="bibrecord"/>
                 <!-- display fields -->
+                <field column="subjectdisplay_en" name="subjectdisplay_en"
+                <field column="subjectdispaly_fr" name="subjectdisplay_fr"
                 <field column="geodisplay_en" name="geodisplay_en"/>
                 <field column="geodisplay_fr" name="geodisplay_fr"/>
                 <field column="origindisplay" name="origindisplay"/>
