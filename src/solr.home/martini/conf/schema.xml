@@ -115,6 +115,7 @@
       <field name="digstatus" type="text_general" indexed="true" store="true"/>
       <field name="geodisplay_en" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="geodisplay_fr" type="text_general" indexed="true" store="true" multiValued="true"/>
+      <field name="geodisplay" type="text_general" indexed="true" store="false" multiValued="true"/>
       <field name="origindisplay" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="peel1" type="text_general" indexed="true" store="true"/>
       <field name="peel2" type="text_general" indexed="true" store="true"/>
@@ -123,6 +124,7 @@
       <field name="subject_fr" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="subjectdisplay_en" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="subjectdisplay_fr" type="text_general" indexed="true" store="true" multiValued="true"/>
+      <field name="subjectdisplay" type="text_general" indexed="true" store="false" multiValued="true"/>
       <field name="title" type="text_general" indexed="true" store="true"/>
       <field name="titledisplay" type="text_general" indexed="true" store="true"/>
       <field name="titlesort" type="text_general" indexed="true" store="true"/>
@@ -284,6 +286,9 @@
 
    <!-- Create a string version of author for faceting -->
    <copyField source="author" dest="author_s"/>
+
+   <copyField source="subjectdisplay_*" dest="subjectdisplay"/>
+   <copyField source="geodisplay_*" dest="geodisplay"/>
 	
    <!-- Above, multiple source fields are copied to the [text] field. 
 	  Another way to map multiple source fields to the same 

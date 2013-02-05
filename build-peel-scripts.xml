@@ -56,8 +56,10 @@
     <target name="test-peel-scripts" depends="compile-peel-scripts" description="Execute Unit Tests">
         <junit printsummary="yes" 
             errorProperty="test.failed" 
-            failureProperty="test.failed">
+            failureProperty="test.failed" fork="yes">
             <jvmarg value="-ea"/>
+	    <jvmarg value="-Xms512M"/>
+	    <jvmarg value="-Xmx512M"/>
             <classpath>
                 <fileset dir="${peel-scripts.lib}">
                     <include name="**/*.jar"/>
@@ -66,10 +68,9 @@
                 <pathelement location="${peel-scripts.test-files}"/>
             </classpath>
             
-            <formatter type="plain"/>
             <formatter type="xml"/>
             
-            <batchtest fork="yes" todir="${peel-scripts.report.dir}">
+            <batchtest todir="${peel-scripts.report.dir}">
                 <fileset dir="${peel-scripts.test}">
                     <exclude name="**/*TestCase.java"/>
                     <include name="**/*Test*.java"/>
