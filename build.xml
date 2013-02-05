@@ -71,6 +71,8 @@
     <mkdir dir="${target.report.dir}"/>
     <junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
       <jvmarg value="-ea"/>
+      <jvmarg value="-Xms512M"/>
+      <jvmarg value="-Xmx512M"/>
       <classpath>
         <pathelement location="${target.classes.java.dir}"/>
         <pathelement location="${target.classes.test.dir}"/>
