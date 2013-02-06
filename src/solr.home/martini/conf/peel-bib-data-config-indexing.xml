@@ -35,10 +35,10 @@
                 <field column="subject_fr" name="subject_fr"/>
                 <field column="bibrecord" name="bibrecord"/>
                 <!-- display fields -->
-                <field column="subjectdisplay_en" sourceColName="subjectdisplay_en" splitBy="\|"/>
-                <field column="subjectdispaly_fr" sourceColName="subjectdisplay_fr" splitBy="\|"/>
-                <field column="geodisplay_en" sourceColName="geodisplay_en" splitBy="\|"/>
-                <field column="geodisplay_fr" sourceColName="geodisplay_fr" splitBy="\|"/>
+                <field column="subjectdisplay_en" sourceColName="subjectdisplay_en" splitBy=" \| "/>
+                <field column="subjectdispaly_fr" sourceColName="subjectdisplay_fr" splitBy=" \| "/>
+                <field column="geodisplay_en" sourceColName="geodisplay_en" splitBy=" \| "/>
+                <field column="geodisplay_fr" sourceColName="geodisplay_fr" splitBy=" \| "/>
                 <field column="origindisplay" name="origindisplay"/>
                 <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
                     rootEntity="false" recursive="true" dataSource="null" onError="continue"

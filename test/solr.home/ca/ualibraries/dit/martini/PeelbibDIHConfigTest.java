@@ -51,7 +51,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	private String[] testEn = { "//result[@numFound='283']",
 			"//str[@name='peelnum']='000001'",
 			"//str[@name='peelnum']='000002'",
-			"//str[@name='peelnum']='000016'",
+			"//str[@name='peelnum']='002848'",
 			"//str[@name='peelnum']='000089'",
 			"//str[@name='peelnum']='000315'",
 			"//str[@name='peelnum']='009021.1-2.3-1'",
