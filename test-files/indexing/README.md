@@ -35,7 +35,7 @@ Peel Bibliographic
 
 | peel #       | Periodic | OCR                  | language | alphabet | diacritics | notes |
 | ------       | -------- | ---                  | -------- | -------- | ---------- | ----: |
-| 16           | single   | Backstage mets/alto  | english  | latin    | no         |       |
+| 2848         | single   | Backstage mets/alto  | english  | latin    | no         | has geodisplay values      |
 | 9021.1-2.3.1 | single   | OCLC olive           | english  | latin    | no         |       |
 | 81           | single   | OCLC olive           | french   | latin    | yes        |       |
 | 2490         | single   | OCLC olive           | hungarian| latin 2  | no         |       |
