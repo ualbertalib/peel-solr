@@ -109,8 +109,8 @@
       <field name="mountDate" type="string" indexed="true" store="true"/>
       
       <!-- peelbib only -->
-      <field name="author" type="text_general" indexed="true" store="true"/>
-      <field name="authordisplay" type="string" indexed="true" store="true"/>
+      <field name="author" type="text_general" indexed="true" store="true" multiValued="true"/>
+      <field name="authordisplay" type="string" indexed="true" store="true" multiValued="true"/>
       <field name="authorsort" type="text_general" indexed="true" store="true"/>
       <field name="digstatus" type="text_general" indexed="true" store="true"/>
       <field name="geodisplay_en" type="string" indexed="true" store="true" multiValued="true"/>
