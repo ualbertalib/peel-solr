@@ -134,7 +134,7 @@
       <field name="date" type="text_general" indexed="true" store="true"/>
       <field name="editionpath" type="text_general" indexed="true" store="true"/>
       <field name="editionlabel" type="text_general" indexed="true" store="true"/>
-      <field name="publication" type="text_general" indexed="true" store="true"/>
+      <field name="publication" type="string" indexed="true" store="true"/>
       <field name="article" type="text_general" indexed="true" store="true"/>
       <field name="headline-height" type="text_general" indexed="true" store="true"/>
       <field name="headline-image" type="text_general" indexed="true" store="true"/>
