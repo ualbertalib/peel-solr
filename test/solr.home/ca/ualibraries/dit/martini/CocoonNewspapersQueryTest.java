@@ -36,12 +36,23 @@ public class CocoonNewspapersQueryTest extends SolrTestCaseJ4 {
 req("echoParams", "all", "qt", "standard", "wt", "standard",
 				"fl", "*,score", "q", "pubyear:(1913)", "fq", "language:(fr)",
 				"fq", "size:(large+OR+medium+OR+xlarge+OR+small)", "fq",
-				"type:(ad+OR+picture+OR+article)", "facet", "true",
-				"facet.mincount", "1", "facet.field", "language",
-				"facet.field", "pubyear", "facet.field", "titledisplay", "hl",
-				"true", "hl.snippets", "1", "hl.fl", "text", "sort", "",
-				"start", "0", "rows", "10"),
- "//result[@numFound='15']"
-		);
+				"type:(ad+OR+picture+OR+article)"), tests);
 	}
+
+	@Test
+	public void testFacetsNewspaperQuery() {
+		assertQ(req("q", "*:*", "facet", "true", "facet.mincount", "1",
+				"facet.field", "language", "facet.field", "pubyear",
+				"facet.field", "publication", "rows", "0"), facetTests);
+	}
+
+	String[] tests = { "//result[@numFound='15']",
+			"//doc/str[@name='publication']", "//doc/str[@name='date']",
+			"//doc/str[@name='page']", "//doc/str[@name='type']",
+			"//doc/str[@name='size']", "//doc/arr[@name='language']",
+			"//doc/str[@name='article']" };
+	String[] facetTests = {
+			"//lst[@name='facet_fields']/lst[@name='language']",
+			"//lst[@name='facet_fields']/lst[@name='pubyear']",
+			"//lst[@name='facet_fields']/lst[@name='publication']" };
 }

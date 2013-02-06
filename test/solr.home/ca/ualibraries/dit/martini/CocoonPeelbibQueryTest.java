@@ -31,31 +31,42 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 
 	@Test
 	public void testAdvancePeelbibQuery() {
-		assertQ(
-		   req( "echoParams", "all",
-				"qt", "standard",
-				"wt", "standard",
+		assertQ(req(
+				"echoParams",
+				"all",
+				"qt",
+				"standard",
+				"wt",
+				"standard",
 				"fl",
 				"*,score",
 				"q",
 				"pubyear:(1850 TO 1860) +bibrecord:(book of common prayer) +actyear:(1856) +digstatus:(mounted) +peelnum:(000329)",
-				"fq", "language:(cre)",
-				"facet", "true",
-				"facet.mincount", "1",
-				"facet.field", "geodisplay",
-				"facet.field", "authordisplay",
-				"facet.field", "subjectdisplay",
-				"facet.field", "language",
-				"facet.field", "digstatus",
-				"facet.field", "collection",
-				"facet.field", "pubyear",
-				"hl", "true",
-				"hl.snippets", "1",
-				"hl.fl", "text",
-				"sort", "",
-				"start", "0",
-				"rows", "10"),
-				"//result[@numFound='1']"
-		);
+				"fq", "language:(cre)"), tests);
 	}
+
+	@Test
+	public void testFacetsPeelbibQuery() {
+		assertQ(req("q", "*:*", "facet", "true", "facet.mincount", "1",
+				"facet.field", "geodisplay", "facet.field", "authordisplay",
+				"facet.field", "subjectdisplay", "facet.field", "language",
+				"facet.field", "digstatus", "facet.field", "pubyear", "rows",
+				"0"), facetTests
+				);
+	}
+
+	String[] tests = { "//result[@numFound='1']", "//doc/str[@name='peelnum']",
+			"//doc/str[@name='titledisplay']",
+			"//doc/arr[@name='authordisplay']",
+			"//doc/arr[@name='origindisplay']", "//doc/str[@name='pubyear']",
+			"//doc/arr[@name='language']", "//doc/str[@name='digstatus']" };
+
+	String[] facetTests = {
+ "//lst[@name='facet_fields']/lst[@name='geodisplay']",
+			"//lst[@name='facet_fields']/lst[@name='authordisplay']",
+			"//lst[@name='facet_fields']/lst[@name='subjectdisplay']",
+			"//lst[@name='facet_fields']/lst[@name='language']",
+			"//lst[@name='facet_fields']/lst[@name='digstatus']",
+			"//lst[@name='facet_fields']/lst[@name='pubyear']"
+	};
 }
