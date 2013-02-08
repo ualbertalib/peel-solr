@@ -20,7 +20,7 @@
                 <field column="language" name="language"/>
                 <field column="pubyear" name="pubyear"/>
                 <field column="actyear" name="actyear"/>
-                <field column="peelnum" name="peelnum"/>
+                <field column="peelnum" sourceColName="peelnum" regex="^[0]*" replaceWith=""/>
                 <field column="peel1" name="peel1"/>
                 <field column="peel2" name="peel2"/>
                 <field column="collection" template="peelbib"/>

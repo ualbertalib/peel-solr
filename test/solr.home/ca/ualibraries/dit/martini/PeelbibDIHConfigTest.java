@@ -41,7 +41,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 
 	@Test
 	public void testRepresentativeContentSample() {
-		assertQ(req("peelnum:000001 peelnum:000012 peelnum:002526 peelnum:000908 peelnum:004265 peelnum:000002"),
+		assertQ(req("peelnum:1 peelnum:12 peelnum:2526 peelnum:908 peelnum:4265 peelnum:2"),
 				testRecordOnly);
 	}
 
@@ -49,22 +49,22 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 			"count(//arr[@name='content'])=0 or //arr[@name='content']/str[not(node())]" };
 	
 	private String[] testEn = { "//result[@numFound='283']",
-			"//str[@name='peelnum']='000001'",
-			"//str[@name='peelnum']='000002'",
-			"//str[@name='peelnum']='002848'",
-			"//str[@name='peelnum']='000089'",
-			"//str[@name='peelnum']='000315'",
-			"//str[@name='peelnum']='009021.1-2.3-1'",
-			"//str[@name='peelnum']='010571'" };
+			"//str[@name='peelnum']='1'",
+			"//str[@name='peelnum']='2'",
+			"//str[@name='peelnum']='2848'",
+			"//str[@name='peelnum']='89'",
+			"//str[@name='peelnum']='315'",
+			"//str[@name='peelnum']='9021.1-2.3-1'",
+			"//str[@name='peelnum']='10571'" };
 	private String[] testFr = { "//result[@numFound='2']",
-			"//str[@name='peelnum']='000081'",
-			"//str[@name='peelnum']='000012'" };
+			"//str[@name='peelnum']='81'",
+			"//str[@name='peelnum']='12'" };
 	private String[] testHu = { "//result[@numFound='2']",
-			"//str[@name='peelnum']='002490'",
-			"//str[@name='peelnum']='002526'" };
+			"//str[@name='peelnum']='2490'",
+			"//str[@name='peelnum']='2526'" };
 	private String[] testDe = { "//result[@numFound='2']",
-			"//str[@name='peelnum']='000089'",
-			"//str[@name='peelnum']='000908'" };
+			"//str[@name='peelnum']='89'",
+			"//str[@name='peelnum']='908'" };
 	private static String[] testAll = { "//result[@numFound='292']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
 			"//arr[@name='language']", "//str[@name='pubyear']",

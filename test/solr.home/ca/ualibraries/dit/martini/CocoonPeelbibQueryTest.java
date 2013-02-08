@@ -41,7 +41,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 				"fl",
 				"*,score",
 				"q",
-				"pubyear:(1850 TO 1860) +bibrecord:(book of common prayer) +actyear:(1856) +digstatus:(mounted) +peelnum:(000329)",
+				"pubyear:(1850 TO 1860) +bibrecord:(book of common prayer) +actyear:(1856) +digstatus:(mounted) +peelnum:(329)",
 				"fq", "language:(cre)"), tests);
 	}
 
