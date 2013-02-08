@@ -42,6 +42,9 @@
                 <field column="origindisplay" name="origindisplay"/>
 		<field column="titledisplay" name="titledisplay"/>
 		<field column="authordisplay" name="authordisplay" splitBy=" \| "/>
+		<!-- sort fields -->
+		<field column="titlesort" name="titlesort"/>
+		<field column="authorsort" name="authorsort"/>
                 <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
                     rootEntity="false" recursive="true" dataSource="null" onError="continue"
                     baseDir="${bib.fileDir}" 
