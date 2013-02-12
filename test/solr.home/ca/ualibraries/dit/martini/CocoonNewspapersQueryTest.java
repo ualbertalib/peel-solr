@@ -27,7 +27,7 @@ public class CocoonNewspapersQueryTest extends SolrTestCaseJ4 {
 				"mountdate", dateFormat.format(date));
 		h.query("/dataimport", request);
 
-		assertQ(req("*:*"), "//result[@numFound='119']");
+		assertQ(req("*:*"), "//result[@numFound='323']");
 	}
 
 	@Test

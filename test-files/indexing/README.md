@@ -11,24 +11,25 @@ Diacritics: markers usually indicating tone beyond the alphabet
 Newspapers
 ----------
 
-| id              | Periodic | OCR          | Language |
-| ---             | -------- | ---          | -------: |
-| CEO/1908/10/03/ | article  | WC mets/alto | latin    |
-| ESA/1913/12/03/ | article  | WC mets/alto | diacritic|
-| GAT/1934/11/09/ | article  | OCLC olive   | latin    |
-| LFC/1981/03/21/ | article  | OCLC|olive   | diacritic|
-| CEO/1908/10/03/ | ad       | WC mets/alto | latin    |
-| ESA/1913/12/03/ | ad       | WC mets/alto | diacritic|
-| GAT/1934/11/09/ | ad       | OCLC olive   | latin    |
-| LFC/1981/03/21/ | ad       | OCLC olive   | diacritic|
-| CEO/1908/10/03/ | picture  | WC mets/alto | latin    |
-| ESA/1913/12/03/ | picture  | WC mets/alto | diacritic|
-| GAT/1934/11/09/ | picture  | OCLC olive   | latin    |
-| LFC/1981/03/21/ | picture  | OCLC olive   | diacritic|
-| CEO (19)        | series   | WC mets/alto | latin    |
-| ESA (36)        | series   | WC mets/alto | diacritic|
-| GAT (67)        | series   | OCLC olive   | latin    |
-| LFC (--)        | series   | OCLC olive   | diacritic|
+| id              | Periodic | OCR          | Language | notes | 
+| ---             | -------- | ---          | -------- | ----: |
+| CEO/1908/10/03/ | article  | WC mets/alto | latin    |       | 
+| ESA/1913/12/03/ | article  | WC mets/alto | diacritic|       |
+| GAT/1934/11/09/ | article  | OCLC olive   | latin    |       |
+| LFC/1981/03/21/ | article  | OCLC|olive   | diacritic|       |
+| CEO/1908/10/03/ | ad       | WC mets/alto | latin    |       |
+| ESA/1913/12/03/ | ad       | WC mets/alto | diacritic|       |
+| GAT/1934/11/09/ | ad       | OCLC olive   | latin    |       |
+| LFC/1981/03/21/ | ad       | OCLC olive   | diacritic|       |
+| CEO/1908/10/03/ | picture  | WC mets/alto | latin    |       |
+| ESA/1913/12/03/ | picture  | WC mets/alto | diacritic|       |
+| GAT/1934/11/09/ | picture  | OCLC olive   | latin    |       |
+| LFC/1981/03/21/ | picture  | OCLC olive   | diacritic|       |
+| CEO (19)        | series   | WC mets/alto | latin    |       |
+| ESA (36)        | series   | WC mets/alto | diacritic|       |
+| GAT (67)        | series   | OCLC olive   | latin    |       |
+| LFC (--)        | series   | OCLC olive   | diacritic|       |
+| LLP (8)		  | series   | WC mets/alto	| diacritic| fulltext contains diacritics |
 
 Peel Bibliographic
 ------------------

@@ -30,21 +30,22 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 				"baseDir", getFile("indexing/newspapers/").getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/dataimport", request);
-		assertQ(req("q", "*:*", "rows", "119"), testAll);
+		assertQ(req("q", "*:*", "rows", "323"), testAll);
 		assertQ(req("q", "language:en", "rows", "86", "fl", "publication"),
 				testEn);
-		assertQ(req("q", "language:fr", "rows", "33", "fl", "publication"),
+		assertQ(req("q", "language:fr", "rows", "237", "fl", "publication"),
 				testFr);
 	}
 
 	private String[] testEn = { "//result[@numFound='86']",
 			"//str[@name='publication']='CEO'",
 			"//str[@name='publication']='GAT'" };
-	private String[] testFr = { "//result[@numFound='33']",
+	private String[] testFr = { "//result[@numFound='237']",
 			"//str[@name='publication']='PDW'",
-			"//str[@name='publication']='ESA'" };
+			"//str[@name='publication']='ESA'",
+			"//str[@name='publication']='LLP'" };
 	private String[] testAll = {
-			"//result[@numFound='119']",
+ "//result[@numFound='323']",
 			"//arr[@name='language']", "//str[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",
 			"//str[@name='mountDate']", "//str[@name='publication']",
