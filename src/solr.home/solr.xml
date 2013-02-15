@@ -49,5 +49,7 @@
   -->
   <cores adminPath="/admin/cores" defaultCoreName="martini" host="${host:}" hostPort="${jetty.port:}" hostContext="${hostContext:}" zkClientTimeout="${zkClientTimeout:15000}">
     <core name="martini" instanceDir="martini" />
+    <core name="newspapers" instanceDir="newspapers"/>
+    <core name="peelbib" instanceDir="peelbib"/>
   </cores>
 </solr>

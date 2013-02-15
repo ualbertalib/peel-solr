@@ -17,10 +17,11 @@
                 <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
                 <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
                 
-                <field column="language" name="language"/>
+                <field column="language" name="language" splitBy=" \| "/>
                 <field column="pubyear" name="pubyear"/>
                 <field column="actyear" name="actyear"/>
-                <field column="peelnum" sourceColName="peelnum" regex="^[0]*" replaceWith=""/>
+		<field column="peelnumsort" template="${properties.peelnum}"/>
+                <field column="peelnum" regex="^0*" replaceWith="" />
                 <field column="peel1" name="peel1"/>
                 <field column="peel2" name="peel2"/>
                 <field column="collection" template="peelbib"/>
