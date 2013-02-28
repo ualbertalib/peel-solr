@@ -111,7 +111,7 @@
       <!-- peelbib only -->
       <field name="author" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="authordisplay" type="string" indexed="true" store="true" multiValued="true"/>
-      <field name="authorsort" type="text_general" indexed="true" store="true"/>
+      <field name="authorsort" type="string" indexed="true" store="true"/>
       <field name="digstatus" type="text_general" indexed="true" store="true"/>
       <field name="geodisplay_en" type="string" indexed="true" store="true" multiValued="true"/>
       <field name="geodisplay_fr" type="string" indexed="true" store="true" multiValued="true"/>
@@ -120,7 +120,7 @@
       <field name="peel1" type="text_general" indexed="true" store="true"/>
       <field name="peel2" type="text_general" indexed="true" store="true"/>
       <field name="peelnum" type="text_ws" indexed="true" store="true"/>
-      <field name="peelnumsort" type="text_ws" indexed="true"/>
+      <field name="peelnumsort" type="string" indexed="true"/>
       <field name="subject_en" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="subject_fr" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="subjectdisplay_en" type="string" indexed="true" store="true" multiValued="true"/>
@@ -128,7 +128,7 @@
       <field name="subjectdisplay" type="string" indexed="true" store="true" multiValued="true"/>
       <field name="title" type="text_general" indexed="true" store="true"/>
       <field name="titledisplay" type="string" indexed="true" store="true"/>
-      <field name="titlesort" type="text_general" indexed="true" store="true"/>
+      <field name="titlesort" type="string" indexed="true" store="true"/>
       <!-- newspaper only -->
       <field name="size" type="text_general" indexed="true" store="true"/>
       <field name="type" type="text_general" indexed="true" store="true"/>
