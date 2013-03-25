@@ -82,14 +82,6 @@ public class PositionsSolrHighlighter extends SolrHighlighter implements
 
 			NamedList<Object> list = new SimpleOrderedMap();
 
-			/*
-			 * TODO working in loops on creating NamedList 
-			 * <lst name="id">
-			 *   <arrname="field">
-			 *     <int>#</int>
-			 *   </arr>
-			 * </lst>
-			 */
 			for (int docID : docIDs) {
 				NamedList<Object> summary = new SimpleOrderedMap();
 				for (String field : fieldNames) {

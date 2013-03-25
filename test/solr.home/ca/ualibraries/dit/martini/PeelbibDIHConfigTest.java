@@ -73,6 +73,5 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 			"//str[@name='collection']='peelbib'", "//str[@name='title']",
 			"//arr[@name='author']", "//arr[@name='subject_en']",
 			"//arr[@name='subject_fr']", "//arr[@name='geodisplay_en']",
-			"//arr[@name='origindisplay']", "//str[@name='digstatus']",
-			"//arr[@name='content']" };
+			"//arr[@name='origindisplay']", "//str[@name='digstatus']" };
 }
