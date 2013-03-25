@@ -28,7 +28,7 @@
     <target name="compile-solr-plugins" depends="init-solr-plugins" unless="done.solr-plugins" description="compile the source ">
         
         <!-- Compile the java code from ${src} and ${src.test} into ${build} -->
-        <javac destdir="${solr-plugins.class.dir}">
+        <javac destdir="${solr-plugins.class.dir}" encoding="UTF-8">
             <src path="${solr-plugins.src}"/>
             <src path="${solr-plugins.test}"/>
             <classpath>

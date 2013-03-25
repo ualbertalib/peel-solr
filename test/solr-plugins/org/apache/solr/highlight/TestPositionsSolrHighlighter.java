@@ -27,7 +27,6 @@ public class TestPositionsSolrHighlighter extends SolrTestCaseJ4 {
 	public void testSimple() {
 		assertQ("simplest test",
 				req("q", "text:document", "sort", "id asc", "hl", "true",
-						"hl.useFastVectorHighlighter", "true",
 						"hl.usePhraseHighlighter", "true",
 						"hl.highlightMultiTerm", "true",
 						"hl.requireFieldMatch", "true"),
@@ -35,4 +34,5 @@ public class TestPositionsSolrHighlighter extends SolrTestCaseJ4 {
 				"//lst[@name='highlighting']/lst[@name='101']/arr[@name='text']/int='0'",
 				"//lst[@name='highlighting']/lst[@name='102']/arr[@name='text']/int='1'");
 	}
+
 }
