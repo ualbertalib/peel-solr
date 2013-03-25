@@ -73,17 +73,17 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 		// term query
 		assertQ(req("q", "text:horse", "fl", "null", "hl", "true",
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
-				"true", "hl.requireFieldMatch", "true"),
+				"true", "hl.fl", "content"),
 				enPositionsTests);
 		// term query with french
 		assertQ(req("q", "text:français", "fl", "null", "hl", "true",
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
-				"true", "hl.requireFieldMatch", "true"), frPositionsTests);
+				"true", "hl.fl", "content"), frPositionsTests);
 
 		// term query with cree
 		assertQ(req("q", "text:Kwayask ê-kî-pê-kiskinowâpahtihicik", "fl",
 				"null", "hl", "true", "hl.usePhraseHighlighter", "true",
-				"hl.highlightMultiTerm", "true", "hl.requireFieldMatch", "true"),
+				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
 				crPositionsTests);
 
 	}
@@ -105,25 +105,25 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 
 	String[] enPositionsTests = {
 			"10 = count(//lst[@name='highlighting']/lst)",
-			"21 = count(//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='text']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='text']/int='2388'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='text']/int='6442'",
-			"42 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='text']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='text']/int='239'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='text']/int='17023'" };
+			"21 = count(//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='2146'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='6200'",
+			"42 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='22'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='16806'" };
 
 	String[] frPositionsTests = {
 			"2 = count(//lst[@name='highlighting']/lst)",
-			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='text']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='text']/int='19229'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='text']/int='19610'",
-			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int='37790'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int='51823'" };
+			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19014'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19395'",
+			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='37552'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='51585'" };
 
 	String[] crPositionsTests = {
 			"1 = count(//lst[@name='highlighting']/lst)",
-			"3 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int='20068'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='text']/int='51368'" };
+			"3 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='19830'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='51130'" };
 }
