@@ -106,24 +106,24 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	String[] enPositionsTests = {
 			"10 = count(//lst[@name='highlighting']/lst)",
 			"21 = count(//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='2146'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='6200'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='1606'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='4664'",
 			"42 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='22'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='16806'" };
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='23'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='16818'" };
 
 	String[] frPositionsTests = {
 			"2 = count(//lst[@name='highlighting']/lst)",
 			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19014'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19395'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19020'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.22.1_bib.properties']/arr[@name='content']/int='19363'",
 			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='37552'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='51585'" };
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='33126'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='45703'" };
 
 	String[] crPositionsTests = {
 			"1 = count(//lst[@name='highlighting']/lst)",
 			"3 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='19830'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='51130'" };
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='17545'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='45295'" };
 }
