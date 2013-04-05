@@ -58,18 +58,6 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	@Test
 	public void testPositionsPeelbibQuery() {
 		
-		/* Examples:     
-|type|query|hits|
-|phrase|"rocky mountains"|124|
-|boolean|horse dog|275|
-|boolean|horse OR dog|275|
-|boolean|horse AND dog|160|
-|boolean|horse -dog|102|
-|boolean|horse NOT dog|102|
-|boolean|(horse OR dog) AND cat|61|
-|fuzzy|horse~|282|
-|proximity|"horse dog"~100|35|
-|truncation|horse*|273| */
 		// term query
 		assertQ(req("q", "text:horse", "fl", "null", "hl", "true",
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
@@ -80,11 +68,35 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
 				"true", "hl.fl", "content"), frPositionsTests);
 
-		// term query with cree
-		assertQ(req("q", "text:Kwayask ê-kî-pê-kiskinowâpahtihicik", "fl",
+		// phrase query
+		assertQ(req("q", "text:\"rocky mountains\"", "fl",
 				"null", "hl", "true", "hl.usePhraseHighlighter", "true",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
-				crPositionsTests);
+				phrasePositionsTests);
+
+		// boolean query
+		assertQ(req("q", "text:(horse -dog) AND cat", "fl", "null", "hl",
+				"true", "hl.usePhraseHighlighter", "true",
+				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
+				booleanPositionsTests);
+
+		// fuzzy query
+		assertQ(req("q", "text:horse~", "fl", "null", "hl",
+				"true", "hl.usePhraseHighlighter", "true",
+				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
+				fuzzyPositionsTests);
+		
+		// proximity query
+		assertQ(req("q", "text:\"horse dog\"~100", "fl", "null", "hl",
+				"true", "hl.usePhraseHighlighter", "true",
+				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
+ proximityPositionsTests);
+
+		// truncation query
+		assertQ(req("q", "text:horse*", "fl", "null", "hl", "true",
+				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
+				"true", "hl.fl", "content"), truncationPositionsTests);
+		
 
 	}
 
@@ -121,9 +133,54 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='33126'",
 			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='45703'" };
 
-	String[] crPositionsTests = {
-			"1 = count(//lst[@name='highlighting']/lst)",
-			"3 = count(//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='17545'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_81_bib.properties']/arr[@name='content']/int='45295'" };
+	String[] phrasePositionsTests = {
+			"10 = count(//lst[@name='highlighting']/lst)",
+			"40 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.10.4_bib.properties']/arr[@name='content']/int)",
+			// notice the phrase appears as pairs
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.10.4_bib.properties']/arr[@name='content']/int='4860'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.10.4_bib.properties']/arr[@name='content']/int='4861'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.10.4_bib.properties']/arr[@name='content']/int='11044'", 
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.10.4_bib.properties']/arr[@name='content']/int='11045'",
+			"16 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.30.4_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.30.4_bib.properties']/arr[@name='content']/int='480'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.30.4_bib.properties']/arr[@name='content']/int='5849'" };
+
+	String[] booleanPositionsTests = {
+			"10 = count(//lst[@name='highlighting']/lst)",
+			"15 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.21.4_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.21.4_bib.properties']/arr[@name='content']/int='5906'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.21.4_bib.properties']/arr[@name='content']/int='16583'",
+			"7 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.31.4_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.31.4_bib.properties']/arr[@name='content']/int='633'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.31.4_bib.properties']/arr[@name='content']/int='20603'" };
+
+	String[] fuzzyPositionsTests = {
+			"10 = count(//lst[@name='highlighting']/lst)",
+			"95 = count(//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='413'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_2490_bib.properties']/arr[@name='content']/int='4820'",
+			"99 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.44.2_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.44.2_bib.properties']/arr[@name='content']/int='220'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.44.2_bib.properties']/arr[@name='content']/int='17975'" };
+
+	String[] proximityPositionsTests = {
+			"10 = count(//lst[@name='highlighting']/lst)",
+			"8 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int)",
+			// in pairs with a distance less than 100
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='768'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='787'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='13030'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.35.3_bib.properties']/arr[@name='content']/int='13057'",
+			"2 = count(//lst[@name='highlighting']/lst[@name='peelbib_9021.4.3_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.4.3_bib.properties']/arr[@name='content']/int='382'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_9021.4.3_bib.properties']/arr[@name='content']/int='475'" };
+
+	String[] truncationPositionsTests = {
+			"10 = count(//lst[@name='highlighting']/lst)",
+			// more results than horse alone, in different positions
+			"1 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571_bib.properties']/arr[@name='content']/int='4305'",
+			"5 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int='3280'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int='12704'" };
 }
