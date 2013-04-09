@@ -56,48 +56,58 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	}
 
 	@Test
-	public void testPositionsPeelbibQuery() {
-		
-		// term query
+	public void testTermQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:horse", "fl", "null", "hl", "true",
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
-				"true", "hl.fl", "content"),
-				enPositionsTests);
-		// term query with french
+				"true", "hl.fl", "content"), enPositionsTests);
+	}
+
+	@Test
+	public void testFrTermQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:français", "fl", "null", "hl", "true",
 				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
 				"true", "hl.fl", "content"), frPositionsTests);
+	}
 
-		// phrase query
+	@Test
+	public void testPhraseQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:\"rocky mountains\"", "fl",
 				"null", "hl", "true", "hl.usePhraseHighlighter", "true",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
 				phrasePositionsTests);
+	}
 
-		// boolean query
+	@Test
+	public void testBooleanQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:(horse -dog) AND cat", "fl", "null", "hl",
 				"true", "hl.usePhraseHighlighter", "true",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
 				booleanPositionsTests);
+	}
 
-		// fuzzy query
+	@Test
+	public void testFuzzyQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:horse~", "fl", "null", "hl",
 				"true", "hl.usePhraseHighlighter", "true",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
 				fuzzyPositionsTests);
-		
-		// proximity query
+	}
+
+	@Test
+	public void testProximityQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:\"horse dog\"~100", "fl", "null", "hl",
 				"true", "hl.usePhraseHighlighter", "true",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
- proximityPositionsTests);
+				proximityPositionsTests);
+	}
 
-		// truncation query
-		assertQ(req("q", "text:horse*", "fl", "null", "hl", "true",
-				"hl.usePhraseHighlighter", "true", "hl.highlightMultiTerm",
-				"true", "hl.fl", "content"), truncationPositionsTests);
-		
-
+	@Test
+	public void testTruncationQueryPositionsPeelbibQuery() {
+		assertQ(req("q", "text:horse*", "fl", "null", "hl",
+				"true", "sort", "uid asc", "hl.usePhraseHighlighter",
+				"true",
+				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
+				truncationPositionsTests);
 	}
 
 	String[] tests = { "//result[@numFound='1']", "//doc/str[@name='peelnum']",
@@ -178,9 +188,10 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	String[] truncationPositionsTests = {
 			"10 = count(//lst[@name='highlighting']/lst)",
 			// more results than horse alone, in different positions
-			"1 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_10571_bib.properties']/arr[@name='content']/int='4305'",
-			"5 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int)",
-			"//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int='3280'",
-			"//lst[@name='highlighting']/lst[@name='peelbib_10571.19_bib.properties']/arr[@name='content']/int='12704'" };
+			"4 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571.10_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.10_bib.properties']/arr[@name='content']/int='134'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.10_bib.properties']/arr[@name='content']/int='8194'",
+			"8 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571.20_bib.properties']/arr[@name='content']/int)",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.20_bib.properties']/arr[@name='content']/int='1334'",
+			"//lst[@name='highlighting']/lst[@name='peelbib_10571.20_bib.properties']/arr[@name='content']/int='15009'" };
 }
