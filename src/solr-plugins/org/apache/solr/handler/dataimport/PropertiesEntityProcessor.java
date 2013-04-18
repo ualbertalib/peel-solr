@@ -7,9 +7,9 @@ import static org.apache.solr.handler.dataimport.XPathEntityProcessor.URL;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class PropertiesEntityProcessor extends EntityProcessorBase {
   @Override
   public Map<String, Object> nextRow() {
     if(done) return null;
-    Map<String, Object> row = new HashMap<String, Object>();
+	Map<String, Object> row = new ConcurrentHashMap<String, Object>();
     DataSource<Reader> dataSource = context.getDataSource();
     Reader isr = dataSource.getData(context.getResolvedEntityAttribute(URL));
     Properties prop = new Properties();

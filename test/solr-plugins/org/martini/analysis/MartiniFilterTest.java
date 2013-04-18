@@ -12,21 +12,21 @@ public class MartiniFilterTest extends BaseTokenStreamTestCase {
 
 	@Test
 	public void testZeroOccurances() throws IOException {
-	StringReader reader = new StringReader("Montréal Montreal");
+		final StringReader reader = new StringReader("Montréal Montreal");
 	    MartiniFilter filter = new MartiniFilter(new WhitespaceTokenizer(TEST_VERSION_CURRENT, reader));
 	assertTokenStreamContents(filter,
 		new String[] { "Montréal", "Montreal" }, new int[] { 1, 1 });
 	}
 	@Test
 	public void testExactlyOnce() throws IOException {
-	StringReader reader = new StringReader("Montréal 0:Montreal");
+		final StringReader reader = new StringReader("Montréal 0:Montreal");
 	    TokenStream stream = new MartiniFilter(new WhitespaceTokenizer(TEST_VERSION_CURRENT, reader));
 	assertTokenStreamContents(stream,
 		new String[] { "Montréal", "Montreal" }, new int[] { 1, 0 });
 	}
 	@Test
 	public void testMiddleMultiple() throws IOException {
-	StringReader reader = new StringReader(
+		final StringReader reader = new StringReader(
 		"Je n'aime pas l'hiver à 0:a Montréal 0:Montreal 0:mount 0:réal, jamais!");
 	    TokenStream stream = new MartiniFilter(new WhitespaceTokenizer(TEST_VERSION_CURRENT, reader));
 	    assertTokenStreamContents(stream, 

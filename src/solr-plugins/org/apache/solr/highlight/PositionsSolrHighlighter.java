@@ -2,11 +2,9 @@ package org.apache.solr.highlight;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
 import org.apache.lucene.search.vectorhighlight.FieldPhraseList;
@@ -26,6 +24,26 @@ import org.apache.solr.search.DocList;
 import org.apache.solr.search.SolrIndexSearcher;
 import org.apache.solr.util.plugin.PluginInfoInitialized;
 
+/**
+ * <p>
+ * Example configuration:
+ * 
+ * <pre class="prettyprint">
+ *   &lt;searchComponent class="solr.HighlightComponent" name="highlight"&gt;
+ *     &lt;highlighting class="org.apache.solr.highlight.PositionsSolrHighlighter"/&gt;
+ *   &lt;/searchComponent&gt;
+ * </pre>
+ * <p>
+ * Notes:
+ * <ul>
+ * <li>fields to highlight must be configured with termVectors="true"
+ * termPositions="true" termOffsets="true"
+ * <li>hl.q (string) can specify the query
+ * <li>hl.fl (string) specifies the field list.
+ * </ul>
+ * 
+ * @lucene.experimental
+ */
 public class PositionsSolrHighlighter extends SolrHighlighter implements
 		PluginInfoInitialized {
 
@@ -42,6 +60,18 @@ public class PositionsSolrHighlighter extends SolrHighlighter implements
 
 	}
 
+	/**
+	 * Generates a list of Highlighted query term position(s) for each item in a
+	 * list of documents, or returns null if highlighting is disabled.
+	 * 
+	 * @param docs query results
+	 * @param query the query
+	 * @param req the current request
+	 * @param defaultFields default list of fields to summarize
+	 * 
+	 * @return NamedList containing a NamedList for each document, which in
+	 *         turns contains sets (field, positions) pairs.
+	 */
 	@Override
 	public NamedList<Object> doHighlighting(DocList docs, Query query,
 			SolrQueryRequest req, String[] defaultFields) throws IOException {
@@ -51,17 +81,14 @@ public class PositionsSolrHighlighter extends SolrHighlighter implements
 		if (isHighlightingEnabled(params)) {
 			FastVectorHighlighter fvh = new FastVectorHighlighter(
 			        // FVH cannot process hl.usePhraseHighlighter parameter per-field basis
-			        params.getBool( HighlightParams.USE_PHRASE_HIGHLIGHTER, true ),
+					params.getBool(HighlightParams.USE_PHRASE_HIGHLIGHTER, true),
 			        // FVH cannot process hl.requireFieldMatch parameter per-field basis
-			        params.getBool( HighlightParams.FIELD_MATCH, false ) );
+					params.getBool(HighlightParams.FIELD_MATCH, false));
 			fvh.setPhraseLimit(params.getInt(HighlightParams.PHRASE_LIMIT, Integer.MAX_VALUE));
 			    
 			SolrIndexSearcher searcher = req.getSearcher();
 			IndexSchema schema = searcher.getSchema();
 			int[] docIDs = toDocIDs(docs);
-
-			// fetch the unique keys
-			String[] keys = getUniqueKeys(searcher, docIDs);
 
 			// query-time parameters
 			String[] fieldNames = getHighlightFields(query, req, defaultFields);
@@ -74,25 +101,26 @@ public class PositionsSolrHighlighter extends SolrHighlighter implements
 				}
 				// fetch unique key if one exists.
 				SchemaField keyField = schema.getUniqueKeyField();
-				if (null != keyField)
+				if (null != keyField) {
 					fset.add(keyField.getName());
+				}
 			}
 
-			int numSnippets = params.getInt(HighlightParams.SNIPPETS, 1);
-
-			NamedList<Object> list = new SimpleOrderedMap();
+			NamedList<Object> list = new SimpleOrderedMap<Object>();
 
 			for (int docID : docIDs) {
-				NamedList<Object> summary = new SimpleOrderedMap();
+				NamedList<Object> summary = new SimpleOrderedMap<Object>();
 				for (String field : fieldNames) {
 					FieldQuery fq = fvh.getFieldQuery(query,
 							searcher.getIndexReader());
-				    FieldTermStack stack = new FieldTermStack( req.getSearcher().getIndexReader(), docID, field, fq );
-				    FieldPhraseList fpl = new FieldPhraseList( stack, fq );
+					FieldTermStack stack = new FieldTermStack(req.getSearcher()
+							.getIndexReader(), docID, field, fq);
+					FieldPhraseList fpl = new FieldPhraseList(stack, fq);
 
 					ArrayList<Integer> positions = new ArrayList<Integer>();
-				    for( FieldPhraseList.WeightedPhraseInfo wpi : fpl.getPhraseList() ) {
-				    	for( FieldTermStack.TermInfo ti : wpi.getTermsInfos() ) {
+					for (FieldPhraseList.WeightedPhraseInfo wpi : fpl
+							.getPhraseList()) {
+						for (FieldTermStack.TermInfo ti : wpi.getTermsInfos()) {
 							positions.add(ti.getPosition());
 				    	}
 				    }
@@ -126,23 +154,4 @@ public class PositionsSolrHighlighter extends SolrHighlighter implements
 		return docIDs;
 	}
 
-	/** Retrieves the unique keys for the topdocs to key the results */
-	protected String[] getUniqueKeys(SolrIndexSearcher searcher, int[] docIDs)
-			throws IOException {
-		IndexSchema schema = searcher.getSchema();
-		SchemaField keyField = schema.getUniqueKeyField();
-		if (keyField != null) {
-			Set<String> selector = Collections.singleton(keyField.getName());
-			String uniqueKeys[] = new String[docIDs.length];
-			for (int i = 0; i < docIDs.length; i++) {
-				int docid = docIDs[i];
-				Document doc = searcher.doc(docid, selector);
-				String id = schema.printableUniqueKey(doc);
-				uniqueKeys[i] = id;
-			}
-			return uniqueKeys;
-		} else {
-			return new String[docIDs.length];
-		}
-	}
 }

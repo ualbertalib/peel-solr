@@ -36,7 +36,7 @@
                 <field column="author" name="author"/>
                 <field column="authorsort" name="authorsort"/>
                 <field column="authordisplay" name="authordisplay"/>
-                <field column="mountdate" template="${dataimporter.request.mountdate}"/>
+                <field column="mountDate" template="${dataimporter.request.mountdate}"/>
                 <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
                     rootEntity="false" recursive="true" dataSource="null" onError="continue"
                     baseDir="${bib.fileDir}" 
