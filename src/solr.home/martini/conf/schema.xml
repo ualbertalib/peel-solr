@@ -117,8 +117,8 @@
       <field name="geodisplay_fr" type="string" indexed="true" store="true" multiValued="true"/>
       <field name="geodisplay" type="string" indexed="true" store="true" multiValued="true"/>
       <field name="origindisplay" type="string" indexed="true" store="true" multiValued="true"/>
-      <field name="peel1" type="text_general" indexed="true" store="true"/>
-      <field name="peel2" type="text_general" indexed="true" store="true"/>
+      <field name="peel1" type="text_general" indexed="true" store="true" multiValued="true"/>
+      <field name="peel2" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="peelnum" type="text_ws" indexed="true" store="true"/>
       <field name="peelnumsort" type="string" indexed="true"/>
       <field name="subject_en" type="text_general" indexed="true" store="true" multiValued="true"/>
