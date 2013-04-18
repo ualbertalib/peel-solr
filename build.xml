@@ -1,122 +1,140 @@
 <project name="peel-solr" default="info" xmlns:ivy="antlib:org.apache.ivy.ant">
-  
-  <property name="src.dir" location="src"/>
-  <property name="solr-plugins.src" location="${src.dir}/solr-plugins"/>
-  <property name="test.dir" location="test/solr.home"/>
-  <property name="test-files.dir" location="test-files"/>
-  <property name="lib.dir" location="lib"/>
-  <property name="main.lib" location="${lib.dir}/main"/>
-  <property name="tasks.lib" location="${lib.dir}/tasks"/>
-  <property name="dist.dir" location="dist"/>
-  
-  <property name="target.dir" location="target"/>
-  <property name="target.classes.java.dir" location="${target.dir}/classes/java"/>
-  <property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
-  <property name="target.report.dir" location="${target.dir}/reports/"/>
-  
-  <property name="solr.home" location="${src.dir}/solr.home"/>
-  <property name="solr.home.lib" location="${solr.home}/martini/lib"/>
-  <property name="solr.xml" location="solr.xml"/>
-  <property name="solr.war" value="solr.war"/>
-  <property name="solr.path" value="solr"/>
-  
-  <available file="${solr.home.lib}/${ant.project.name}.jar" property="solr-plugins.available"/>
-  
-  <import file="deploy-tomcat.xml"/>
-  <import file="build-solr-plugins.xml"/>
-  <import file="build-peel-scripts.xml"/>
-  
-  <target name="info" description="About peel-solr">
-    <echo message="ant install-solr -- will use solr.xml as context file to deploy solr.war in Tomcat"/>
-    <echo message="ant uninstall-solr -- will undeploy /solr webapp from Tomcat"/>
-    <echo message="ant report -- will run all tests and create tidy report of results"/>
-  	<echo message="ant test -- will run tests of solr.home configurations"/>
-    <echo message="ant test-solr-plugins -- will run all tests of custom solr-plugins"/>
-    <echo message="ant dist-solr-plugins -- will create jar and install in solr.home/lib"/>
-    <echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
-    <echo message="ant dist-peel-scripts -- will create jar for use by peel-scripts"/>
-  	<echo message="ant clean-all -- will remove all compiled source, ivy libraries and Solr data directory"/>
-    <echo message="ant clean -- will remove all compiled source"/>
-    <echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
-    <echo message="ant clean-solr -- will remove data directory"/>
-  </target>
-  
-  <target name="retrieve.test" xmlns:ivy="antlib:org.apache.ivy.ant">
-    <ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]"/>
-    <ivy:cachepath pathid="test.classpath" conf="test"/>
-  </target>
-  
-  <available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
-  
-  <target name="retrieve.solr.home.lib" depends="dist-solr-plugins">
-    <mkdir dir="${solr.home.lib}"/>
-    <ivy:retrieve conf="solr.lib" sync="true" pattern="${solr.home.lib}/[artifact]-[revision].[ext]"/>
-    <copy todir="${solr.home.lib}" file="${dist.dir}/${ant.project.name}.jar"/>
-  </target>
-  
-  <target name="compile.test" depends="retrieve.test, retrieve.solr.home.lib">
-    <mkdir dir="${target.classes.test.dir}"/>
-    <javac destdir="${target.classes.test.dir}" encoding="UTF-8">
-      <src path="${test.dir}"/>
-      <classpath>
-        <pathelement location="${target.classes.java.dir}"/>
-        <path refid="test.classpath"/>
-      </classpath>
-    </javac>
-  </target>
-  
-  <target name="compile" depends="compile.test"/>
-  
-  <target name="test" depends="compile">
-    <mkdir dir="${target.report.dir}"/>
-    <junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
-      <jvmarg value="-ea"/>
-      <jvmarg value="-Xms1024M"/>
-      <jvmarg value="-Xmx1024M"/>
-      <classpath>
-        <pathelement location="${target.classes.java.dir}"/>
-        <pathelement location="${target.classes.test.dir}"/>
-        <pathelement location="${src.dir}"/>
-        <pathelement location="${test-files.dir}"/>
-        <path refid="test.classpath"/>
-      </classpath>
-      <formatter type="xml"/>
-      <batchtest todir="${target.report.dir}">
-        <fileset dir="${test.dir}">
-          <exclude name="**/Test*All.java"/>
-          <exclude name="**/*TestCase.java"/>
-          <include name="**/*Test*.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
-  
-  <target name="report" depends="test, test-peel-scripts">
-    <mkdir dir="${target.report.dir}/html"/>
-    <junitreport todir="${target.report.dir}">
-      <fileset dir="${target.report.dir}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report todir="${target.report.dir}/html"/>
-    </junitreport>
-  </target>
-  
-  <target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins"/>
-  
-  <target name="clean">
-    <delete dir="${target.dir}"/>
-    <delete dir="${solr.home.lib}"/>
-    <antcall target="clean-solr-plugins"/>
-    <antcall target="clean-deploy-solr"/>
-  </target>
-  
-  <target name="clean-ivy">
-    <delete dir="${lib.dir}"/>
-  </target>
-  
-  <target name="clean-solr">
-    <delete includeemptydirs="true">
-      <fileset dir="${solr.home}/martini/data" includes="**/*"/>
-    </delete>
-  </target>
+
+	<property name="src.dir" location="src"/>
+	<property name="solr-plugins.src" location="${src.dir}/solr-plugins"/>
+	<property name="test.dir" location="test/solr.home"/>
+	<property name="test-files.dir" location="test-files"/>
+	<property name="lib.dir" location="lib"/>
+	<property name="main.lib" location="${lib.dir}/main"/>
+	<property name="tasks.lib" location="${lib.dir}/tasks"/>
+	<property name="dist.dir" location="dist"/>
+
+	<property name="target.dir" location="target"/>
+	<property name="target.classes.java.dir" location="${target.dir}/classes/java"/>
+	<property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
+	<property name="target.report.dir" location="${target.dir}/reports/"/>
+
+	<property name="solr.home" location="${src.dir}/solr.home"/>
+	<property name="solr.home.lib" location="${solr.home}/martini/lib"/>
+	<property name="solr.xml" location="solr.xml"/>
+	<property name="solr.war" value="solr.war"/>
+	<property name="solr.path" value="solr"/>
+
+	<available file="${solr.home.lib}/${ant.project.name}.jar" property="solr-plugins.available"/>
+
+	<import file="deploy-tomcat.xml"/>
+	<import file="build-solr-plugins.xml"/>
+	<import file="build-peel-scripts.xml"/>
+
+	<target name="info" description="About peel-solr">
+		<echo message="ant install-solr -- will use solr.xml as context file to deploy solr.war in Tomcat"/>
+		<echo message="ant uninstall-solr -- will undeploy /solr webapp from Tomcat"/>
+		<echo message="ant report -- will run all tests and create tidy report of results"/>
+		<echo message="ant test -- will run tests of solr.home configurations"/>
+		<echo message="ant test-solr-plugins -- will run all tests of custom solr-plugins"/>
+		<echo message="ant dist-solr-plugins -- will create jar and install in solr.home/lib"/>
+		<echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
+		<echo message="ant dist-peel-scripts -- will create jar for use by peel-scripts"/>
+		<echo message="ant clean-all -- will remove all compiled source, ivy libraries and Solr data directory"/>
+		<echo message="ant clean -- will remove all compiled source"/>
+		<echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
+		<echo message="ant clean-solr -- will remove data directory"/>
+	</target>
+
+	<property name="ivy.install.version" value="2.3.0"/>
+	<property name="ivy.jar.dir" value="${basedir}/ivy" />
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+	<property name="build.dir" value="build" />
+	<property name="src.dir" value="src" />
+
+	<target name="download-ivy" unless="skip.download">
+		<mkdir dir="${ivy.jar.dir}" />
+		<echo message="installing ivy..." />
+		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
+	</target>
+	<target name="install-ivy" depends="download-ivy" description="--> install ivy">
+		<path id="ivy.lib.path">
+			<pathelement location="${ivy.jar.file}" />
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
+	</target>
+
+	<target name="retrieve.test" depends="install-ivy" xmlns:ivy="antlib:org.apache.ivy.ant">
+		<ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]" />
+		<ivy:cachepath pathid="test.classpath" conf="test"/>
+	</target>
+
+	<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
+
+	<target name="retrieve.solr.home.lib" depends="dist-solr-plugins">
+		<mkdir dir="${solr.home.lib}"/>
+		<ivy:retrieve conf="solr.lib" sync="true" pattern="${solr.home.lib}/[artifact]-[revision].[ext]"/>
+		<copy todir="${solr.home.lib}" file="${dist.dir}/${ant.project.name}.jar"/>
+	</target>
+
+	<target name="compile.test" depends="retrieve.test, retrieve.solr.home.lib">
+		<mkdir dir="${target.classes.test.dir}"/>
+		<javac destdir="${target.classes.test.dir}" encoding="UTF-8">
+			<src path="${test.dir}"/>
+			<classpath>
+				<pathelement location="${target.classes.java.dir}"/>
+				<path refid="test.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compile" depends="compile.test"/>
+
+	<target name="test" depends="compile">
+		<mkdir dir="${target.report.dir}"/>
+		<junit printsummary="yes" haltonerror="yes" haltonfailure="yes" fork="yes">
+			<jvmarg value="-ea"/>
+			<jvmarg value="-Xms1024M"/>
+			<jvmarg value="-Xmx1024M"/>
+			<classpath>
+				<pathelement location="${target.classes.java.dir}"/>
+				<pathelement location="${target.classes.test.dir}"/>
+				<pathelement location="${src.dir}"/>
+				<pathelement location="${test-files.dir}"/>
+				<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest todir="${target.report.dir}">
+				<fileset dir="${test.dir}">
+					<exclude name="**/Test*All.java"/>
+					<exclude name="**/*TestCase.java"/>
+					<include name="**/*Test*.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="report" depends="test, test-peel-scripts">
+		<mkdir dir="${target.report.dir}/html"/>
+		<junitreport todir="${target.report.dir}">
+			<fileset dir="${target.report.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report todir="${target.report.dir}/html"/>
+		</junitreport>
+	</target>
+
+	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins"/>
+
+	<target name="clean">
+		<delete dir="${target.dir}"/>
+		<delete dir="${solr.home.lib}"/>
+		<antcall target="clean-solr-plugins"/>
+		<antcall target="clean-deploy-solr"/>
+	</target>
+
+	<target name="clean-ivy">
+		<delete dir="${lib.dir}"/>
+	</target>
+
+	<target name="clean-solr">
+		<delete includeemptydirs="true">
+			<fileset dir="${solr.home}/martini/data" includes="**/*"/>
+		</delete>
+	</target>
 </project>
