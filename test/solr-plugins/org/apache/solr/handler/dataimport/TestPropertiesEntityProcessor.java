@@ -37,7 +37,7 @@ public class TestPropertiesEntityProcessor extends AbstractDataImportHandlerTest
           "      <field column=\"key2\" name=\"key2_i\"/>" +
           "      <field column=\"key3\" name=\"key3_i\"/>" +
           "      <field column=\"fruits\" name=\"fruits__t\"/>" +
-          "      <field column=\"cheese\" name=\"cheeses_t\"/>" +
+          "      <field column=\"cheeses\" name=\"cheeses_t\"/>" +
           "     </entity>" +
           "  </document>" +
           "</dataConfig>";

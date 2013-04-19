@@ -51,7 +51,7 @@ public class PropertiesEntityProcessor extends EntityProcessorBase {
       for (Map<String, String> field : context.getAllEntityFields()) {
         String col = field.get(COLUMN);
         String s = prop.getProperty( col );
-        if (s != null) row.put(col, s);
+        if (s != null && !s.isEmpty()) row.put(col, s);
       }
     } catch (IOException e) {
       wrapAndThrow(SEVERE, e, "Unable to load properties file");
