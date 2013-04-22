@@ -41,7 +41,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 				"fl",
 				"*,score",
 				"q",
-				"pubyear:(1850 TO 1860) +bibrecord:(book of common prayer) +actyear:(1856) +digstatus:(mounted) +peelnum:(329)",
+				"pubyear:[1850 TO 1860] +bibrecord:(book of common prayer) +actyear:(1856) +digstatus:(mounted) +peelnum:(329)",
 				"fq", "language:(cre)"), tests);
 	}
 
@@ -113,7 +113,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	String[] tests = { "//result[@numFound='1']", "//doc/str[@name='peelnum']",
 			"//doc/str[@name='titledisplay']",
 			"//doc/arr[@name='authordisplay']",
-			"//doc/arr[@name='origindisplay']", "//doc/str[@name='pubyear']",
+			"//doc/arr[@name='origindisplay']", "//doc/int[@name='pubyear']",
 			"//doc/arr[@name='language']", "//doc/str[@name='digstatus']" };
 
 	String[] facetTests = {

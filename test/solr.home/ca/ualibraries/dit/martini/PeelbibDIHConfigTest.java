@@ -67,7 +67,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 			"//str[@name='peelnum']='908'" };
 	private static String[] testAll = { "//result[@numFound='292']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
-			"//arr[@name='language']", "//str[@name='pubyear']",
+			"//arr[@name='language']", "//int[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",
 			"//str[@name='mountDate']", "//str[@name='bibrecord']",
 			"//str[@name='collection']='peelbib'", "//str[@name='title']",

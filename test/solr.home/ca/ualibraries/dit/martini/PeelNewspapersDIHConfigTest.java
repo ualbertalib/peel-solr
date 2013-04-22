@@ -46,7 +46,7 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 			"//str[@name='publication']='LLP'" };
 	private String[] testAll = {
  "//result[@numFound='323']",
-			"//arr[@name='language']", "//str[@name='pubyear']",
+			"//arr[@name='language']", "//int[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",
 			"//str[@name='mountDate']", "//str[@name='publication']",
 			"//str[@name='date']", "//str[@name='editionpath']",
