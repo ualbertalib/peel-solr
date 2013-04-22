@@ -18,7 +18,7 @@
                 <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
                 
                 <field column="language" name="language" splitBy=" \| "/>
-                <field column="pubyear" name="pubyear"/>
+                <field column="pubyear" name="pubyear" splitBy="/"/>
                 <field column="actyear" name="actyear"/>
                 <field column="peelnumsort" template="${properties.peelnum}"/>
                 <field column="peelnum" regex="^0*" replaceWith="" />
