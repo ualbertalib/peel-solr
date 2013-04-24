@@ -286,7 +286,7 @@
    <copyField source="url" dest="text"/>
 
    <!-- Create a string version of author for faceting -->
-   <!--copyField source="author" dest="author_s"/-->
+   <copyField source="author" dest="author_s"/>
 
    <copyField source="subject_*" dest="subject"/>
    <copyField source="subjectdisplay_*" dest="subjectdisplay"/>
