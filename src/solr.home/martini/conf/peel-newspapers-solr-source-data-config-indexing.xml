@@ -45,19 +45,19 @@
                 <!-- sort fields -->
                 <field column="titlesort" xpath="/response/result/doc/str[@name='titlesort']"/>
                 <field column="authorsort" xpath="/response/result/doc/str[@name='authorsort']"/>
-                
-                <field column="publication" name="publication"/>
-                <field column="date" name="date"/>
-                <field column="editionlabel" name="editionlabel"/>
-                <field column="editionpath" name="editionpath"/>
-                <field column="type" name="type"/>
-                <field column="size" name="size"/>
-                <field column="page" name="page"/>
-                <field column="article" name="article"/>
-                <field column="headline-image" name="headline-image"/>
-                <field column="headline-width" name="headline-width"/>
-                <field column="headline-height" name="headline-height"/>
-                <field column="headline-text" name="bibrecord"/>
+
+                <field column="publication" xpath="/response/result/doc/str[@name='publication']"/>
+                <field column="date" xpath="/response/result/doc/str[@name='date']"/>
+                <field column="editionlabel" xpath="/response/result/doc/str[@name='editionlabel']"/>
+                <field column="editionpath" xpath="/response/result/doc/str[@name='editionpath']"/>
+                <field column="type" xpath="/response/result/doc/str[@name='type']"/>
+                <field column="size" xpath="/response/result/doc/str[@name='size']"/>
+                <field column="page" xpath="/response/result/doc/str[@name='page']"/>
+                <field column="article" xpath="/response/result/doc/str[@name='article']"/>
+                <field column="headline-image" xpath="/response/result/doc/str[@name='headline-image']"/>
+                <field column="headline-width" xpath="/response/result/doc/str[@name='headline-width']"/>
+                <field column="headline-height" xpath="/response/result/doc/str[@name='headline-height']"/>
+                <field column="headline-text" xpath="/response/result/doc/str[@name='headline-text']"/>
                 
             </entity>
         </entity>
