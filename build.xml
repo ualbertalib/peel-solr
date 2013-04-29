@@ -108,6 +108,20 @@
 			</batchtest>
 		</junit>
 	</target>
+	
+
+	<target name="test-solrmeter">
+		<java jar="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"
+			fork="true"
+			failonerror="true"
+		>
+			<arg value="-h"/>
+			<classpath>
+				<pathelement location="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+		</java>
+	</target>
 
 	<target name="report" depends="test, test-peel-scripts">
 		<mkdir dir="${target.report.dir}/html"/>
