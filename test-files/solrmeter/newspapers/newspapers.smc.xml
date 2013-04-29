@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Solr Meter Configuration File. Generated at Apr 29, 2013</comment>
+<entry key="solr.query.queryMode">standard</entry>
+<entry key="solr.update.documentsToCommit">100</entry>
+<entry key="executor.optimizeExecutor">ondemand</entry>
+<entry key="statistic.refreshTime">2000</entry>
+<entry key="solr.queryMethod">GET</entry>
+<entry key="statistic.configuration.filePath">statistics-config.xml</entry>
+<entry key="solr.query.useFacets">false</entry>
+<entry key="solr.query.useFilterQueries">false</entry>
+<entry key="solr.server.configuration.followRedirect">false</entry>
+<entry key="solr.query.addRandomExtraParams">true</entry>
+<entry key="solr.queriesFiles">test-files\solrmeter\newspapers\queries.16.txt</entry>
+<entry key="statistic.timeRange.range501_1000">true</entry>
+<entry key="solrConnectedButton.pingInterval">5000</entry>
+<entry key="solr.query.filterQueriesFile"/>
+<entry key="solr.update.timeToCommit">10000</entry>
+<entry key="guice.standalonePresentationModule">com.plugtree.solrmeter.StandalonePresentationModule</entry>
+<entry key="solr.documentIdField">id</entry>
+<entry key="statistic.timeRange.range0_500">true</entry>
+<entry key="solr.update.solrAutocommit">false</entry>
+<entry key="solr.documentFieldsFile"/>
+<entry key="solr.testTime">1</entry>
+<entry key="files.charset">UTF-8</entry>
+<entry key="statistic.timeRange.range1001_2000">true</entry>
+<entry key="solr.load.queriesperminute">20</entry>
+<entry key="solr.server.configuration.allowCompression">true</entry>
+<entry key="solr.server.configuration.soTimeout">60000</entry>
+<entry key="tools.extract.removeDuplicates">true</entry>
+<entry key="statistic.showingStatistics">all</entry>
+<entry key="solr.load.updatesperminute">20</entry>
+<entry key="solr.query.echoParams">false</entry>
+<entry key="solr.query.extraParameters"/>
+<entry key="solr.searchUrl">http://qpr.library.ualberta.ca:8080/solr-4.1.0/newspapers-wisecat</entry>
+<entry key="executor.queryExecutor">random</entry>
+<entry key="guice.modelModule">com.plugtree.solrmeter.ModelModule</entry>
+<entry key="solr.server.configuration.maxTotalConnections">1000000</entry>
+<entry key="solr.query.extraParams">test-files\solrmeter\newspapers\extraParams.txt</entry>
+<entry key="statistic.timeRange.range2001_2147483647">true</entry>
+<entry key="tools.extract.regex">path=/select params=\{(.*)\}.*</entry>
+<entry key="solr.errorLogStatistic.maxStored">400</entry>
+<entry key="guice.statisticsModule">com.plugtree.solrmeter.StatisticsModule</entry>
+<entry key="solr.updatesFiles">./example/updates.txt</entry>
+<entry key="executor.updateExecutor">random</entry>
+<entry key="solr.server.configuration.maxRetries">1</entry>
+<entry key="solr.addUrl">http://localhost:8983/solr</entry>
+<entry key="solr.queryLogStatistic.maxStored">1000</entry>
+<entry key="solr.server.configuration.defaultMaxConnectionsPerHost">100000</entry>
+<entry key="solr.query.facetMethod">fc</entry>
+<entry key="solr.server.configuration.connectionTimeout">60000</entry>
+</properties>

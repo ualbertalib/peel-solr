@@ -1,0 +1,1 @@
+echoParams=all&qt=standard&wt=standard&fl=*,[docid],score&facet.range=pubyear&facet.range.start=1&facet.range.end=5000&facet.range.gap=5&facet=true&facet.mincount=1&facet.field=language&facet.field=publication&hl=true&hl.snippets=1&hl.fl=content&sort=&start=0&rows=10
