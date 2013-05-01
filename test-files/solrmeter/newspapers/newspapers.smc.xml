@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>Solr Meter Configuration File. Generated at Apr 29, 2013</comment>
-<entry key="solr.query.queryMode">standard</entry>
+<comment>Solr Meter Configuration File. Generated at May 1, 2013</comment>
+<entry key="solr.query.queryMode">external</entry>
 <entry key="solr.update.documentsToCommit">100</entry>
 <entry key="executor.optimizeExecutor">ondemand</entry>
 <entry key="statistic.refreshTime">2000</entry>
@@ -25,7 +25,7 @@
 <entry key="solr.testTime">1</entry>
 <entry key="files.charset">UTF-8</entry>
 <entry key="statistic.timeRange.range1001_2000">true</entry>
-<entry key="solr.load.queriesperminute">20</entry>
+<entry key="solr.load.queriesperminute">250</entry>
 <entry key="solr.server.configuration.allowCompression">true</entry>
 <entry key="solr.server.configuration.soTimeout">60000</entry>
 <entry key="tools.extract.removeDuplicates">true</entry>
