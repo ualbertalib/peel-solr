@@ -63,7 +63,7 @@ public class LocalMartiniIndexerTest {
 		}
 		;
 		assertEquals(
-				"Indexing completed. Added/Updated: 119 documents. Deleted 0 documents.",
+        "Indexing completed. Added/Updated: 323 documents. Deleted 0 documents.",
 				lmi.report());
 
 	}

@@ -31,6 +31,9 @@
 		<echo message="ant uninstall-solr -- will undeploy /solr webapp from Tomcat"/>
 		<echo message="ant report -- will run all tests and create tidy report of results"/>
 		<echo message="ant test -- will run tests of solr.home configurations"/>
+		<echo message="ant test-solrmeter --  will run solrmeter for performance/load testing (requires windowing os)"/>
+		<echo message="   test-solrmeter-peelbib is for peelbib config"/>
+		<echo message="   test-solrmeter-newspapers is for newspapers config"/>
 		<echo message="ant test-solr-plugins -- will run all tests of custom solr-plugins"/>
 		<echo message="ant dist-solr-plugins -- will create jar and install in solr.home/lib"/>
 		<echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
