@@ -95,6 +95,7 @@
       <field name="actyear" type="text_general" indexed="true" stored="true"/>
       <field name="bibrecord" type="text_general" indexed="true" stored="true"/>
       <field name="collection" type="text_general" indexed="true" stored="true"/>
+      <field name="index" type="text_general" indexed="true" stored="true"/>
       <field name="filename" type="text_general" indexed="true" store="true"/>
       <field name="language" type="text_general" indexed="true" store="true" multiValued="true"/>
       <field name="pubyear" type="tint" indexed="true" store="true"/>
