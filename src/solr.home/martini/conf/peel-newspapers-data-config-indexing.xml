@@ -30,6 +30,7 @@
                 <field column="headline-height" name="headline-height"/>
                 <field column="headline-text" name="bibrecord"/>
                 <field column="collection" template="newspapers"/>
+                <field column="index" template="newspapers"/>
                 <field column="title" name="title"/>
                 <field column="titlesort" name="titlesort"/>
                 <field column="titledisplay" name="titledisplay"/>

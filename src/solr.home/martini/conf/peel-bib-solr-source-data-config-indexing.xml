@@ -24,6 +24,7 @@
                 <field column="peel1" xpath="/response/result/doc/str[@name='peel1']"/>
                 <field column="peel2" xpath="/response/result/doc/str[@name='peel2']"/>
                 <field column="collection" xpath="/response/result/doc/str[@name='collection']"/>
+                <field column="index" template="peelbib"/>
                 <field column="digstatus" xpath="/response/result/doc/str[@name='digstatus']"/>
                 <field column="oaiset" xpath="/response/result/doc/str[@name='oaiset']"/>
                 <field column="rectype" xpath="/response/result/doc/str[@name='rectype']"/>
