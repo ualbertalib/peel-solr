@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test-solr-deploy" default="test">
+    <property file="solr.properties"/>
+    <target name="test-started">
+        <waitfor maxwait="${target.time}" maxwaitunit="${target.unit}" timeoutproperty="test.notStarted">
+            <http url="http://${host}:${port}/${solr}/admin/ping"/>
+        </waitfor>
+        <fail message="http://${host}:${port}/${solr}/admin/ping is not reachable. Is Solr installed and started?  Are the values in solr.properties correct?" if="test.notStarted"/>
+    </target>
+    <target name="test" depends="test-started"/>
+</project>
