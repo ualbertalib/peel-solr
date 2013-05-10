@@ -1,4 +1,4 @@
-package ca.ualibraries.dit.martini;
+package ca.ualibraries.dit.peel;
 
 import org.apache.solr.SolrTestCaseJ4;
 import org.junit.BeforeClass;
@@ -9,7 +9,7 @@ public class MartiniConfigTest extends SolrTestCaseJ4 {
     @BeforeClass
     public static void beforeClass() throws Exception {
 	initCore("solrconfig.xml", "schema.xml", getFile("solr.home")
-		.getAbsolutePath(), "martini");
+        .getAbsolutePath(), "peel");
     }
 
     @Test

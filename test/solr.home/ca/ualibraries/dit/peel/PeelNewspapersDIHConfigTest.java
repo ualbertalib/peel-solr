@@ -1,4 +1,4 @@
-package ca.ualibraries.dit.martini;
+package ca.ualibraries.dit.peel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,7 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		initCore("solrconfig.xml", "schema.xml", getFile("solr.home")
-				.getAbsolutePath(), "martini");
+        .getAbsolutePath(), "peel");
 	}
 
 	@Test

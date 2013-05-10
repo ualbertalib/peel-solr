@@ -15,7 +15,7 @@
 	<property name="target.report.dir" location="${target.dir}/reports/"/>
 
 	<property name="solr.home" location="${src.dir}/solr.home"/>
-	<property name="solr.home.lib" location="${solr.home}/martini/lib"/>
+	<property name="solr.home.lib" location="${solr.home}/peel/lib"/>
 	<property name="solr.xml" location="solr.xml"/>
 	<property name="solr.war" value="solr.war"/>
 	<property name="solr.path" value="solr"/>
@@ -38,6 +38,7 @@
 		<echo message="ant dist-solr-plugins -- will create jar and install in solr.home/lib"/>
 		<echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
 		<echo message="ant dist-peel-scripts -- will create jar for use by peel-scripts"/>
+		<echo message="ant dist-instanceDir -- will create zip and tar.gz containing peel-solr instanceDir ready for deployment in Solr 4.1 installation"/>
 		<echo message="ant clean-all -- will remove all compiled source, ivy libraries and Solr data directory"/>
 		<echo message="ant clean -- will remove all compiled source"/>
 		<echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
@@ -152,8 +153,21 @@
 			<report todir="${target.report.dir}/html"/>
 		</junitreport>
 	</target>
+	
+	<target name="dist-instanceDir" depends="test">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.dir}"/>
+		
+		<zip destfile="${dist.dir}/${ant.project.name}-instanceDir.zip"
+		       basedir="${solr.home}"
+		       update="true"
+		  />
+		<tar destfile="${dist.dir}/${ant.project.name}-instanceDir.tar.gz" compression="gzip">
+		  <zipfileset src="${dist.dir}/${ant.project.name}-instanceDir.zip"/>
+		</tar>
+	</target>
 
-	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins"/>
+	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter"/>
 
 	<target name="clean">
 		<delete dir="${target.dir}"/>
@@ -168,7 +182,13 @@
 
 	<target name="clean-solr">
 		<delete includeemptydirs="true">
-			<fileset dir="${solr.home}/martini/data" includes="**/*"/>
+			<fileset dir="${solr.home}/peel/data" includes="**/*"/>
 		</delete>
+	</target>
+	
+	<target name="clean-solrmeter">
+		<delete file="queryTime.csv"/>
+		<delete file="histogram.csv"/>
+		<delete file="solrmeter.log"/>
 	</target>
 </project>

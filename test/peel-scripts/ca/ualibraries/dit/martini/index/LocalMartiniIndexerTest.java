@@ -20,7 +20,7 @@ public class LocalMartiniIndexerTest {
 
 	@BeforeClass
 	public static void init() {
-		lmi = new LocalMartiniIndexer("src/solr.home", "martini");
+    lmi = new LocalMartiniIndexer("src/solr.home", "peel");
 	}
 	@Test
 	public void testPeelBibDataImport() throws SolrServerException,
