@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="test-solr-deploy" default="test">
+    <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="xmltask.jar"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="ant-contrib-1.0b2.jar"/>
     <property file="solr.properties"/>
     <target name="test-started">
         <waitfor maxwait="${target.time}" maxwaitunit="${target.unit}" timeoutproperty="test.notStarted">
@@ -7,5 +9,166 @@
         </waitfor>
         <fail message="http://${host}:${port}/${solr}/admin/ping is not reachable. Is Solr installed and started?  Are the values in solr.properties correct?" if="test.notStarted"/>
     </target>
-    <target name="test" depends="test-started"/>
+    <target name="test-collection">
+        <waitfor maxwait="${target.time}" maxwaitunit="${target.unit}" timeoutproperty="test.notStarted">
+            <http url="http://${host}:${port}/${solr}/${collection}/admin/ping"/>
+        </waitfor>
+        <fail message="http://${host}:${port}/${solr}/${collection}/admin/ping is not reachable. Is ${collection} installed?  Are the values in solr.properties correct?" if="test.notStarted"/>
+    </target>
+    <target name="test-get-utf8">
+        <get src="http://${host}:${port}/${solr}/${collection}/select?q=h%C3%A9llo&amp;echoParams=explicit&amp;wt=python" dest="rsp1.xml"/>
+        <fail message="HTTP GET is not accepting UTF-8">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp1.xml" substring="h\u00e9llo"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="test-adv-utf8">
+        <get src="http://${host}:${port}/${solr}/${collection}/select?q=%F0%90%8C%88&amp;echoParams=explicit&amp;wt=python" dest="rsp2.xml"/>
+        <fail message="HTTP GET is not accepting advanced UTF-8">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp2.xml" substring="\ud800\udf08"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="test-peelbib">
+        <fail message="peelbib query failed. Is the ${collection} collection configured for peelbib queries? See Solr log for further info.">
+            <condition>
+                <not>
+                    <http url="http://${host}:${port}/${solr}/${collection}/select/?echoParams=all&amp;qt=standard&amp;wt=standard&amp;fl=*%2C%5Bdocid%5D%2Cscore&amp;facet.range=pubyear&amp;facet.range.start=1&amp;facet.range.end=5000&amp;facet.range.gap=5&amp;fq=index%3A%28peelbib%29&amp;q=*:*&amp;facet=true&amp;facet.mincount=1&amp;facet.field=geodisplay&amp;facet.field=authordisplay&amp;facet.field=subjectdisplay&amp;facet.field=language&amp;facet.field=digstatus&amp;hl=true&amp;hl.snippets=1&amp;hl.fl=content&amp;sort=&amp;start=0&amp;rows=10"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="test-newspapers">
+        <fail message="newspaper query failed. Is the ${collection} collection configured for newspaper queries? See Solr log for further info.">
+            <condition>
+                <not>
+                    <http url="http://${host}:${port}/${solr}/${collection}/select/?echoParams=all&amp;qt=standard&amp;wt=standard&amp;fl=*%2C%5Bdocid%5D%2Cscore&amp;facet.range=pubyear&amp;facet.range.start=1&amp;facet.range.end=5000&amp;facet.range.gap=5&amp;fq=index%3A%28newspapers%29&amp;q=*:*&amp;facet=true&amp;facet.mincount=1&amp;facet.field=language&amp;facet.field=publication&amp;hl=true&amp;hl.snippets=1&amp;hl.fl=content&amp;sort=&amp;start=0&amp;rows=10"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="test-rsptime" depends="get-mbeans">
+        <xmltask source="rsp-mbeans.xml"> 
+            <copy path="/response/lst[@name='solr-mbeans']/lst[@name='QUERYHANDLER']/lst[@name='/select']/lst[@name='stats']/double[@name='avgTimePerRequest']/text()" property="avgTimePerRequest"/>
+        </xmltask>
+        <if>
+            <islessthan arg1="${avgTimePerRequest}" arg2="${target.time}"/>
+            <then>
+                <echo message="Current average query time is ${avgTimePerRequest} ms"/>
+            </then>
+            <else>
+                <fail message="Average query time exceeds ${target.time} ${target.unit}"/>
+            </else>
+        </if>
+    </target>
+    <target name="test-jvm-mem" depends="get-system">
+        <xmltask source="rsp-system.xml"> 
+            <copy path="/response/lst[@name='jvm']/lst[@name='memory']/lst[@name='raw']/double[@name='used%']/text()" property="jvmMemPercent"/>
+        </xmltask>
+        <if>
+            <islessthan arg1="${jvmMemPercent}" arg2="${target.memory.percent}"/>
+            <then>
+                <echo message="Current JVM memory usage is ${jvmMemPercent}%"/>
+            </then>
+            <else>
+                <fail message="Current JVM memory usage exceeds ${target.memory.percent}% (${jvmMemPercent}%)"/>
+            </else>
+        </if>
+    </target>
+    <target name="test-sys-mem" depends="get-system">
+        <xmltask source="rsp-system.xml"> 
+            <copy path="/response/lst[@name='system']/long[@name='freePhysicalMemorySize']/text()" property="freeVM"/>
+            <copy path="/response/lst[@name='system']/long[@name='totalPhysicalMemorySize']/text()" property="totalVM"/>
+        </xmltask>
+        <math result="usedVM" operand1="${totalVM}" operation="subtract" operand2="${freeVM}" datatype="double"/>
+        <math result="memory.fraction" operand1="${usedVM}" operation="divide" operand2="${totalVM}" datatype="double"/>
+        <math result="memory.percent" operand1="${memory.fraction}" operation="multiply" operand2="100" datatype="double"/>
+        <if>
+            <islessthan arg1="${memory.percent}" arg2="${target.memory.percent}"/>
+            <then>
+                <echo message="Current memory usage is ${memory.percent}%"/>
+            </then>
+            <else>
+                <fail message="Current JVM memory usage exceeds ${target.memory.percent}% (${memory.percent}%)"/>
+            </else>
+        </if>
+    </target>
+    <target name="test-swap-mem" depends="get-system">
+        <xmltask source="rsp-system.xml"> 
+            <copy path="/response/lst[@name='system']/long[@name='freeSwapSpaceSize']/text()" property="freeSwap"/>
+            <copy path="/response/lst[@name='system']/long[@name='totalSwapSpaceSize']/text()" property="totalSwap"/>
+        </xmltask>
+        <math result="usedSwap" operand1="${totalSwap}" operation="subtract" operand2="${freeSwap}" datatype="double"/>
+        <math result="memory.fraction" operand1="${usedSwap}" operation="divide" operand2="${totalSwap}" datatype="double"/>
+        <math result="memory.percent" operand1="${memory.fraction}" operation="multiply" operand2="100" datatype="double"/>
+        <if>
+            <islessthan arg1="${memory.percent}" arg2="${target.memory.percent}"/>
+            <then>
+                <echo message="Current swap usage is ${memory.percent}%"/>
+            </then>
+            <else>
+                <fail message="Current swap usage exceeds ${target.memory.percent}% (${memory.percent}%)"/>
+            </else>
+        </if>
+    </target>
+    <target name="test-sysload" depends="get-system">
+        <xmltask source="rsp-system.xml"> 
+            <copy path="/response/lst[@name='jvm']/int[@name='processors']/text()" property="processors"/>
+            <copy path="/response/lst[@name='system']/double[@name='systemLoadAverage']/text()" property="avgLoad"/>
+        </xmltask>
+       <if>
+            <or>
+                <isgreaterthan arg1="${avgLoad}" arg2="0.0"/>
+            </or>
+            <then>
+                <if>
+                    <islessthan arg1="${avgLoad}" arg2="${processors}"/>
+                    <then>
+                        <echo message="Current load is ${avgLoad} on ${processors} cores"/>
+                    </then>
+                    <else>
+                        <fail message="Current load exceeds target.  Current load is ${avgLoad} on ${processors} cores"/>
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo message="load was not reported (${avgLoad})"/>
+            </else>
+        </if>
+    </target>
+    <target name="test-errors" depends="get-mbeans">
+        <xmltask source="rsp-mbeans.xml"> 
+            <copy path="/response/lst[@name='solr-mbeans']/lst[@name='QUERYHANDLER']/lst[@name='/select']/lst[@name='stats']/long[@name='requests']/text()" property="requests"/>
+            <copy path="/response/lst[@name='solr-mbeans']/lst[@name='QUERYHANDLER']/lst[@name='/select']/lst[@name='stats']/long[@name='errors']/text()" property="errors"/>
+        </xmltask>
+        <math result="errors.fraction" operand1="${errors}" operation="divide" operand2="${requests}" datatype="double"/>
+        <if>
+            <islessthan arg1="${errors.fraction}" arg2="${target.errors.fraction}"/>
+            <then>
+                <echo message="Current errors ${errors}/${requests} (${errors.fraction})"/>
+            </then>
+            <else>
+                <fail message="Current errors exceeds target.  Current errors ${errors}/${requests} (${errors.fraction})"/>
+            </else>
+        </if>
+    </target>
+    <target name="get-system">
+        <get src="http://${host}:${port}/${solr}/${collection}/admin/system" dest="rsp-system.xml"/>
+    </target>
+    <target name="get-mbeans">
+        <get src="http://${host}:${port}/${solr}/${collection}/admin/mbeans?stats=true" dest="rsp-mbeans.xml"/>
+    </target>
+    <target name="clean">
+        <delete file="rsp1.xml"/>
+        <delete file="rsp2.xml"/>
+        <delete file="rsp-system.xml"/>
+        <delete file="rsp-mbeans.xml"/>
+    </target>
+    <target name="test" depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sys-mem,test-sysload,test-errors"/>
 </project>
