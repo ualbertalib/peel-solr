@@ -3,6 +3,91 @@
     <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="xmltask.jar"/>
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="ant-contrib-1.0b2.jar"/>
     <property file="solr.properties"/>
+    <property name="collection.path" location="${collection}"/>
+    <target name="create-core" depends="clean" description="uses Solr CoreAdmin API to create collection">
+        <input message="Enter name of collection to create or enter for ${collection}" defaultvalue="${collection}" addproperty="name"/>
+        <input message="Enter path to instance direction of collection or enter for ${collection.path}" defaultvalue="${collection.path}" addproperty="instanceDir"/>
+        <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
+            <prop name="action" value="CREATE"/>
+            <prop name="name" value="${name}"/>
+            <prop name="instanceDir" value="${instanceDir}"/>
+        </post>
+        <fail message="${collection} was not loaded.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp-coreadmin.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="unload-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to unload collection, but keeps index directory">
+        <input message="Select one of the following cores to unload: ${message}" addproperty="core" defaultvalue="${collection}"/>
+        <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
+            <prop name="action" value="UNLOAD"/>
+            <prop name="core" value="${core}"/>
+        </post>
+        <fail message="${collection} was not unloaded.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp-coreadmin.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="delete-core" depends="clean" description="uses Sole CoreAdmin API to unload collection and deletes index directory">
+        <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
+            <prop name="action" value="UNLOAD"/>
+            <prop name="core" value="${collection}"/>
+            <prop name="deleteIndex" value="true"/>
+        </post>
+        <fail message="${collection} was not unloaded.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp-coreadmin.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="swap-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to swap pointers to collection">
+        <input message="Select one of the following cores to swap: ${message}" addproperty="core"/>
+        <input message="Select one of the following cores to swap: ${message}" addproperty="other"/>
+        <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
+            <prop name="action" value="SWAP"/>
+            <prop name="core" value="${core}"/>
+            <prop name="other" value="${other}"/>
+        </post>
+        <fail message="${collection} was not swapped.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp-coreadmin.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    <target name="merge-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to merge indexes">
+        <input message="Select one of the following cores to merge into: ${message}" addproperty="core"/>
+        <input message="Select one of the following cores to merge into ${core}: ${message}" addproperty="srcCore"/>
+        <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
+            <prop name="action" value="MERGEINDEXES"/>
+            <prop name="core" value="${core}"/>
+            <prop name="srcCore" value="${srcCore}"/>
+        </post>
+        <fail message="${collection} was not merged.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp-coreadmin.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+        <get src="http://${host}:${port}/${solr}/${collection}/update?commit=true&amp;optimize=true" dest="rsp.xml"/>
+        <fail message="${collection} was not committed and optimized.">
+            <condition>
+                <not>
+                    <resourcecontains resource="rsp.xml" substring="&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
     <target name="test-started">
         <waitfor maxwait="${target.time}" maxwaitunit="${target.unit}" timeoutproperty="test.notStarted">
             <http url="http://${host}:${port}/${solr}/admin/ping"/>
@@ -164,11 +249,20 @@
     <target name="get-mbeans">
         <get src="http://${host}:${port}/${solr}/${collection}/admin/mbeans?stats=true" dest="rsp-mbeans.xml"/>
     </target>
+    <target name="get-cores">
+        <get src="http://${host}:${port}/${solr}/admin/cores" dest="rsp-cores.xml"/>
+        <xmltask source="rsp-cores.xml">
+            <copy path="/response/lst[@name='status']/lst/str[@name='name']/text()" append="true" propertySeparator=", " property="message"/>
+        </xmltask>
+    </target>
     <target name="clean">
+        <delete file="rsp.xml"/>
         <delete file="rsp1.xml"/>
         <delete file="rsp2.xml"/>
         <delete file="rsp-system.xml"/>
         <delete file="rsp-mbeans.xml"/>
+        <delete file="rsp-coreadmin.xml"/>
+        <delete file="rsp-cores.xml"/>
     </target>
     <target name="test" depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sys-mem,test-sysload,test-errors"/>
 </project>
