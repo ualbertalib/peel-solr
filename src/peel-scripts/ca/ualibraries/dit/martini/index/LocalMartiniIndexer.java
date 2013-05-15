@@ -121,7 +121,8 @@ public class LocalMartiniIndexer {
 	
 	public static void main(String[] args) throws InterruptedException {
 		if (unknownArgs(args) || args.length < 1) {
-			logger.warn("Usage: java "
+      logger
+          .warn("Usage: java -jar "
 							+ LocalMartiniIndexer.class.getName()
 							+ " <solr.home> [coreName=<corename> contentDir=<baseDirectory> config=<data-config> mountDate=<mountdate>]");
 			return;

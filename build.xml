@@ -39,6 +39,7 @@
 		<echo message="ant test-peel-scripts -- will run all tests of stand-alone Indexer for peel-scripts"/>
 		<echo message="ant dist-peel-scripts -- will create jar for use by peel-scripts"/>
 		<echo message="ant dist-instanceDir -- will create zip and tar.gz containing peel-solr instanceDir ready for deployment in Solr 4.1 installation"/>
+		<echo message="ant dist -- will create all artifacts (peel-scripts, peel-solr and peel-solr-instanceDir)"/>
 		<echo message="ant clean-all -- will remove all compiled source, ivy libraries and Solr data directory"/>
 		<echo message="ant clean -- will remove all compiled source"/>
 		<echo message="ant clean-ivy -- will remove lib directories and all retrieved jars"/>
@@ -167,6 +168,8 @@
 		</tar>
 	</target>
 
+	<target name="dist" depends="dist-instanceDir,dist-peel-scripts"/>
+	
 	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter"/>
 
 	<target name="clean">

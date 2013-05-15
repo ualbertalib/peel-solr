@@ -13,6 +13,8 @@
     <property name="peel-scripts.test-files" location="test-files"/>
     <property name="project.revision" value="1.0.0"/>
     
+    <import file="build-solr-plugins.xml"/>
+    
     <!-- Initialize the environment  -->
     <target name="init-peel-scripts" depends="retrieve.solr.home.lib">
         <!-- Create the build directory structure used by compile -->
@@ -44,16 +46,18 @@
         <mkdir dir="${dist.dir}"/>
         
         <!-- Put everything in ${build} into the jar file -->
-        <jar jarfile="${dist.dir}/${ant.project.name}.jar">
+        <jar jarfile="${dist.dir}/${ant.project.name}-scripts.jar">
             <fileset dir="${peel-scripts.class.dir}">
                 <exclude name="**/*Test*"/>
             </fileset>
+            <zipgroupfileset dir="${peel-scripts.lib}" includes="*.jar"/>
+            <manifest><attribute name="Main-Class" value="ca.ualibraries.dit.martini.index.LocalMartiniIndexer"/></manifest>
         </jar>
     </target>
     
     
     <!-- Execute Unit Tests  -->
-    <target name="test-peel-scripts" depends="compile-peel-scripts" description="Execute Unit Tests">
+    <target name="test-peel-scripts" depends="compile-peel-scripts,dist-solr-plugins" description="Execute Unit Tests">
         <junit printsummary="yes" 
             errorProperty="test.failed" 
             failureProperty="test.failed" fork="yes">
