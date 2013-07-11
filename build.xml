@@ -182,7 +182,7 @@
 	</target>
 
 	<target name="clean-solr">
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="${solr.home}/peel/data" includes="**/*"/>
 		</delete>
 	</target>
