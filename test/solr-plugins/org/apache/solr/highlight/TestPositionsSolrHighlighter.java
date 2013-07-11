@@ -4,6 +4,7 @@ import org.apache.solr.SolrTestCaseJ4;
 import org.apache.solr.handler.component.HighlightComponent;
 import org.junit.BeforeClass;
 
+@org.apache.lucene.util.LuceneTestCase.SuppressCodecs({"Lucene3x","Lucene40"})
 public class TestPositionsSolrHighlighter extends SolrTestCaseJ4 {
 
 	@BeforeClass

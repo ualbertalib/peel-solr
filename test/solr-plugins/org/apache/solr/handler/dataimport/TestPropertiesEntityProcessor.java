@@ -27,6 +27,7 @@ import org.junit.Test;
  *
  * @since solr 4.1
  */
+@org.apache.lucene.util.LuceneTestCase.SuppressCodecs({"Lucene3x","Lucene40"})
 public class TestPropertiesEntityProcessor extends AbstractDataImportHandlerTestCase {
   private String conf =
       "<dataConfig>" +

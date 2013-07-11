@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.junit.Test;
 
+@org.apache.lucene.util.LuceneTestCase.SuppressCodecs({"Lucene3x","Lucene40"})
 public class MartiniFilterTest extends BaseTokenStreamTestCase {
 
 	@Test
