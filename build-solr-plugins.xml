@@ -1,17 +1,19 @@
 <project name="peel-plugins" xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <!-- set global properties for this build -->
-	  <property name="dist.dir" location="dist"/>
-	  <property name="target.dir" location="target"/>
-  <property name="lib.dir" location="lib"/>
-    
-  <property name="solr-plugins.src" location="src/solr-plugins"/>
-  <property name="solr-plugins.class.dir"  location="${target.dir}/solr-plugins"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="target.dir" location="target"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="solr-plugins.src" location="src/solr-plugins"/>
+    <property name="solr-plugins.class.dir"  location="${target.dir}/solr-plugins"/>
     <property name="solr-plugins.report.dir" location="${target.dir}/reports"/>
     <property name="solr-plugins.lib" location="${lib.dir}/solr-plugins"/>
     <property name="solr-plugins.test" location="test/solr-plugins"/>
     <property name="solr-plugins.test-files" location="test-files"/>
     <property name="project.revision" value="1.0.0"/>
+    
+    
+    <available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
     
     <!-- Initialize the environment  -->
     <target name="init-solr-plugins" unless="done.solr-plugins">

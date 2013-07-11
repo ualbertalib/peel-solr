@@ -20,8 +20,6 @@
 	<property name="solr.war" value="solr.war"/>
 	<property name="solr.path" value="solr"/>
 
-	<available file="${solr.home.lib}/${ant.project.name}.jar" property="solr-plugins.available"/>
-
 	<import file="deploy-tomcat.xml"/>
 	<import file="build-solr-plugins.xml"/>
 	<import file="build-peel-scripts.xml"/>
@@ -68,8 +66,6 @@
 		<ivy:retrieve sync="true" conf="test" pattern="${main.lib}/[artifact]-[revision].[ext]" />
 		<ivy:cachepath pathid="test.classpath" conf="test"/>
 	</target>
-
-	<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
 
 	<target name="retrieve.solr.home.lib" depends="dist-solr-plugins">
 		<mkdir dir="${solr.home.lib}"/>
@@ -170,7 +166,9 @@
 
 	<target name="dist" depends="dist-instanceDir,dist-peel-scripts"/>
 	
-	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter"/>
+	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter">
+		<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
+	</target>
 
 	<target name="clean">
 		<delete dir="${target.dir}"/>
