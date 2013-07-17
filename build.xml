@@ -166,9 +166,7 @@
 
 	<target name="dist" depends="dist-instanceDir,dist-peel-scripts"/>
 	
-	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter">
-		<available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
-	</target>
+	<target name="clean-all" depends="clean, clean-ivy, clean-solr, clean-solr-plugins, clean-solrmeter"/>
 
 	<target name="clean">
 		<delete dir="${target.dir}"/>

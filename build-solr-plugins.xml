@@ -13,10 +13,13 @@
     <property name="project.revision" value="1.0.0"/>
     
     
-    <available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
+    <target name="check-solr-plugins">
+        <available file="${dist.dir}/${ant.project.name}.jar" property="done.solr-plugins"/>
+    </target>
+    
     
     <!-- Initialize the environment  -->
-    <target name="init-solr-plugins" unless="done.solr-plugins">
+    <target name="init-solr-plugins" depends="check-solr-plugins" unless="done.solr-plugins">
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${solr-plugins.class.dir}"/>
         <mkdir dir="${solr-plugins.report.dir}"/>

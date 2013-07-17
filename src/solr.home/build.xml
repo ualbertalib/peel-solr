@@ -20,7 +20,7 @@
             </condition>
         </fail>
     </target>
-    <target name="unload-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to unload collection, but keeps index directory">
+    <target name="unload-core" depends="clean,get-cores" description="uses Solr CoreAdmin API to unload collection, but keeps index directory">
         <input message="Select one of the following cores to unload: ${message}" addproperty="core" defaultvalue="${collection}"/>
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
             <prop name="action" value="UNLOAD"/>
@@ -34,7 +34,7 @@
             </condition>
         </fail>
     </target>
-    <target name="delete-core" depends="clean" description="uses Sole CoreAdmin API to unload collection and deletes index directory">
+    <target name="delete-core" depends="clean" description="uses Solr CoreAdmin API to unload collection and deletes index directory">
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
             <prop name="action" value="UNLOAD"/>
             <prop name="core" value="${collection}"/>
@@ -48,7 +48,7 @@
             </condition>
         </fail>
     </target>
-    <target name="swap-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to swap pointers to collection">
+    <target name="swap-core" depends="clean,get-cores" description="uses Solr CoreAdmin API to swap pointers to collection">
         <input message="Select one of the following cores to swap: ${message}" addproperty="core"/>
         <input message="Select one of the following cores to swap: ${message}" addproperty="other"/>
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
@@ -64,7 +64,7 @@
             </condition>
         </fail>
     </target>
-    <target name="merge-core" depends="clean,get-cores" description="uses Sole CoreAdmin API to merge indexes">
+    <target name="merge-core" depends="clean,get-cores" description="uses Solr CoreAdmin API to merge indexes">
         <input message="Select one of the following cores to merge into: ${message}" addproperty="core"/>
         <input message="Select one of the following cores to merge into ${core}: ${message}" addproperty="srcCore"/>
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
@@ -264,5 +264,6 @@
         <delete file="rsp-coreadmin.xml"/>
         <delete file="rsp-cores.xml"/>
     </target>
-    <target name="test" depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sys-mem,test-sysload,test-errors"/>
+    <target name="test" description="tests Solr available, collection available, utf-8 chars display correctly, components for peel queries functional, and real-time performance including response time, memory use, system load, and errors are within tolerances."
+        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sys-mem,test-sysload,test-errors"/>
 </project>
