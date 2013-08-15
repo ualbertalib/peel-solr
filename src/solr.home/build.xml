@@ -184,6 +184,34 @@
             </else>
         </if>
     </target>
+    <target name="test-file-descriptors" depends="get-system">
+        <xmltask source="rsp-system.xml"> 
+            <copy path="/response/lst[@name='system']/str [@name='name']/text()" property="os"/>
+            <copy path="/response/lst[@name='system']/long [@name='openFileDescriptorCount']/text()" property="openFiles"/>
+            <copy path="/response/lst[@name='system']/long [@name='maxFileDescriptorCount']/text()" property="maxFiles"/>
+        </xmltask>
+        <if>
+            <equals arg1="$os" arg2="Linux" />
+            <then>
+                <math result="files.fraction" operand1="${openFiles}" operation="divide" operand2="${maxFiles}" datatype="double"/>
+                <math result="files.percent" operand1="${files.fraction}" operation="multiply" operand2="100" datatype="double"/>
+                <if>
+                    <islessthan arg1="${files.percent}" arg2="${target.files.percent}"/>
+                    <then>
+                        <echo message="Current file descriptors usage is ${files.percent}%"/>
+                    </then>
+                    <else>
+                        <fail message="Current file descriptors exceeds ${target.files.percent}% (${files.percent}%). \
+                            Running out of file descriptors can be mitigated by increasing ulimit -n for the solr user. \
+                            A memory leak will result if the available file descriptors are exhausted."/>
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo message="N/A"/>
+            </else>
+        </if>
+    </target>
     <target name="test-sysload" depends="get-system">
         <xmltask source="rsp-system.xml"> 
             <copy path="/response/lst[@name='jvm']/int[@name='processors']/text()" property="processors"/>
@@ -247,5 +275,5 @@
         <delete file="rsp-cores.xml"/>
     </target>
     <target name="test" description="tests Solr available, collection available, utf-8 chars display correctly, components for peel queries functional, and real-time performance including response time, memory use, system load, and errors are within tolerances."
-        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sysload,test-errors"/>
+        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-file-descriptors,test-sysload,test-errors"/>
 </project>
