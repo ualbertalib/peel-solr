@@ -166,24 +166,6 @@
             </else>
         </if>
     </target>
-    <target name="test-sys-mem" depends="get-system">
-        <xmltask source="rsp-system.xml"> 
-            <copy path="/response/lst[@name='system']/long[@name='freePhysicalMemorySize']/text()" property="freeVM"/>
-            <copy path="/response/lst[@name='system']/long[@name='totalPhysicalMemorySize']/text()" property="totalVM"/>
-        </xmltask>
-        <math result="usedVM" operand1="${totalVM}" operation="subtract" operand2="${freeVM}" datatype="double"/>
-        <math result="memory.fraction" operand1="${usedVM}" operation="divide" operand2="${totalVM}" datatype="double"/>
-        <math result="memory.percent" operand1="${memory.fraction}" operation="multiply" operand2="100" datatype="double"/>
-        <if>
-            <islessthan arg1="${memory.percent}" arg2="${target.memory.percent}"/>
-            <then>
-                <echo message="Current memory usage is ${memory.percent}%"/>
-            </then>
-            <else>
-                <fail message="Current JVM memory usage exceeds ${target.memory.percent}% (${memory.percent}%)"/>
-            </else>
-        </if>
-    </target>
     <target name="test-swap-mem" depends="get-system">
         <xmltask source="rsp-system.xml"> 
             <copy path="/response/lst[@name='system']/long[@name='freeSwapSpaceSize']/text()" property="freeSwap"/>
@@ -265,5 +247,5 @@
         <delete file="rsp-cores.xml"/>
     </target>
     <target name="test" description="tests Solr available, collection available, utf-8 chars display correctly, components for peel queries functional, and real-time performance including response time, memory use, system load, and errors are within tolerances."
-        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sys-mem,test-sysload,test-errors"/>
+        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-sysload,test-errors"/>
 </project>
