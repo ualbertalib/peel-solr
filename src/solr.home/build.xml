@@ -191,7 +191,7 @@
             <copy path="/response/lst[@name='system']/long [@name='maxFileDescriptorCount']/text()" property="maxFiles"/>
         </xmltask>
         <if>
-            <equals arg1="$os" arg2="Linux" />
+            <equals arg1="${os}" arg2="Linux" />
             <then>
                 <math result="files.fraction" operand1="${openFiles}" operation="divide" operand2="${maxFiles}" datatype="double"/>
                 <math result="files.percent" operand1="${files.fraction}" operation="multiply" operand2="100" datatype="double"/>
