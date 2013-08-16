@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>Solr Meter Configuration File. Generated at May 2, 2013</comment>
+<comment>Solr Meter Configuration File. Generated at Aug 16, 2013</comment>
 <entry key="solr.query.queryMode">external</entry>
 <entry key="solr.update.documentsToCommit">100</entry>
 <entry key="executor.optimizeExecutor">ondemand</entry>
@@ -34,21 +34,21 @@
 <entry key="solr.load.updatesperminute">20</entry>
 <entry key="solr.query.echoParams">false</entry>
 <entry key="solr.query.extraParameters"/>
-<entry key="solr.searchUrl">http://qpr.library.ualberta.ca:8080/solr-4.1.0/peelbib-wisecat</entry>
+<entry key="solr.searchUrl">http://reading.library.ualberta.ca:8983/solr/peel</entry>
 <entry key="executor.queryExecutor">random</entry>
 <entry key="guice.modelModule">com.plugtree.solrmeter.ModelModule</entry>
-<entry key="solr.server.configuration.maxTotalConnections">1000000</entry>
 <entry key="solr.query.extraParams">test-files\solrmeter\peelbib\extraParams.txt</entry>
+<entry key="solr.server.configuration.maxTotalConnections">1000000</entry>
 <entry key="statistic.timeRange.range2001_2147483647">true</entry>
 <entry key="tools.extract.regex">path=/select params=\{(.*)\}.*</entry>
 <entry key="solr.errorLogStatistic.maxStored">400</entry>
 <entry key="guice.statisticsModule">com.plugtree.solrmeter.StatisticsModule</entry>
-<entry key="solr.updatesFiles">./example/updates.txt</entry>
 <entry key="executor.updateExecutor">random</entry>
+<entry key="solr.updatesFiles">./example/updates.txt</entry>
 <entry key="solr.server.configuration.maxRetries">1</entry>
 <entry key="solr.addUrl">http://localhost:8983/solr</entry>
-<entry key="solr.queryLogStatistic.maxStored">1000</entry>
 <entry key="solr.server.configuration.defaultMaxConnectionsPerHost">100000</entry>
+<entry key="solr.queryLogStatistic.maxStored">1000</entry>
 <entry key="solr.query.facetMethod">fc</entry>
 <entry key="solr.server.configuration.connectionTimeout">60000</entry>
 </properties>
