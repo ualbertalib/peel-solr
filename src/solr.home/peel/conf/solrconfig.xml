@@ -785,6 +785,24 @@
        -->
   </requestHandler>
   
+  <requestHandler name="/newspapersdataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+    <lst name="defaults">
+      <str name="command">full-import</str>
+      <str name="clean">false</str>
+      <str name="commit">true</str>
+      <str name="config">peel-newspapers-data-config-indexing.xml</str>
+    </lst>
+  </requestHandler>
+  
+  <requestHandler name="/peelbibdataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+    <lst name="defaults">
+      <str name="command">full-import</str>
+      <str name="clean">false</str>
+      <str name="commit">true</str>
+      <str name="config">peel-bib-data-config-indexing.xml</str>
+    </lst>
+  </requestHandler>
+  
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
       <str name="config">peel-newspapers-data-config-indexing.xml</str>

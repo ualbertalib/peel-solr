@@ -19,15 +19,12 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 		Date date = new Date();
 
 		// request to dataimport require baseDir and mountdate as a parameter
-		LocalSolrQueryRequest request = lrf.makeRequest("command",
-				"full-import", "config",
- "peel-bib-data-config-indexing.xml",
-				"clean", "true",
-				"commit", "true", "synchronous", "true", "indent", "true",
- "baseDir", getFile("indexing/peelbib/")
+		LocalSolrQueryRequest request = lrf.makeRequest("clean", "true",
+				"synchronous", "true", "indent", "true",
+				"baseDir", getFile("indexing/peelbib/")
 						.getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
-		h.query("/dataimport", request);
+		h.query("/peelbibdataimport", request);
 		assertQ(req("q", "*:*", "rows", "292"), testAll);
 	}
 

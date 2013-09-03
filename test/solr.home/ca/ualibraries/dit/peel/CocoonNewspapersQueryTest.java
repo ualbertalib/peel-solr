@@ -25,7 +25,7 @@ public class CocoonNewspapersQueryTest extends SolrTestCaseJ4 {
 				"commit", "true", "synchronous", "true", "indent", "true",
 				"baseDir", getFile("indexing/newspapers/").getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
-		h.query("/dataimport", request);
+		h.query("/newspapersdataimport", request);
 
 		assertQ(req("*:*"), "//result[@numFound='323']");
 	}

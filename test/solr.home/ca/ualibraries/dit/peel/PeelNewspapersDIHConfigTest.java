@@ -23,13 +23,11 @@ public class PeelNewspapersDIHConfigTest extends SolrTestCaseJ4 {
 		Date date = new Date();
 
 		// request to dataimport require baseDir and mountdate as a parameter
-		LocalSolrQueryRequest request = lrf.makeRequest("command",
-				"full-import", "config",
-				"peel-newspapers-data-config-indexing.xml", "clean", "true",
-				"commit", "true", "synchronous", "true", "indent", "true",
+		LocalSolrQueryRequest request = lrf.makeRequest("clean", "true",
+				"synchronous", "true", "indent", "true",
 				"baseDir", getFile("indexing/newspapers/").getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
-		h.query("/dataimport", request);
+		h.query("/newspapersdataimport", request);
 		assertQ(req("q", "*:*", "rows", "323"), testAll);
 		assertQ(req("q", "language:en", "rows", "86", "fl", "publication"),
 				testEn);

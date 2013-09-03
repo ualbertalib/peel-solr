@@ -1,4 +1,10 @@
-Peel-Solr 1.0
+Peel-Solr 0.2
+===============
+
+* added DataImportHandler Request Handlers for each ingestion type (peelbib, newspapers).  Simpler URL, 
+provides defaults which can be overridden. 
+
+Peel-Solr 0.1
 ===============
 
 MartiniFilter
