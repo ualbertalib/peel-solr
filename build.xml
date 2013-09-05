@@ -13,6 +13,7 @@
 	<property name="target.classes.java.dir" location="${target.dir}/classes/java"/>
 	<property name="target.classes.test.dir" location="${target.dir}/classes/test"/>
 	<property name="target.report.dir" location="${target.dir}/reports/"/>
+	<property name="target.solrmeter.dir" location="${target.report.dir}/solrmeter"/>
 
 	<property name="solr.home" location="${src.dir}/solr.home"/>
 	<property name="solr.home.lib" location="${solr.home}/peel/lib"/>
@@ -29,7 +30,7 @@
 		<echo message="ant uninstall-solr -- will undeploy /solr webapp from Tomcat"/>
 		<echo message="ant report -- will run all tests and create tidy report of results"/>
 		<echo message="ant test -- will run tests of solr.home configurations"/>
-		<echo message="ant test-solrmeter --  will run solrmeter for performance/load testing (requires windowing os)"/>
+		<echo message="ant test-solrmeter --  will run solrmeter for load/stress testing"/>
 		<echo message="   test-solrmeter-peelbib is for peelbib config"/>
 		<echo message="   test-solrmeter-newspapers is for newspapers config"/>
 		<echo message="ant test-solr-plugins -- will run all tests of custom solr-plugins"/>
@@ -111,7 +112,88 @@
 	</target>
 	
 
-	<target name="test-solrmeter" depends="test-solrmeter-peelbib"/>
+	<target name="test-solrmeter">
+		<antcall target="test-solrmeter-load"/>
+		<antcall target="test-solrmeter-stress"/>
+	</target>
+	
+	<target name="test-solrmeter-init">
+		<tstamp/>
+		<mkdir dir="${target.solrmeter.dir}/${DSTAMP}${TSTAMP}"/>
+	</target>
+	
+	<target name="test-solrmeter-load" depends="test-solrmeter-init">
+		<echo message="running load testing... this should take about ten minutes."/>
+		<echo message="WARNING: premature termination may result in high CPU and TCP connections in CLOSE_WAIT state  
+			on Solr server. If this occurs restart your desktop and then jetty on the remote server."/>
+		<java jar="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"
+			fork="true"
+			failonerror="true"
+			output="${target.solrmeter.dir}/solrmeter-load.log"
+			>
+			<arg value="-h"/>
+			<jvmarg value="-Dsolrmeter.configurationFile=test-files/solrmeter/peel.smc.xml"/>
+			<jvmarg value="-Dsolrmeter.runMode=headless"/>
+			<jvmarg value="-Dheadless.outputDirectory=${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/load/"/>
+			<jvmarg value="-Dsolr.searchUrl=http://reading.library.ualberta.ca:8983/solr/peel"/>
+			<classpath>
+				<pathelement location="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+		</java>
+		
+		<loadfile srcfile="${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/load/query_console" property="solrmeter.console">
+			<filterchain>
+				<headfilter lines="10"/>
+			</filterchain>
+		</loadfile>
+		<echo message="${solrmeter.console}"/>
+		
+		<loadfile srcfile="${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/load/statistics/query_statistics" property="solrmeter.stats">
+			<filterchain>
+				<headfilter lines="8"/>
+			</filterchain>
+		</loadfile>
+		<echo message="${solrmeter.stats}"/>
+	</target>
+	
+	<target name="test-solrmeter-stress" depends="test-solrmeter-init">
+		<tstamp/>
+		<echo message="running stress testing... this should take about ten minutes."/>
+		<echo message="WARNING: premature termination may result in high CPU and TCP connections in CLOSE_WAIT state  
+			on Solr server. If this occurs restart your desktop and then jetty on the remote server."/>
+		<java jar="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"
+			fork="true"
+			failonerror="true"
+			output="${target.solrmeter.dir}/solrmeter-stress.log"
+			>
+			<arg value="-h"/>
+			<jvmarg value="-Dsolrmeter.configurationFile=test-files/solrmeter/peel.smc.xml"/>
+			<jvmarg value="-Dsolrmeter.runMode=headless"/>
+			<jvmarg value="-Dheadless.outputDirectory=${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/stress/"/>
+			<jvmarg value="-Dsolr.searchUrl=http://reading.library.ualberta.ca:8983/solr/peel"/>
+			<jvmarg value="-Dsolr.load.queriesperminute=660"/>
+			<jvmarg value="-Dheadless.numQueries=6600"/>
+			<classpath>
+				<pathelement location="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+		</java>
+		
+		<loadfile srcfile="${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/stress/query_console" property="solrmeter.console">
+			<filterchain>
+				<headfilter lines="10"/>
+			</filterchain>
+		</loadfile>
+		<echo message="${solrmeter.console}"/>
+		
+		<loadfile srcfile="${target.solrmeter.dir}/${DSTAMP}${TSTAMP}/stress/statistics/query_statistics" property="solrmeter.stats">
+			<filterchain>
+				<headfilter lines="8"/>
+			</filterchain>
+		</loadfile>
+		<echo message="${solrmeter.stats}"/>
+	</target>
 	
 	<target name="test-solrmeter-peelbib">
 		<java jar="solrmeter/solrmeter-0.3.1-SNAPSHOT-jar-with-dependencies.jar"
@@ -186,8 +268,9 @@
 	</target>
 	
 	<target name="clean-solrmeter">
-		<delete file="queryTime.csv"/>
-		<delete file="histogram.csv"/>
-		<delete file="solrmeter.log"/>
+		<delete dir="${target.solrmeter.dir}"/>
+		<delete file="queryTime.csv" failonerror="false"/>
+		<delete file="histogram.csv" failonerror="false"/>
+		<delete file="solrmeter.log" failonerror="false"/>
 	</target>
 </project>
