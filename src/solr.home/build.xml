@@ -148,7 +148,7 @@
                 <echo message="Current average query time is ${avgTimePerRequest} ms"/>
             </then>
             <else>
-                <fail message="Average query time exceeds ${target.time} ${target.unit}"/>
+                <fail message="Average query time (${avgTimePerRequest} ms) exceeds ${target.time} ${target.unit}"/>
             </else>
         </if>
     </target>
@@ -275,5 +275,5 @@
         <delete file="rsp-cores.xml"/>
     </target>
     <target name="test" description="tests Solr available, collection available, utf-8 chars display correctly, components for peel queries functional, and real-time performance including response time, memory use, system load, and errors are within tolerances."
-        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-file-descriptors,test-sysload,test-errors"/>
+        depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-file-descriptors,test-errors"/>
 </project>
