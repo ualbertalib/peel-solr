@@ -52,3 +52,4 @@ Peel Bibliographic
 | 2            | single   | none                 | cree     | canadian aboriginal symballics | yes | also english |
 | 10571   (73) | series   | Backstage mets/alto  | english  | latin    | no         |       |
 | 9021.* (206) | series   | OCLC olive           | english  | latin    | no         | 9021.2.2-3 is missing language |
+| 6492         | single   |                      | german (low) | latin 2 | yes     | german (low) is represented by de-low -- hyphen needs to persist |

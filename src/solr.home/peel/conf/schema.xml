@@ -97,7 +97,7 @@
       <field name="collection" type="text_general" indexed="true" stored="true"/>
       <field name="index" type="text_general" indexed="true" stored="true"/>
       <field name="filename" type="text_general" indexed="true" store="true"/>
-      <field name="language" type="text_general" indexed="true" store="true" multiValued="true"/>
+      <field name="language" type="string" indexed="true" store="true" multiValued="true"/> <!--language=de-low shouldn't be broken--> 
       <field name="pubyear" type="tint" indexed="true" store="true"/>
       <field name="modified" type="text_general" indexed="true" store="true"/>
       <field name="uid" type="string" indexed="true" store="true"/>

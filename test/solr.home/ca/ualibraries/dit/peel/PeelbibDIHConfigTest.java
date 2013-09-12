@@ -25,7 +25,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/peelbibdataimport", request);
-		assertQ(req("q", "*:*", "rows", "292"), testAll);
+		assertQ(req("q", "*:*", "rows", "293"), testAll);
 	}
 
 	@Test
@@ -34,6 +34,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 		assertQ(req("language:fr"), testFr);
 		assertQ(req("language:hu"), testHu);
 		assertQ(req("language:de"), testDe);
+		assertQ(req("language:de-low"), testDeLow);
 	}
 
 	@Test
@@ -62,7 +63,9 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	private String[] testDe = { "//result[@numFound='2']",
 			"//str[@name='peelnum']='89'",
 			"//str[@name='peelnum']='908'" };
-	private static String[] testAll = { "//result[@numFound='292']",
+	private String[] testDeLow = { "//result[@numFound='1']",
+      "//str[@name='peelnum']='6492'" };
+	private static String[] testAll = { "//result[@numFound='293']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
 			"//arr[@name='language']", "//int[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",
