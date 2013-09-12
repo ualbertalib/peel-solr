@@ -34,7 +34,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 		assertQ(req("language:fr"), testFr);
 		assertQ(req("language:hu"), testHu);
 		assertQ(req("language:de"), testDe);
-		assertQ(req("language:de-low"), testDeLow);
+		assertQ(req("q", "language:de-low", "facet", "true", "facet.field", "language"), testDeLow);
 	}
 
 	@Test
@@ -64,7 +64,8 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 			"//str[@name='peelnum']='89'",
 			"//str[@name='peelnum']='908'" };
 	private String[] testDeLow = { "//result[@numFound='1']",
-      "//str[@name='peelnum']='6492'" };
+      "//str[@name='peelnum']='6492'",
+      "//lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='language']/int[@name='de-low']" };
 	private static String[] testAll = { "//result[@numFound='293']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
 			"//arr[@name='language']", "//int[@name='pubyear']",
