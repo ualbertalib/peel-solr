@@ -11,12 +11,23 @@
                 url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer"
                 logTemplate="      metadata ${bib.fileAbsolutePath}"
                 logLevel="debug" rootEntity="true" dataSource="file">
+                
+                <entity name="itemproperties" processor="FileListEntityProcessor" fileName="itemstatus.properties"
+                    rootEntity="false" recursive="true" dataSource="null" onError="continue"
+                    baseDir="${bib.fileDir}" 
+                    >
+                    <entity name="itemstatus" processor="PropertiesEntityProcessor" 
+                        url="${itemproperties.fileAbsolutePath}" transformer="RegexTransformer,LogTransformer"
+                        logTemplate="      metadata ${itemproperties.fileAbsolutePath}"
+                        rootEntity="false" logLevel="debug" dataSource="file" onError="skip">
+                        <field column="mountdate" name="mountdate"/>
+                    </entity>
+                </entity>
                 <!-- utility fields -->
                 <field column="modified" template="${bib.fileLastModified}"/>
                 <field column="uri" template="${bib.fileAbsolutePath}"/>
                 <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
                 <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
-                
                 <field column="language" name="language" splitBy=" \| "/>
                 <field column="pubyear" name="pubyear" splitBy="/"/>
                 <field column="actyear" name="actyear"/>
@@ -29,7 +40,6 @@
                 <field column="digstatus" name="digstatus"/>
                 <field column="oaiset" name="oaiset"/>
                 <field column="rectype" template="text"/>
-                <field column="mountDate" template="${dataimporter.request.mountdate}"/>
                 <!-- index fields -->
                 <field column="title" name="title"/>
                 <field column="author" name="author"/>

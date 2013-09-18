@@ -11,12 +11,13 @@ import org.junit.Test;
 
 public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 
+  static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  static Date date = new Date();
+  
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		initCore("solrconfig.xml", "schema.xml", getFile("solr.home")
         .getAbsolutePath(), "peel");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
 
 		// request to dataimport require baseDir and mountdate as a parameter
 		LocalSolrQueryRequest request = lrf.makeRequest("clean", "true",
@@ -25,7 +26,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/peelbibdataimport", request);
-		assertQ(req("q", "*:*", "rows", "293"), testAll);
+		assertQ(req("q", "*:*", "rows", "294"), testAll);
 	}
 
 	@Test
@@ -42,11 +43,18 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 		assertQ(req("peelnum:1 peelnum:12 peelnum:2526 peelnum:908 peelnum:4265 peelnum:2"),
 				testRecordOnly);
 	}
+	
+	@Test
+	public void testMountDate() {
+	  assertQ(req("peelnum:2848"), testMountDate);
+	}
+	
+	private String[] testMountDate = {"//str[@name='mountDate']='2009-03-05'"};
 
 	private String[] testRecordOnly = { "//result[@numFound='6']",
 			"count(//arr[@name='content'])=0 or //arr[@name='content']/str[not(node())]" };
 	
-	private String[] testEn = { "//result[@numFound='283']",
+	private String[] testEn = { "//result[@numFound='284']",
 			"//str[@name='peelnum']='1'",
 			"//str[@name='peelnum']='2'",
 			"//str[@name='peelnum']='2848'",
@@ -66,7 +74,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	private String[] testDeLow = { "//result[@numFound='1']",
       "//str[@name='peelnum']='6492'",
       "//lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='language']/int[@name='de-low']" };
-	private static String[] testAll = { "//result[@numFound='293']",
+	private static String[] testAll = { "//result[@numFound='294']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
 			"//arr[@name='language']", "//int[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",
