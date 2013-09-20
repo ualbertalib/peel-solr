@@ -26,7 +26,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(),
 				"mountdate", dateFormat.format(date));
 		h.query("/peelbibdataimport", request);
-		assertQ(req("q", "*:*", "rows", "294"), testAll);
+		assertQ(req("q", "*:*", "rows", "293"), testAll);
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	private String[] testRecordOnly = { "//result[@numFound='6']",
 			"count(//arr[@name='content'])=0 or //arr[@name='content']/str[not(node())]" };
 	
-	private String[] testEn = { "//result[@numFound='284']",
+	private String[] testEn = { "//result[@numFound='283']",
 			"//str[@name='peelnum']='1'",
 			"//str[@name='peelnum']='2'",
 			"//str[@name='peelnum']='2848'",
@@ -74,7 +74,7 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	private String[] testDeLow = { "//result[@numFound='1']",
       "//str[@name='peelnum']='6492'",
       "//lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='language']/int[@name='de-low']" };
-	private static String[] testAll = { "//result[@numFound='294']",
+	private static String[] testAll = { "//result[@numFound='293']",
 			"//str[@name='uid']", "//str[@name='peelnum']",
 			"//arr[@name='language']", "//int[@name='pubyear']",
 			"//str[@name='actyear']", "//str[@name='digstatus']",

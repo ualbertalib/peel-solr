@@ -27,7 +27,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(), "mountdate", dateFormat
 						.format(date));
 		h.query("/peelbibdataimport", request);
-		assertQ(req("*:*"), "//result[@numFound='294']");
+		assertQ(req("*:*"), "//result[@numFound='293']");
 	}
 
 	@Test
