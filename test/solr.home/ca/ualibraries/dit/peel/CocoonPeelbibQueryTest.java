@@ -11,12 +11,13 @@ import org.junit.Test;
 
 public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 
+  static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  static Date date = new Date();
+  
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		initCore("solrconfig.xml", "schema.xml", getFile("solr.home")
         .getAbsolutePath(), "peel");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
 
 		// request to dataimport require baseDir and mountdate as a parameter
 		LocalSolrQueryRequest request = lrf.makeRequest("command",
@@ -113,7 +114,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	String[] tests = { "//result[@numFound='1']", "//doc/str[@name='peelnum']",
 			"//doc/str[@name='titledisplay']",
 			"//doc/arr[@name='authordisplay']",
-			"//doc/arr[@name='origindisplay']", "//doc/int[@name='pubyear']",
+			"//doc/arr[@name='origindisplay']", "//doc/int[@name='pubyear']='1856'",
 			"//doc/arr[@name='language']", "//doc/str[@name='digstatus']" };
 
 	String[] facetTests = {

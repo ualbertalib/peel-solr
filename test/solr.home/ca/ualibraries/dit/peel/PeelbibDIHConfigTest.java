@@ -46,10 +46,10 @@ public class PeelbibDIHConfigTest extends SolrTestCaseJ4 {
 	
 	@Test
 	public void testMountDate() {
-	  assertQ(req("peelnum:2848"), testMountDate);
+	  assertQ(req("peelnum:2848 OR peelnum:329"), testMountDate);
 	}
 	
-	private String[] testMountDate = {"//str[@name='mountDate']='2009-03-05'"};
+	private String[] testMountDate = {"//str[@name='mountDate']='2009-03-05'","//str[@name='mountDate']='"+ dateFormat.format(date) +"'"};
 
 	private String[] testRecordOnly = { "//result[@numFound='6']",
 			"count(//arr[@name='content'])=0 or //arr[@name='content']/str[not(node())]" };

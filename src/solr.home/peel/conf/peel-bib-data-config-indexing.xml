@@ -1,35 +1,74 @@
 <dataConfig>
     <dataSource name="file" type="FileDataSource"/>
+    <script>
+        <![CDATA[
+            function validatePubyears(row) {   // see peel-scripts/xsl/martini2solr.xsl
+                var pubyear = row.get( 'pubyear' );
+                if ( pubyear == null ) { 
+                    row.remove( 'pubyear' ); 
+                    return row;
+                } else if( pubyear.match('[0-9]{4}([-/][0-9]{4})*') ) {
+                    row.put( 'pubyear', pubyear.substring(0,4));
+                } else if( pubyear.match('c?[0-9]{3}[?-]?') ) {
+                    row.put( 'pubyear', pubyear.replace('c?([0-9]{3})[?-]?', '$10') );
+                } else if( pubyear.match('a? ?[0-9]{2}[?-]?')) {
+                    row.put( 'pubyear', pubyear.replace('a? ?([0-9]{2})[?-]?', '$100'));
+                } else if( pubyear.match('[0-9]{4}')) {
+                    row.put( 'pubyear', pubyear.replace('.*([0-9]{4})?.+', '$1'));
+                } else {
+                    row.remove( 'pubyear' );
+                }
+                return row; 
+            }
+            function mountDateFromItemStatusFile(row,context) {
+                var mountDate = row.get('mountdate');
+                var fileDir = context.getVariableResolver().replaceTokens('${bib.fileDir}');
+                context.setSessionAttribute('mountDate', mountDate, 'global');
+                context.setSessionAttribute('fileDir', fileDir, 'global');
+            }
+            function setMountDate(row,context) {
+                var fileDir = context.getSessionAttribute('fileDir', 'global');
+                var contextFileDir =  context.resolve('bib.fileDir');
+                var mountDate = context.getSessionAttribute('mountDate', 'global');
+                if( !contextFileDir.equals(fileDir) || mountDate == null || mountDate == '' ) {
+                    mountDate = context.getVariableResolver().replaceTokens('${dataimporter.request.mountdate}');
+                }
+                row.put( 'mountDate', mountDate );
+                return row; 
+            }
+        ]]>
+    </script>
     <document>
         <!-- this outer processor generates a list of files satisfying the conditions
             specified in the attributes -->
+        
         <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties"
             rootEntity="false" recursive="true" dataSource="null" onError="continue"
             baseDir="${dataimporter.request.baseDir}" 
             >
+            <entity name="itemproperties" processor="FileListEntityProcessor" fileName="itemstatus.properties"
+                rootEntity="false" recursive="true" dataSource="null" onError="continue"
+                baseDir="${bib.fileDir}" 
+                >
+                <entity name="itemstatus" processor="PropertiesEntityProcessor" 
+                    url="${itemproperties.fileAbsolutePath}" transformer="RegexTransformer,LogTransformer,script:mountDateFromItemStatusFile"
+                    logTemplate="      metadata ${itemproperties.fileAbsolutePath}"
+                    rootEntity="false" logLevel="debug" dataSource="file">
+                    <field column="mountdate" name="mountdate"/>
+                </entity>
+            </entity>
             <entity name="properties" processor="PropertiesEntityProcessor"
-                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer"
+                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer,script:setMountDate,script:validatePubyears"
                 logTemplate="      metadata ${bib.fileAbsolutePath}"
                 logLevel="debug" rootEntity="true" dataSource="file">
                 
-                <entity name="itemproperties" processor="FileListEntityProcessor" fileName="itemstatus.properties"
-                    rootEntity="false" recursive="true" dataSource="null" onError="continue"
-                    baseDir="${bib.fileDir}" 
-                    >
-                    <entity name="itemstatus" processor="PropertiesEntityProcessor" 
-                        url="${itemproperties.fileAbsolutePath}" transformer="RegexTransformer,LogTransformer"
-                        logTemplate="      metadata ${itemproperties.fileAbsolutePath}"
-                        rootEntity="false" logLevel="debug" dataSource="file" onError="skip">
-                        <field column="mountdate" name="mountdate"/>
-                    </entity>
-                </entity>
                 <!-- utility fields -->
                 <field column="modified" template="${bib.fileLastModified}"/>
                 <field column="uri" template="${bib.fileAbsolutePath}"/>
                 <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
                 <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
                 <field column="language" name="language" splitBy=" \| "/>
-                <field column="pubyear" name="pubyear" splitBy="/"/>
+                <field column="pubyear" name="pubyear"/>
                 <field column="actyear" name="actyear"/>
                 <field column="peelnumsort" template="${properties.peelnum}"/>
                 <field column="peelnum" regex="^0*" replaceWith="" />
