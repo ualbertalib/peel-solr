@@ -3,18 +3,19 @@
     <script>
         <![CDATA[
             function validatePubyears(row) {   // see peel-scripts/xsl/martini2solr.xsl
-                var pubyear = row.get( 'pubyear' );
+                var pubyear = new String(row.get( 'pubyear' ));
+                row.remove('pubyear');
                 if ( pubyear == null ) { 
                     row.remove( 'pubyear' ); 
                     return row;
                 } else if( pubyear.match('[0-9]{4}([-/][0-9]{4})*') ) {
                     row.put( 'pubyear', pubyear.substring(0,4));
                 } else if( pubyear.match('c?[0-9]{3}[?-]?') ) {
-                    row.put( 'pubyear', pubyear.replace('c?([0-9]{3})[?-]?', '$10') );
+                    row.put( 'pubyear', pubyear.replace(/c?([0-9]{3})[?-]?/g, '$10') );
                 } else if( pubyear.match('a? ?[0-9]{2}[?-]?')) {
-                    row.put( 'pubyear', pubyear.replace('a? ?([0-9]{2})[?-]?', '$100'));
+                    row.put( 'pubyear', pubyear.replace(/a? ?([0-9]{2})[?-]?/g, '$100'));
                 } else if( pubyear.match('[0-9]{4}')) {
-                    row.put( 'pubyear', pubyear.replace('.*([0-9]{4})?.+', '$1'));
+                    row.put( 'pubyear', pubyear.replace(/.*([0-9]{4})?.+/g, '$1'));
                 } else {
                     row.remove( 'pubyear' );
                 }
@@ -58,7 +59,7 @@
                 </entity>
             </entity>
             <entity name="properties" processor="PropertiesEntityProcessor"
-                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer,script:setMountDate,script:validatePubyears"
+                url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer,script:validatePubyears,script:setMountDate"
                 logTemplate="      metadata ${bib.fileAbsolutePath}"
                 logLevel="debug" rootEntity="true" dataSource="file">
                 

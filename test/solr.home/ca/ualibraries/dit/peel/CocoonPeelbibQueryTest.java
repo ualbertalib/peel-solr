@@ -27,7 +27,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 						.getAbsolutePath(), "mountdate", dateFormat
 						.format(date));
 		h.query("/peelbibdataimport", request);
-		assertQ(req("*:*"), "//result[@numFound='293']");
+		assertQ(req("*:*"), "//result[@numFound='296']");
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 	public void testTruncationQueryPositionsPeelbibQuery() {
 		assertQ(req("q", "text:horse*", "fl", "null", "hl",
 				"true", "sort", "uid asc", "hl.usePhraseHighlighter",
-				"true",
+				"true", "rows", "11",
 				"hl.highlightMultiTerm", "true", "hl.fl", "content"),
 				truncationPositionsTests);
 	}
@@ -187,7 +187,7 @@ public class CocoonPeelbibQueryTest extends SolrTestCaseJ4 {
 			"//lst[@name='highlighting']/lst[@name='peelbib_9021.4.3_bib.properties']/arr[@name='content']/int='475'" };
 
 	String[] truncationPositionsTests = {
-			"10 = count(//lst[@name='highlighting']/lst)",
+			"11 = count(//lst[@name='highlighting']/lst)",
 			// more results than horse alone, in different positions
 			"4 = count(//lst[@name='highlighting']/lst[@name='peelbib_10571.10_bib.properties']/arr[@name='content']/int)",
 			"//lst[@name='highlighting']/lst[@name='peelbib_10571.10_bib.properties']/arr[@name='content']/int='134'",
