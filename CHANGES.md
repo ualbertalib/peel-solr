@@ -1,8 +1,16 @@
 Peel-Solr 0.2
 ===============
 
+features
 * added DataImportHandler Request Handlers for each ingestion type (peelbib, newspapers).  Simpler URL, 
 provides defaults which can be overridden. 
+* created ScriptTransformer for pubyears that show up as edge cases (c192, 1920-1930, etc)
+* created ScriptTransformer to assign mountDate when itemstatus.properties does not give it
+
+bug fixes
+* relaxed default performance limits
+* changed language to string field type as hypen is important to some language codes (de-low)
+* changed oaiset to multivalued
 
 Peel-Solr 0.1
 ===============

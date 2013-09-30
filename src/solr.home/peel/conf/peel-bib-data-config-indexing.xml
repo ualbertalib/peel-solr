@@ -78,7 +78,7 @@
                 <field column="collection" template="peelbib"/>
                 <field column="index" template="peelbib"/>
                 <field column="digstatus" name="digstatus"/>
-                <field column="oaiset" name="oaiset"/>
+                <field column="oaiset" name="oaiset" splitBy=" \| "/>
                 <field column="rectype" template="text"/>
                 <!-- index fields -->
                 <field column="title" name="title"/>

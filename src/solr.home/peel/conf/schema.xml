@@ -102,7 +102,7 @@
       <field name="modified" type="text_general" indexed="true" store="true"/>
       <field name="uid" type="string" indexed="true" store="true"/>
       <field name="uri" type="string" indexed="true" store="true"/>
-      <field name="oaiset" type="string" indexed="true" store="true"/>
+      <field name="oaiset" type="string" indexed="true" store="true" multiValued="true"/>
       
       <!-- Peel 3.0 fields -->
       <field name="isBibRecord" type="boolean" indexed="true" store="true"/>
