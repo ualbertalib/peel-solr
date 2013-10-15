@@ -34,10 +34,11 @@
             </condition>
         </fail>
     </target>
-    <target name="delete-core" depends="clean" description="uses Solr CoreAdmin API to unload collection and deletes index directory">
+    <target name="delete-core" depends="clean,get-cores" description="uses Solr CoreAdmin API to unload collection and deletes index directory">
+        <input message="Select one of the following cores to unload: ${message}" addproperty="core" defaultvalue="${collection}"/>
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
             <prop name="action" value="UNLOAD"/>
-            <prop name="core" value="${collection}"/>
+            <prop name="core" value="${core}"/>
             <prop name="deleteIndex" value="true"/>
         </post>
         <fail message="${collection} was not unloaded.">
