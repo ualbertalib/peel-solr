@@ -43,7 +43,7 @@
         <!-- this outer processor generates a list of files satisfying the conditions
             specified in the attributes -->
         
-        <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties"
+        <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties" excludes="hold"
             rootEntity="false" recursive="true" dataSource="null" onError="continue"
             baseDir="${dataimporter.request.baseDir}" 
             >

@@ -5,7 +5,7 @@
             specified in the attributes -->
         <entity name="bib" processor="FileListEntityProcessor" fileName="bib.properties"
             rootEntity="false" recursive="true" dataSource="null" onError="continue"
-            baseDir="${dataimporter.request.baseDir}" 
+            baseDir="${dataimporter.request.baseDir}" excludes="hold"
             >
             <entity name="properties" processor="PropertiesEntityProcessor"
                 url="${bib.fileAbsolutePath}" transformer="TemplateTransformer,LogTransformer"
