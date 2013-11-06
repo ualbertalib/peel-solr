@@ -26,8 +26,8 @@ public class LocalMartiniIndexerTest {
 	public void testPeelBibDataImport() throws SolrServerException,
 			InterruptedException {
 
-		lmi.start("test-files/indexing/peelbib/",
-				"peel-bib-data-config-indexing.xml", dateFormat.format(date));
+    lmi.setConfig("peel-bib-data-config-indexing.xml");
+		lmi.start("test-files/indexing/peelbib/", dateFormat.format(date));
 		while (lmi.poll()) {
 			Thread.sleep(5000L);
 		}
@@ -41,8 +41,8 @@ public class LocalMartiniIndexerTest {
 	public void testPeelBibDataImportMissingDateMounted()
 			throws SolrServerException, InterruptedException {
 
-		lmi.start("test-files/indexing/peelbib/",
-				"peel-bib-data-config-indexing.xml", null);
+    lmi.setConfig("peel-bib-data-config-indexing.xml");
+		lmi.start("test-files/indexing/peelbib/", null);
 		while (lmi.poll()) {
 			Thread.sleep(5000L);
 		}
@@ -55,9 +55,9 @@ public class LocalMartiniIndexerTest {
 	@Test
 	public void testPeelNewsDataImport() throws SolrServerException,
 			InterruptedException {
-		lmi.start("test-files/indexing/newspapers/",
-				"peel-newspapers-data-config-indexing.xml",
-				dateFormat.format(date));
+	  
+    lmi.setConfig("peel-newspapers-data-config-indexing.xml");
+		lmi.start("test-files/indexing/newspapers/", dateFormat.format(date));
 		while (lmi.poll()) {
 			Thread.sleep(5000L);
 		}

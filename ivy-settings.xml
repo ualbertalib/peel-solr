@@ -1,0 +1,17 @@
+<ivysettings>
+    <settings defaultResolver="default"/>
+    
+    <include url="${ivy.default.settings.dir}/ivysettings-public.xml"/>
+    <include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
+    <include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+    <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
+    
+    <resolvers>
+        <ibiblio name="maven.restlet.org" root="http://maven.restlet.org" m2compatible="true" />
+        <chain name="default" returnFirst="true" checkmodified="true" changingPattern=".*SNAPSHOT">
+            <resolver ref="local"/>
+            <resolver ref="main"/>
+            <resolver ref="maven.restlet.org" />
+        </chain>
+    </resolvers>
+</ivysettings>
