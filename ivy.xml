@@ -14,12 +14,13 @@
     <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="tasks->master"/>
     <dependency org="org.apache.solr" name="solr" rev="4.1.0" conf="deploy-solr->master"/>
     <dependency org="junit" name="junit" rev="4.11" conf="test->default;peel-scripts->default"/>
-    <dependency org="org.apache.solr" name="solr-test-framework" rev="4.1.0" conf="test-solr-home->default" >
+    <dependency org="org.apache.solr" name="solr-test-framework" rev="4.1.0" conf="test-solr-home->default;peel-scripts->default" >
       <exclude type="orbit"/>
     </dependency>  
-    <dependency org="org.apache.solr" name="solr-dataimporthandler" rev="4.1.0" conf="solr.lib->master;test,solr-plugins->default" transitive="false"/>
+    <dependency org="org.apache.solr" name="solr-dataimporthandler" rev="4.1.0" conf="solr.lib->master;test,peel-scripts->default;solr-plugins->default" transitive="false"/>
     <dependency org="org.apache.solr" name="solr-solrj" rev="4.1.0" conf="peel-scripts->default" transitive="false"/>
     <dependency org="org.apache.solr" name="solr-core" rev="4.1.0" conf="peel-scripts->default"/>
-    <dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="peel-scripts->default;solr-plugins->default"/>
+    <dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" transitive="false" conf="peel-scripts->default;solr-plugins->default"/>
+            
   </dependencies>
 </ivy-module>

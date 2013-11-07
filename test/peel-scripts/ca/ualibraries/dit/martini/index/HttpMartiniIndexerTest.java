@@ -11,6 +11,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@org.apache.lucene.util.LuceneTestCase.SuppressCodecs({"Lucene3x","Lucene40"})
 public class HttpMartiniIndexerTest extends SolrJettyTestBase {
   
   private static HttpMartiniIndexer hmi;
@@ -20,7 +21,8 @@ public class HttpMartiniIndexerTest extends SolrJettyTestBase {
 
   @BeforeClass
   public static void init() throws Exception {
-    String solrHome = "http://127.1.0.0:8983/solr";
+    createJetty("src/solr.home", null, null);
+    String solrHome = "http://127.0.0.1:"+ jetty.getLocalPort() + "/solr";
     /*createJetty(solrHome, null, null);*/
     hmi = new HttpMartiniIndexer(solrHome, "peel");
   }
