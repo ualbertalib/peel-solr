@@ -10,6 +10,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LocalMartiniIndexerTest {
 
@@ -17,6 +19,7 @@ public class LocalMartiniIndexerTest {
 
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Date date = new Date();
+	static Logger logger = LoggerFactory.getLogger(Indexer.class);
 
 	@BeforeClass
 	public static void init() {

@@ -66,8 +66,6 @@
                 <!-- utility fields -->
                 <field column="modified" template="${bib.fileLastModified}"/>
                 <field column="uri" template="${bib.fileAbsolutePath}"/>
-                <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
-                <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
                 <field column="language" name="language" splitBy=" \| "/>
                 <field column="pubyear" name="pubyear"/>
                 <field column="actyear" name="actyear"/>
@@ -102,10 +100,12 @@
                     baseDir="${bib.fileDir}" 
                     >
                     <entity name="fulltext" processor="PlainTextEntityProcessor" 
-                        url="${txt.fileAbsolutePath}" transformer="TemplateTransformer,LogTransformer"
+                        url="${txt.fileAbsolutePath}" transformer="TemplateTransformer,RegexTransformer,LogTransformer"
                         logTemplate="      fulltext"
-                        logLevel="debug" dataSource="file" onError="skip">
+                        logLevel="debug" dataSource="file">
                         <field column="plainText" name="content"/>
+                        <field column="clipEnd" template="${bib.fileAbsolutePath}" regex="[\\/]" replaceWith="_"/>
+                        <field column="uid" sourceColName="clipEnd" regex="^.*_indexing_.*?" replaceWith="${1}"/>
                     </entity>
                 </entity>
             </entity>

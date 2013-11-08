@@ -14,11 +14,15 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.CoreContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LocalMartiniIndexer extends Indexer implements MartiniIndexer {
 
 	private SolrServer server;
 	private String config;
+	static Logger logger = LoggerFactory.getLogger(LocalMartiniIndexer.class);
+	
 	/**
 	 * Initializes and starts an embedded Solr server (no servlet container --
 	 * like Tomcat -- required)

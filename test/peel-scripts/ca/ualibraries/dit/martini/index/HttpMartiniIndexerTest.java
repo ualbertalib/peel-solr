@@ -23,10 +23,9 @@ public class HttpMartiniIndexerTest extends SolrJettyTestBase {
   public static void init() throws Exception {
     createJetty("src/solr.home", null, null);
     String solrHome = "http://127.0.0.1:"+ jetty.getLocalPort() + "/solr";
-    /*createJetty(solrHome, null, null);*/
     hmi = new HttpMartiniIndexer(solrHome, "peel");
   }
- 
+   
   @Test
   public void testPeelBib() throws SolrServerException {
     hmi.start("test-files/indexing/peelbib/", dateFormat.format(date));

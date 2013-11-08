@@ -47,7 +47,7 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
   @Override
   public FileVisitResult postVisitDirectory(Path dir, IOException exc)
       throws IOException {
-    if( null != doc )
+    if( null != doc && doc.containsKey("uid") )
       docs.add( doc );
     return super.postVisitDirectory(dir, exc);
   }
@@ -83,8 +83,7 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
   }
   
   private boolean notRepeated(String key) {
-    String schema = fields.get(key).getSchema();
-    if( schema.contains(""+FieldFlag.MULTI_VALUED.getAbbreviation()) )
+    if( fields.get(key).getFlags().contains(FieldFlag.MULTI_VALUED) )
       return true;
     else if( doc.containsKey(key) )
       return false;
