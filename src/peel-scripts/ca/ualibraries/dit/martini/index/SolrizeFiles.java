@@ -28,9 +28,11 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
   private SolrInputDocument doc = null;
   static char dirSep = System.getProperty("file.separator").charAt(0);
   Map<String,FieldInfo> fields;
+  String mountDate;
   
-  public SolrizeFiles(Map<String,FieldInfo> fieldInfo) {
+  public SolrizeFiles(Map<String,FieldInfo> fieldInfo, String mountDate) {
     fields = fieldInfo;
+    this.mountDate = mountDate;
   }
   
   public Collection<SolrInputDocument> getDocs() {
@@ -47,8 +49,12 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
   @Override
   public FileVisitResult postVisitDirectory(Path dir, IOException exc)
       throws IOException {
-    if( null != doc && doc.containsKey("uid") )
+    if( null != doc && doc.containsKey("uid") ) {
+      if( !doc.containsKey( "mountDate") && null != mountDate) {
+        doc.addField("mountDate", mountDate);
+      }
       docs.add( doc );
+    }
     return super.postVisitDirectory(dir, exc);
   }
   
@@ -58,10 +64,14 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
       String fulltext = FileUtils.readFileToString( file.toFile() );
       doc.addField( "content", fulltext);
       doc.addField( "uid", uid(file.toFile()));
+      doc.addField( "uri", file.toAbsolutePath());
     }
-    if( file.toString().contains(".properties")) {
+    if( file.toString().endsWith(".properties")) {
       doProperties(file);
     } 
+    if( file.toString().endsWith("bib.properties")) {
+      doc.addField( "modified", file.toFile().lastModified() );
+    }
     return FileVisitResult.CONTINUE;
   }
 
@@ -69,25 +79,48 @@ public class SolrizeFiles extends SimpleFileVisitor<Path> {
     Properties prop = new Properties();
     prop.load( Files.newInputStream(file) );
     for ( Map.Entry entry: prop.entrySet() ) {
-      String key = (String) entry.getKey();
-      String value = (String) entry.getValue();
+      String key = mapKey((String) entry.getKey());
+      String[] values;
+      if( isMultiValued( key ) ) {
+        values = ((String) entry.getValue()).split("|");
+      } else {
+        values = new String[1];
+        values[0] = (String) entry.getValue();
+      }
       if( fields.containsKey( key ) && notRepeated(key) ) {
         if( "pubyear".equals( key ) ) {
-          value = validateDate( value );
+          values[0] = validateDate( values[0] );
         }
-        if( !"".equals(value) ) {
-          doc.addField( key, value );
+        if( !"".equals(values[0]) ) {
+          for( String value : values ) {
+            doc.addField( key, value );
+          }
         }
       }
     }
   }
   
+  private String mapKey(String key) {
+    if( null == fields.get(key) )
+      key = null;
+    if( "mountdate".equals(key))
+      key = "mountDate";
+    return key;
+  }
+
   private boolean notRepeated(String key) {
-    if( fields.get(key).getFlags().contains(FieldFlag.MULTI_VALUED) )
+    if( isMultiValued(key) )
       return true;
     else if( doc.containsKey(key) )
       return false;
     return true;
+  }
+
+  private boolean isMultiValued(String key) {
+    FieldInfo info = fields.get(key);
+    if( null == info )
+      return false;
+    return info.getFlags().contains(FieldFlag.MULTI_VALUED);
   }
 
   public static String validateDate(String input) {

@@ -32,7 +32,7 @@ public class HttpMartiniIndexer implements MartiniIndexer {
     luke.setShowSchema(true);
     try {
       LukeResponse process = luke.process(server);
-      SolrizeFiles sf = new SolrizeFiles( process.getFieldInfo() );
+      SolrizeFiles sf = new SolrizeFiles( process.getFieldInfo(), mountDate );
       Files.walkFileTree(startingDir, sf);
       lastResponse = server.add( sf.getDocs() );
       lastResponse = server.commit();
