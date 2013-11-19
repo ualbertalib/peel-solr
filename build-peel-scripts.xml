@@ -62,8 +62,8 @@
             errorProperty="test.failed" 
             failureProperty="test.failed" fork="yes">
             <jvmarg value="-ea"/>
-	    <jvmarg value="-Xms512M"/>
-	    <jvmarg value="-Xmx512M"/>
+	    <jvmarg value="-Xms1024M"/>
+	    <jvmarg value="-Xmx1024M"/>
             <classpath>
                 <fileset dir="${peel-scripts.lib}">
                     <include name="**/*.jar"/>
