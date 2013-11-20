@@ -1,0 +1,9 @@
+#solrcore.properties
+solr.filterCache.size=2003232
+solr.filterCache.initialSize=2003232
+
+solr.queryResultCache.size=27827
+solr.queryResultCache.size=27827
+
+solr.LRUCache.size=6314
+solr.LRUCache.initialSize=6314

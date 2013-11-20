@@ -1,0 +1,2 @@
+#solrcore.properties
+solr.forwarding.target=http://reading.library.ualberta.ca:8983/solr/peel

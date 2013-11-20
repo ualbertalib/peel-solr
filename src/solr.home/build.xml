@@ -6,7 +6,7 @@
     <property name="collection.path" location="${collection}"/>
     <target name="create-core" depends="clean" description="uses Solr CoreAdmin API to create collection">
         <input message="Enter name of collection to create or enter for ${collection}" defaultvalue="${collection}" addproperty="name"/>
-        <input message="Enter path to instance direction of collection or enter for ${collection.path}" defaultvalue="${collection.path}" addproperty="instanceDir"/>
+        <input message="Enter path to instance directory of collection or enter for ${collection.path}" defaultvalue="${collection.path}" addproperty="instanceDir"/>
         <post to="http://${host}:${port}/${solr}/admin/cores" logfile="rsp-coreadmin.xml">
             <prop name="action" value="CREATE"/>
             <prop name="name" value="${name}"/>
@@ -275,6 +275,21 @@
         <delete file="rsp-coreadmin.xml"/>
         <delete file="rsp-cores.xml"/>
     </target>
+	
+	<target name="specialize">
+		<input message="Enter name of collection to create or enter for ${collection}" defaultvalue="${collection}" addproperty="name"/>
+		<input message="Enter path to instance directory of collection or enter for ${collection.path}" defaultvalue="${collection.path}" addproperty="instanceDir"/>
+		<input message="Enter specialization for ${name}" defaultvalue="none" addproperty="specialize"/>
+		<if>
+			<equals arg1="${specialize}" arg2="none"/>
+			<then>
+				<delete file="${instanceDir}/conf/solrcore.properties" quiet="true"/>
+			</then>
+			<else>
+				<copy file="${instanceDir}/conf/solrcore.properties.${specialize}" toFile="${instanceDir}/conf/solrcore.properties" overwrite="true" verbose="true"/>
+			</else>
+		</if>
+	</target>
     <target name="test" description="tests Solr available, collection available, utf-8 chars display correctly, components for peel queries functional, and real-time performance including response time, memory use, system load, and errors are within tolerances."
         depends="test-started,test-collection,test-get-utf8,test-adv-utf8,test-peelbib,test-newspapers,test-rsptime,test-jvm-mem,test-file-descriptors,test-errors"/>
 </project>
