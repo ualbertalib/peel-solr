@@ -806,6 +806,7 @@
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
       <str name="config">peel-newspapers-data-config-indexing.xml</str>
+      <str name="update.chain">forwarding</str>
     </lst>
   </requestHandler>
 
@@ -1084,6 +1085,12 @@
   <searchComponent class="solr.HighlightComponent" name="highlight">
     <highlighting class="org.apache.solr.highlight.PositionsSolrHighlighter" summarizeEmpty="false"/>
   </searchComponent>
+  
+  <updateRequestProcessorChain name="forwarding">
+    <processor class="solr.ForwardingUpdateProcessorFactory" >
+      <str name="target">${solr.forwarding.target:none}</str>
+    </processor>
+  </updateRequestProcessorChain>
 
   <queryResponseWriter name="json" class="solr.JSONResponseWriter">
      <!-- For the purposes of the tutorial, JSON responses are written as

@@ -32,40 +32,50 @@ public class ForwardingProcessor extends UpdateRequestProcessor {
 
   @Override
   public void finish() throws IOException {
-    server.shutdown();
+    if(!isDisabled) {
+      server.shutdown();
+    }
     super.finish();
   }
 
   private static final String TARGET_PARAM = "target";
+  private static final String TARGET_NONE = "none";
   private SolrServer server;
+  private boolean isDisabled = false;
   
   public ForwardingProcessor(SolrParams params, SolrQueryRequest req,
       SolrQueryResponse rsp, UpdateRequestProcessor next) {
     super(next);
     if (params != null) {
-      server = new HttpSolrServer( params.get(TARGET_PARAM) );
+      if( params.get(TARGET_PARAM).equals(TARGET_NONE)) {
+        isDisabled = true;
+      } else {
+        server = new HttpSolrServer( params.get(TARGET_PARAM) );
+      }
     }
   }
 
   @Override
   public void processAdd(AddUpdateCommand cmd) throws IOException {
-    try {
-      server.add( cmd.getSolrInputDocument() );
-    } catch (SolrServerException e) {
-      throw new RuntimeException();
+    if(!isDisabled) {
+      try {
+        server.add( cmd.getSolrInputDocument() );
+      } catch (SolrServerException e) {
+        throw new RuntimeException();
+      }
     }
-
     super.processAdd(cmd);
   }
 
   @Override
   public void processCommit(CommitUpdateCommand cmd) throws IOException {
-    try {
-      server.commit();
-    } catch (SolrServerException e) {
-      throw new RuntimeException();
+    if(!isDisabled) {
+      try {
+        server.commit();
+      } catch (SolrServerException e) {
+        throw new RuntimeException();
+      }
     }
-
     super.processCommit(cmd);
   }
   
