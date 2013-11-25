@@ -9,6 +9,7 @@
     <property name="peel-scripts.class.dir"  location="${target.dir}/peel-scripts"/>
     <property name="peel-scripts.report.dir" location="${target.dir}/reports"/>
     <property name="peel-scripts.lib" location="${lib.dir}/peel-scripts"/>
+    <property name="test.lib" location="${lib.dir}/test"/>
     <property name="peel-scripts.test" location="test/peel-scripts"/>
     <property name="peel-scripts.test-files" location="test-files"/>
     <property name="project.revision" value="1.0.0"/>
@@ -23,6 +24,8 @@
         
         <ivy:retrieve sync="true" conf="peel-scripts" pattern="${peel-scripts.lib}/[artifact]-[revision].[ext]"/>
         <ivy:cachepath pathid="peel-scripts.classpath" conf="peel-scripts"/>
+    	<ivy:retrieve sync="true" conf="test" pattern="${test.lib}/[artifact]-[revision].[ext]"/>
+    	<ivy:cachepath pathid="test.classpath" conf="test"/>
     </target>
     
     
@@ -35,6 +38,7 @@
             <src path="${peel-scripts.test}"/>
             <classpath>
                 <path refid="peel-scripts.classpath"/>
+            	<path refid="test.classpath"/>
             </classpath>
         </javac>
         
@@ -46,7 +50,7 @@
         <mkdir dir="${dist.dir}"/>
         
         <!-- Put everything in ${build} into the jar file -->
-        <jar jarfile="${dist.dir}/${ant.project.name}-scripts.jar">
+        <jar jarfile="${dist.dir}/${ant.project.name}-scripts.jar" filesetmanifest="mergewithoutmain">
             <fileset dir="${peel-scripts.class.dir}">
                 <exclude name="**/*Test*"/>
             </fileset>
@@ -68,6 +72,9 @@
                 <fileset dir="${peel-scripts.lib}">
                     <include name="**/*.jar"/>
                 </fileset>
+        		<fileset dir="${test.lib}">
+        	                    <include name="**/*.jar"/>
+        	    </fileset>
                 <pathelement location="${peel-scripts.class.dir}"/>
                 <pathelement location="${peel-scripts.test-files}"/>
             </classpath>

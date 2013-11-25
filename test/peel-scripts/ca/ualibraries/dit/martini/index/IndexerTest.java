@@ -16,13 +16,6 @@ public class IndexerTest extends SolrJettyTestBase {
   }
   
   @Test
-  public void testHttp() throws Exception {
-    String[] args = {"http://127.0.0.1:" + jetty.getLocalPort() + "/solr", "coreName=peel", "contentDir=test-files/indexing/"};
-    Indexer.main(args);
-    jetty.stop();
-  }
-  
-  @Test
   public void testLocal() throws Exception {
     String[] args = {"src/solr.home", "coreName=peel", "contentDir=test-files/indexing/",  "config=peel-bib-data-config-indexing.xml"};
     Indexer.main(args);
