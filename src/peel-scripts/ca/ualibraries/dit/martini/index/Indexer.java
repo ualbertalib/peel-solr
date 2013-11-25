@@ -3,7 +3,6 @@ package ca.ualibraries.dit.martini.index;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.commons.validator.routines.UrlValidator;
 
 public class Indexer {
   
@@ -18,18 +17,12 @@ public class Indexer {
   		return;
   	}
   	MartiniIndexer indexer;
-  	
-  	UrlValidator urlValidator = new UrlValidator();
-  	
+  	  	
   	String solrHome = args[0];
     String coreName = getArg("coreName", args);
     
-  	if( urlValidator.isValid( solrHome )) {
-  	  indexer = new HttpMartiniIndexer( solrHome, coreName );
-  	} else {
-  	  indexer = new LocalMartiniIndexer( solrHome, coreName );
+  	indexer = new LocalMartiniIndexer( solrHome, coreName );
   	  ((LocalMartiniIndexer) indexer).setConfig( getArg("config", args));
-  	}
   	
   	try {
   		indexer.start(getArg("contentDir", args), getArg("mountDate", args));
