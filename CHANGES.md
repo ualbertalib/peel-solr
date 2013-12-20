@@ -1,11 +1,22 @@
 Peel-Solr 0.2
 ===============
 
+ForwardingUpdateProcessor
+-------------------------
+Is an [UpdateRequestProcessor](http://wiki.apache.org/solr/UpdateRequestProcessor) for use with 
+[Solr](http://lucene.apache.org/solr).  This takes any updates to an instance of Solr and forwards
+to the target Solr specified in the config.
+
+[See SOLR-5470](https://issues.apache.org/jira/browse/SOLR-5470)
+
 features
 * added DataImportHandler Request Handlers for each ingestion type (peelbib, newspapers).  Simpler URL, 
 provides defaults which can be overridden. 
 * created ScriptTransformer for pubyears that show up as edge cases (c192, 1920-1930, etc)
 * created ScriptTransformer to assign mountDate when itemstatus.properties does not give it
+* can start instance in a vm using [Vagrant](http://docs.vagrantup.com/v2/getting-started/index.html)
+* updated SolrMeter to unpatched trunk (with headless capability)
+* use solrcore.properties to specialize config (caching etc)
 
 bug fixes
 * relaxed default performance limits
