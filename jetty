@@ -1,0 +1,20 @@
+JETTY_HOME=/opt/solr
+JETTY_USER=solr
+JETTY_LOGS=/opt/solr/logs
+
+JAVA_HOME=/usr/lib/jvm/java-1.6.0
+
+JAVA_OPTIONS="-Djava.util.logging.config.file=etc/logging.properties -Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
+JAVA_OPTIONS="-Xmx12g -Xms12g -Xmn4g $JAVA_OPTIONS"
+JAVA_OPTIONS="-XX:PermSize=45m -XX:MaxPermSize=45m $JAVA_OPTIONS"
+JAVA_OPTIONS="-XX:+UseParallelOldGC $JAVA_OPTIONS"
+JAVA_OPTIONS="-Xloggc:$JETTY_LOGS/gc.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintTenuringDistribution -XX:+PrintCommandLineFlags -XX:+PrintHeapAtGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime $JAVA_OPTIONS"
+JAVA_OPTIONS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/tmp/jetty-solr-dump.hprof $JAVA_OPTIONS"
+
+# some additional java GC options suggested by jetty
+#JAVA_OPTIONS="-XX:+DisableExplicitGC $JAVA_OPTIONS"
+#JAVA_OPTIONS="-XX:+UseConcMarkSweepGC $JAVA_OPTIONS"
+#JAVA_OPTIONS="-XX:ParallelCMSThreads=2 $JAVA_OPTIONS"
+#JAVA_OPTIONS="-XX:+CMSClassUnloadingEnabled $JAVA_OPTIONS"
+#JAVA_OPTIONS="-XX:+UseCMSCompactAtFullCollection $JAVA_OPTIONS"
+#JAVA_OPTIONS="-XX:CMSInitiatingOccupancyFraction=80 $JAVA_OPTIONS"
