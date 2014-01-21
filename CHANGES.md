@@ -1,3 +1,11 @@
+Peel-Solr 0.2.1
+===============
+
+bug fixes
+* updated vagrant base box
+* removed inacurate index-size-estimator.xls
+* changed the default cache values to be optimized for querying
+
 Peel-Solr 0.2
 ===============
 
