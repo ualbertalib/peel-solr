@@ -1,2 +1,2 @@
 #solrcore.properties
-solr.forwarding.target=http://reading.library.ualberta.ca:8983/solr/peel-sample
+solr.forwarding.target=http://qpr.library.ualberta.ca:8983/solr/peel
