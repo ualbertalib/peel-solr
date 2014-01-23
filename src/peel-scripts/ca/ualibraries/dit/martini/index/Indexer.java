@@ -13,21 +13,26 @@ public class Indexer {
       logger
           .warn("Usage: java -jar "
   						+ LocalMartiniIndexer.class.getName()
-  						+ " <solr.home> [coreName=<corename> contentDir=<baseDirectory> config=<data-config> mountDate=<mountdate>]");
+  						+ " <solr.home> [coreName=<corename> contentDir=<baseDirectory> config=<data-config> mountDate=<mountdate> poll=<pollFrequency in seconds>]");
   		return;
   	}
   	MartiniIndexer indexer;
   	  	
   	String solrHome = args[0];
     String coreName = getArg("coreName", args);
-    
+    long pollFrequency = 5000L;
+    try {
+      pollFrequency = Long.parseLong( getArg("poll", args) ) * 1000L;
+    }catch(NumberFormatException e) {
+      
+    }
   	indexer = new LocalMartiniIndexer( solrHome, coreName );
   	  ((LocalMartiniIndexer) indexer).setConfig( getArg("config", args));
   	
   	try {
   		indexer.start(getArg("contentDir", args), getArg("mountDate", args));
   		while (indexer.poll()) {
-  			Thread.sleep(5000L);
+  			Thread.sleep(pollFrequency);
   		};
       logger.info( indexer.report() );
   	} catch (SolrServerException e) {
@@ -41,7 +46,7 @@ public class Indexer {
   }
 
   private static String[] knownArgs = { "coreName", "contentDir", "config",
-  			"mountDate" };
+  			"mountDate", "poll" };
 
   private static boolean unknownArgs(String[] args) {
   	boolean isKnown = true;

@@ -17,7 +17,7 @@ public class IndexerTest extends SolrJettyTestBase {
   
   @Test
   public void testLocal() throws Exception {
-    String[] args = {"src/solr.home", "coreName=peel", "contentDir=test-files/indexing/",  "config=peel-bib-data-config-indexing.xml"};
+    String[] args = {"src/solr.home", "coreName=peel", "contentDir=test-files/indexing/",  "config=peel-bib-data-config-indexing.xml", "poll=30"};
     Indexer.main(args);
   }
   
