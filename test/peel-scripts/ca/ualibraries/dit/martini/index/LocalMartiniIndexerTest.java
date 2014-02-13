@@ -70,6 +70,22 @@ public class LocalMartiniIndexerTest {
 				lmi.report());
 
 	}
+	
+	@Test
+  public void testGZipIgnore() throws SolrServerException,
+      InterruptedException {
+    
+    lmi.setConfig("peel-newspapers-data-config-indexing.xml");
+    lmi.start("test-files/indexing/newspapers/LLT", dateFormat.format(date));
+    while (lmi.poll()) {
+      Thread.sleep(5000L);
+    }
+    ;
+    assertEquals(
+        "Indexing completed. Added/Updated: 0 documents. Deleted 0 documents.",
+        lmi.report());
+
+  }
 
 	@AfterClass
 	public static void close() {

@@ -5,11 +5,13 @@ import java.io.IOException;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.update.AddUpdateCommand;
 import org.apache.solr.update.CommitUpdateCommand;
+import org.apache.solr.update.UpdateHandler;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -30,18 +32,12 @@ import org.apache.solr.update.CommitUpdateCommand;
 
 public class ForwardingProcessor extends UpdateRequestProcessor {
 
-  @Override
-  public void finish() throws IOException {
-    if(!isDisabled) {
-      server.shutdown();
-    }
-    super.finish();
-  }
-
   private static final String TARGET_PARAM = "target";
   private static final String TARGET_NONE = "none";
   private SolrServer server;
   private boolean isDisabled = false;
+  private UpdateHandler updateHandler;
+  private boolean changesSinceCommit;
   
   public ForwardingProcessor(SolrParams params, SolrQueryRequest req,
       SolrQueryResponse rsp, UpdateRequestProcessor next) {
@@ -53,6 +49,7 @@ public class ForwardingProcessor extends UpdateRequestProcessor {
         server = new HttpSolrServer( params.get(TARGET_PARAM) );
       }
     }
+    this.updateHandler = req.getCore().getUpdateHandler();
   }
 
   @Override
@@ -63,8 +60,11 @@ public class ForwardingProcessor extends UpdateRequestProcessor {
       } catch (SolrServerException e) {
         throw new RuntimeException();
       }
+    } else {
+      updateHandler.addDoc(cmd);
     }
-    super.processAdd(cmd);
+    super.processAdd(cmd);      
+    changesSinceCommit = true;
   }
 
   @Override
@@ -75,8 +75,22 @@ public class ForwardingProcessor extends UpdateRequestProcessor {
       } catch (SolrServerException e) {
         throw new RuntimeException();
       }
+    } else {
+      updateHandler.commit(cmd);
     }
     super.processCommit(cmd);
+    changesSinceCommit = false;
   }
   
+  @Override
+  public void finish() throws IOException {
+    if (changesSinceCommit && updateHandler.getUpdateLog() != null) {
+      updateHandler.getUpdateLog().finish(null);
+    }
+    if(!isDisabled) {
+      server.shutdown();
+    }
+    super.finish();
+  }
+    
 }

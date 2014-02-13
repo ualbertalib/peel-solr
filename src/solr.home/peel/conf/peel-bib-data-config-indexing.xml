@@ -95,7 +95,7 @@
                 <!-- sort fields -->
                 <field column="titlesort" name="titlesort"/>
                 <field column="authorsort" name="authorsort"/>
-                <entity name="txt" processor="FileListEntityProcessor" fileName="fulltext.txt"
+                <entity name="txt" processor="FileListEntityProcessor" fileName="^fulltext.txt$"
                     rootEntity="false" recursive="true" dataSource="null" onError="continue"
                     baseDir="${bib.fileDir}" 
                     >

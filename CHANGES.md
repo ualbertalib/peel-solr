@@ -1,3 +1,13 @@
+Peel-Solr 0.2.2
+===============
+
+bug fixes
+* doesn't try to index fulltext.txt.gz
+* specify poll interval when using peel-scripts indexer to minimize repetition in logs and maximize useful info
+* remove unused configs
+* made qpr default forwarding instance
+
+
 Peel-Solr 0.2.1
 ===============
 
